@@ -21,7 +21,7 @@ class NewPost(tk.Frame):
         self.media = []
         media_list= MediaList(self.main_frame, self.media)
         media_list.pack()
-        get_media_btn = GetMediaBtn(self.main_frame, self.media, media_list)
+        get_media_btn = GetMediaBtn(self.main_frame, self.media, media_list, max_items=3)
         get_media_btn.pack()
         pass
 
