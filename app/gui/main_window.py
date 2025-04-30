@@ -36,7 +36,7 @@ class MainWindow(tk.Tk):
         self.body_content.pack(fill='both', expand= True,padx=10, pady=10)
 
 
-    def load_content(self, new_content:tk.Frame, old_content:tk.Frame):
+    def load_content(self, new_content:tk.Frame):
         self.new_content_frame()
         if new_content == "Landing":
             landing = Landing(self.body_content, self)
