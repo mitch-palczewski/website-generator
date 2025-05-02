@@ -12,6 +12,8 @@ try:
 except ImportError:
     print("Error: windll not imported. Text may be blurred")
     pass
+MAX_IMG_HEIGHT = 700
+MAX_IMG_WIDTH = 700
 
 class MediaList(tk.Frame):
     def __init__(self, container:tk.Frame, media: list, tk_images:list):
@@ -28,10 +30,14 @@ class MediaList(tk.Frame):
         for index, m in enumerate(self.media):
             lbl = tk.Label(self.media_content, text=m)
             lbl.pack()
-            lbl = tk.Label(self.media_content,  image=self.tk_images[index])
-            lbl.pack()
-            x_btn = tk.Button(self.media_content, text="x", command= lambda idx=index: self.remove_media_element(idx))
-            x_btn.pack()
+            img_group = tk.Frame(self.media_content)
+            img_group.columnconfigure(0, weight=4)
+            img_group.columnconfigure(1, weight=1)
+            img_group.pack(fill='x', expand=True)
+            lbl = tk.Label(img_group,  image=self.tk_images[index])
+            lbl.grid(column=0, row=0)
+            x_btn = tk.Button(img_group, text="x", command= lambda idx=index: self.remove_media_element(idx))
+            x_btn.grid(column=1, row=0, sticky=tk.E)
         
     
     def remove_media_element(self, index):
@@ -74,7 +80,12 @@ class GetMediaBtn(tk.Frame):
 
 def path_to_tk_image(file_path):
     img = Image.open(file_path)
-    img = img.resize((600, 400), Image.NEAREST)
+    original_width, original_height = img.size
+    scaling_factor = MAX_IMG_HEIGHT / original_height
+    new_width = int(original_width * scaling_factor)
+    resized_image = img.resize((new_width, MAX_IMG_HEIGHT), Image.LANCZOS)
+    img.thumbnail((MAX_IMG_WIDTH, MAX_IMG_HEIGHT), Image.LANCZOS)
+
     photo = ImageTk.PhotoImage(img)
     return photo
 

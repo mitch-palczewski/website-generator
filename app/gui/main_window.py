@@ -43,7 +43,7 @@ class MainWindow(tk.Tk):
             landing.pack()
         elif new_content == "NewPost":
             new_post = NewPost(self.body_content, self)
-            new_post.pack()
+            new_post.pack(fill='both', expand= True)
   
         self.body_content.pack(fill='both', expand= True,padx=10, pady=10)
         pass
