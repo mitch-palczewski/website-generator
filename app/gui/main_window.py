@@ -8,6 +8,7 @@ except ImportError:
 
 from .subwindows.landing import Landing
 from .subwindows.new_post import NewPost
+from .subwindows.configure_post import ConfigurePost
 
 class MainWindow(tk.Tk):
     def __init__(self):
@@ -40,10 +41,13 @@ class MainWindow(tk.Tk):
         self.new_content_frame()
         if new_content == "Landing":
             landing = Landing(self.body_content, self)
-            landing.pack()
+            landing.pack(fill='both', expand= True)
         elif new_content == "NewPost":
             new_post = NewPost(self.body_content, self)
             new_post.pack(fill='both', expand= True)
+        elif new_content == "ConfigurePost":
+            configure_post = ConfigurePost(self.body_content, self)
+            configure_post.pack(fill='both', expand= True)
   
         self.body_content.pack(fill='both', expand= True,padx=10, pady=10)
         pass

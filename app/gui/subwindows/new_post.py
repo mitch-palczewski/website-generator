@@ -1,6 +1,7 @@
 import tkinter as tk
 import shutil
 import os
+import json
 from bs4 import BeautifulSoup as bs
 try:
     from ctypes import windll
@@ -99,9 +100,14 @@ class NewPost(tk.Frame):
             html_file_soup = bs(file, "html.parser")
         posts_div = html_file_soup.find("div", id="posts")
         if posts_div:
-            html_content = bs(HTML_CONTENT, "html.parser")
-            html_content = self.configure_content(html_content, media_paths[0], text)
-            posts_div.insert(0, html_content)
+            with open("app\config\config.json", "r") as json_file:
+                config_data = json.load(json_file)
+            post_path = config_data["post_component"]
+            with open(post_path, "r", encoding="utf-8") as post_file:
+                post_html = bs(post_file, "html.parser")
+            
+            post_html = self.configure_content(post_html, media_paths[0], text)
+            posts_div.insert(0, post_html)
         else:
             raise ValueError("Error: No element with id 'posts' found.")
 
@@ -111,11 +117,11 @@ class NewPost(tk.Frame):
 
 
 
-    def configure_content(self, html_content:bs, image:str, text:str):
-        first_p = html_content.find("p")
+    def configure_content(self, post_html:bs, image:str, text:str):
+        first_p = post_html.find("p")
         if first_p:
             first_p.insert(0,text)
-        first_img = html_content.find("img")
+        first_img = post_html.find("img")
         if  first_img:
             first_img["src"] = image
-        return html_content
+        return post_html
