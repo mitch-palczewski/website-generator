@@ -3,6 +3,8 @@ import shutil
 import os
 import json
 from bs4 import BeautifulSoup as bs
+from datetime import date
+
 try:
     from ctypes import windll
     windll.shcore.SetProcessDpiAwareness(1)
@@ -66,14 +68,17 @@ class NewPost(tk.Frame):
         self.text_field = TextField(self.body_frame)
         self.text_field.grid(column=1,row=1, sticky=tk.N)
 
+        #Footer
         build_post_btn = tk.Button(self.main_frame, text="Build Post", command=self.build_post)
         build_post_btn.pack(side="right")
         pass
 
     def build_post(self):
-        text:str = self.text_field.get_text()
+        caption:str = self.text_field.get_text()
+        post_date:str = get_date()
         local_media_paths = []
-        if len(self.media) == 0 and text == "":
+        
+        if len(self.media) == 0 and caption == "":
             #Build out if text is blank
             print("Upload Media or Text")
             return
@@ -82,42 +87,56 @@ class NewPost(tk.Frame):
             local_media_paths.append(new_path)
         
         if len(local_media_paths) == 1:
-            self.build_single_media_html(local_media_paths, text)
+            self.build_single_media_html(local_media_paths, caption, post_date)
             self.main_window.load_content("Landing")
         elif len(local_media_paths) == 0: 
             print("Text only Posts not supported at this time")
         else:
             print("Posts with multiple media elements not supported at this time.") 
 
-    def build_single_media_html(self, media_paths: list, text:str):
+    def build_single_media_html(self, media_paths: list, caption:str, post_date:str):
         html_webpage: bs = open_html(HTML_FILE_PATH)
         posts_div_tag = html_webpage.find("div", id="posts")
         if posts_div_tag:
             config_data: dict = open_json(CONFIG_JSON_PATH)
             post_html: bs = open_html(config_data["post_component"])
-            post_html = self.configure_content(post_html, media_paths[0], text)
+            post_html = self.configure_content(post_html, media_paths[0], caption, post_date)
             posts_div_tag.insert(0, post_html)
         else:
             raise ValueError("Error: No element with id 'posts' found.")
         write_html_file(HTML_FILE_PATH, html_webpage)
 
-    def configure_content(self, post_html:bs, image:str, text:str) -> bs: 
+    def configure_content(self, post_html:bs, image:str, caption:str, post_date:str) -> bs: 
         """
         Edits the inserts data into the HTML component 
         """
+        #Inserts Caption
         p_tag = post_html.find("p", id="caption")
         if not p_tag:
             p_tag = post_html.find("p")
         if not p_tag:
-            raise ValueError("Error: No <p> tag element found.")
-        p_tag.insert(0,text)
+            raise ValueError("Error: No <p> tag found for caption element.")
+        if p_tag:
+            p_tag.insert(0,caption)
         
+        #Inserts Image
         img_tag = post_html.find("img", id="media")
         if not img_tag:
             img_tag = post_html.find("img")
         if not img_tag:
-            raise ValueError("Error: No <img> tag element found.")
-        img_tag["src"] = image
+            raise ValueError("Error: No <img> tag found for media element.")
+        if img_tag:
+            img_tag["src"] = image
+
+        #Inserts Date
+        h6_tag = post_html.find("h6", id="date")
+        if not h6_tag:
+            h6_tag = post_html.find("h6")
+        if not img_tag:
+            raise ValueError("Error: No <h6> tag found for date element.")
+        if h6_tag:
+            h6_tag.insert(0,post_date)
+        
         return post_html
 
 def open_html(html_file_path:str) -> bs:
@@ -139,3 +158,8 @@ def move_media_to_folder(media:str, folder:str) -> str:
     file_name = os.path.basename(media)
     new_path = os.path.join(folder, file_name)
     return new_path
+
+def get_date() -> str:
+    unformatted_date:date = date.today()
+    today_date: str = unformatted_date.strftime("%m-%d-%Y")
+    return today_date
