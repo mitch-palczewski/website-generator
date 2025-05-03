@@ -102,16 +102,22 @@ class NewPost(tk.Frame):
         write_html_file(HTML_FILE_PATH, html_webpage)
 
     def configure_content(self, post_html:bs, image:str, text:str) -> bs: 
-        first_p_tag = post_html.find("p")
-        first_img = post_html.find("img")
-        if first_p_tag:
-            first_p_tag.insert(0,text)
-        else:
+        """
+        Edits the inserts data into the HTML component 
+        """
+        p_tag = post_html.find("p", id="caption")
+        if not p_tag:
+            p_tag = post_html.find("p")
+        if not p_tag:
             raise ValueError("Error: No <p> tag element found.")
-        if  first_img:
-            first_img["src"] = image
-        else: 
+        p_tag.insert(0,text)
+        
+        img_tag = post_html.find("img", id="media")
+        if not img_tag:
+            img_tag = post_html.find("img")
+        if not img_tag:
             raise ValueError("Error: No <img> tag element found.")
+        img_tag["src"] = image
         return post_html
 
 def open_html(html_file_path:str) -> bs:
