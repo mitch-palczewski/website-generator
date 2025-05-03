@@ -13,24 +13,15 @@ except ImportError:
 from gui.components.get_media import GetMediaBtn, MediaList
 from gui.components.text_field import TextField
 
+CONFIG_JSON_PATH = "app\config\config.json"
 ASSET_FOLDER_PATH = "assets"
 MAX_MEDIA_ITEMS = 1
-HTML_FILE = "index.html"
-HTML_CONTENT = """
-        <div class="bg-gray-200 p-2 rounded shadow">
-          <img
-            alt="Photo 1"
-            class="w-full h-auto object-cover rounded"
-            src="https://via.placeholder.com/400"
-        />
-        <p></p>
-        </div>
-"""
+HTML_FILE_PATH = "index.html"
 
 class NewPost(tk.Frame):
     def __init__(self, container, main_window):
         super().__init__(container)
-        self.main_window = main_window
+        self.main_window:tk.Frame = main_window
         self.media = []
         self.tk_images = []
 
@@ -45,7 +36,10 @@ class NewPost(tk.Frame):
         self.body_frame.pack(fill='both', expand= True, padx=10, pady=10)
 
         #HEADER
-        landing_btn = tk.Button(self.header_frame, text="Landing Page", command=lambda: main_window.load_content("Landing"))
+        landing_btn = tk.Button(
+            self.header_frame, 
+            text="Landing Page", 
+            command=lambda: main_window.load_content("Landing"))
         landing_btn.pack(side="right")
         lbl = tk.Label(self.header_frame, text= "NEW POST PAGE")
         lbl.pack()
@@ -53,9 +47,17 @@ class NewPost(tk.Frame):
         
         #BODY
             #BODY LEFT
-        media_list= MediaList(self.body_frame, self.media, self.tk_images)
+        media_list= MediaList(
+            self.body_frame, 
+            self.media, 
+            self.tk_images)
         media_list.grid(column=0,row=1, sticky=tk.NS)
-        get_media_btn = GetMediaBtn(self.body_frame, self.media, self.tk_images, media_list, max_items=MAX_MEDIA_ITEMS)
+        get_media_btn = GetMediaBtn(
+            self.body_frame, 
+            self.media, 
+            self.tk_images, 
+            media_list, 
+            max_items=MAX_MEDIA_ITEMS)
         get_media_btn.grid(column=0,row=0, sticky=tk.N)
 
             #BODY RIGHT
@@ -68,60 +70,66 @@ class NewPost(tk.Frame):
         build_post_btn.pack(side="right")
         pass
 
-
     def build_post(self):
-        text = self.text_field.get_text()
-        print(text)
+        text:str = self.text_field.get_text()
+        local_media_paths = []
         if len(self.media) == 0 and text == "":
             #Build out if text is blank
             print("Upload Media or Text")
             return
-        print("Building Post")
-        local_media_paths = []
         for media in self.media:
-            shutil.copy(media, ASSET_FOLDER_PATH)
-            file_name = os.path.basename(media)
-            new_path = os.path.join(ASSET_FOLDER_PATH, file_name)
+            new_path:str = move_media_to_folder(media, ASSET_FOLDER_PATH)
             local_media_paths.append(new_path)
         
         if len(local_media_paths) == 1:
             self.build_single_media_html(local_media_paths, text)
-            print("Post With Single Media Built")
             self.main_window.load_content("Landing")
         elif len(local_media_paths) == 0: 
             print("Text only Posts not supported at this time")
         else:
-            print("Posts with multiple media elements not supported at this time.")
-    
-
+            print("Posts with multiple media elements not supported at this time.") 
 
     def build_single_media_html(self, media_paths: list, text:str):
-        with open(HTML_FILE, "r", encoding="utf-8") as file:
-            html_file_soup = bs(file, "html.parser")
-        posts_div = html_file_soup.find("div", id="posts")
-        if posts_div:
-            with open("app\config\config.json", "r") as json_file:
-                config_data = json.load(json_file)
-            post_path = config_data["post_component"]
-            with open(post_path, "r", encoding="utf-8") as post_file:
-                post_html = bs(post_file, "html.parser")
-            
+        html_webpage: bs = open_html(HTML_FILE_PATH)
+        posts_div_tag = html_webpage.find("div", id="posts")
+        if posts_div_tag:
+            config_data: dict = open_json(CONFIG_JSON_PATH)
+            post_html: bs = open_html(config_data["post_component"])
             post_html = self.configure_content(post_html, media_paths[0], text)
-            posts_div.insert(0, post_html)
+            posts_div_tag.insert(0, post_html)
         else:
             raise ValueError("Error: No element with id 'posts' found.")
+        write_html_file(HTML_FILE_PATH, html_webpage)
 
-        with open(HTML_FILE, "w", encoding="utf-8") as file:
-            file.write(str(html_file_soup))
-            pass
-
-
-
-    def configure_content(self, post_html:bs, image:str, text:str):
-        first_p = post_html.find("p")
-        if first_p:
-            first_p.insert(0,text)
+    def configure_content(self, post_html:bs, image:str, text:str) -> bs: 
+        first_p_tag = post_html.find("p")
         first_img = post_html.find("img")
+        if first_p_tag:
+            first_p_tag.insert(0,text)
+        else:
+            raise ValueError("Error: No <p> tag element found.")
         if  first_img:
             first_img["src"] = image
+        else: 
+            raise ValueError("Error: No <img> tag element found.")
         return post_html
+
+def open_html(html_file_path:str) -> bs:
+    with open(html_file_path, "r", encoding="utf-8") as file:
+        html_file_soup = bs(file, "html.parser")
+    return html_file_soup
+
+def open_json(json_file_path:str) -> dict:
+    with open(json_file_path, "r") as json_file:
+        json_data: dict = json.load(json_file)
+    return json_data
+
+def write_html_file(html_file_path:str, html:bs) -> None:
+    with open(html_file_path, "w", encoding="utf-8") as file:
+        file.write(str(html))
+
+def move_media_to_folder(media:str, folder:str) -> str:
+    shutil.copy(media, folder)
+    file_name = os.path.basename(media)
+    new_path = os.path.join(folder, file_name)
+    return new_path
