@@ -149,10 +149,21 @@ class NewPost(tk.Frame):
         h6_tag = post_html.find("h6", id="date")
         if not h6_tag:
             h6_tag = post_html.find("h6")
-        if not img_tag:
+        if not h6_tag:
             raise ValueError("Error: No <h6> tag found for date element.")
         if h6_tag:
             h6_tag.insert(0,post_date)
+        
+        #Inserts Title
+        title = self.title_field.get_text()
+        h1_tag = post_html.find("h1", id="title")
+        if not h1_tag:
+            h1_tag = post_html.find("h6")
+        if not h1_tag:
+            raise ValueError("Error: No <h6> tag found for date element.")
+        if h1_tag:
+            h1_tag.insert(0,title)
+
         
         return post_html
 
