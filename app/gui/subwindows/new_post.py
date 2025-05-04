@@ -16,6 +16,7 @@ from gui.components.get_media import GetMediaBtn, MediaList
 from gui.components.text_field import TextField
 
 CONFIG_JSON_PATH = "app\config\config.json"
+MESSAGE_HTML = "html_components\communicate\message.html"
 ASSET_FOLDER_PATH = "assets"
 MAX_MEDIA_ITEMS = 1
 HTML_FILE_PATH = "index.html"
@@ -96,32 +97,54 @@ class NewPost(tk.Frame):
             #Build out if text is blank
             print("Upload Media or Text")
             return
+        
         for media in self.media:
             new_path:str = move_media_to_folder(media, ASSET_FOLDER_PATH)
             local_media_paths.append(new_path)
         
+        #IF post is single image
         if len(local_media_paths) == 1:
             self.build_single_media_html(local_media_paths, caption, post_date)
             self.main_window.load_content("Landing")
+        #IF post is text only 
         elif len(local_media_paths) == 0: 
             print("Text only Posts not supported at this time")
         else:
-            print("Posts with multiple media elements not supported at this time.") 
+            print("Posts with multiple media or video elements not supported at this time.") 
+    
 
     def build_single_media_html(self, media_paths: list, caption:str, post_date:str):
         html_webpage: bs = open_html(HTML_FILE_PATH)
+        if not html_webpage:
+            raise ValueError("Error: HTML webpage not found in file system.")
         posts_div_tag = html_webpage.find("div", id="posts")
-        if posts_div_tag:
-            config_data: dict = open_json(CONFIG_JSON_PATH)
-            post_html: bs = open_html(config_data["post_component"])
-            post_html = self.configure_content(post_html, media_paths[0], caption, post_date)
-            posts_div_tag.insert(0, post_html)
-        else:
+        if not posts_div_tag:
             raise ValueError("Error: No element with id 'posts' found.")
+        config_data: dict = open_json(CONFIG_JSON_PATH)
+        post_html: bs = open_html(config_data["post_component"])
+        post_commenting:bool = config_data["post_commenting"]
+        post_messaging:bool = config_data["post_messaging"]
+        email:str = config_data["email"]
+        post_html = self.configure_content(post_html, media_paths[0], caption, post_date)
+        if post_messaging:
+            post_html = self.configure_messaging(post_html, email)
+        posts_div_tag.insert(0, post_html)     
         write_html_file(HTML_FILE_PATH, html_webpage)
     
-    def configure_messaging(self, post_html:bs, commenting:bool, message:bool, email:str):
-        pass
+    def configure_messaging(self, post_html:bs, email:str):
+        message_html:bs = open_html(MESSAGE_HTML)
+        if not message_html:
+            raise ValueError("Error: message html not found.")
+        message_form_tag = message_html.find("form", id="message_form")
+        if not message_form_tag:
+            raise ValueError("Error: id = message_form not found in message form html")
+        message_div_tag = post_html.find("div", id="message_div")
+        if not message_div_tag:
+            raise ValueError("Error: id = message_div not found in post html.")
+        formsubmit_link = "https://formsubmit.co/" + email
+        message_form_tag["action"] = formsubmit_link
+        message_div_tag.insert(0,message_form_tag)
+        return post_html
 
     def configure_content(self, post_html:bs, image:str, caption:str, post_date:str) -> bs: 
         """
