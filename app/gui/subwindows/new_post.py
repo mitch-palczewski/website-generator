@@ -66,7 +66,6 @@ class NewPost(tk.Frame):
         media_list.pack()
 
             #BODY RIGHT
-                #TITLE ENTRY
         body_right_frame = tk.Frame(self.body_frame)
         body_right_frame.columnconfigure(0, weight=1)
         body_right_frame.columnconfigure(1, weight=3)
@@ -77,7 +76,6 @@ class NewPost(tk.Frame):
         self.title_field = TextField(body_right_frame, 1)
         self.title_field.grid(column=1,row=0, sticky=tk.N)
 
-                #CAPTION ENTRY
         caption_field_label = tk.Label(body_right_frame, text = "Caption:")
         caption_field_label.grid(column=0, row=1, sticky=tk.NE, pady=30)
         self.caption_field = TextField(body_right_frame, 8)
@@ -87,6 +85,7 @@ class NewPost(tk.Frame):
         build_post_btn = tk.Button(self.main_frame, text="Build Post", command=self.build_post)
         build_post_btn.pack(side="right")
         pass
+
 
     def build_post(self):
         caption:str = self.caption_field.get_text()
@@ -120,30 +119,60 @@ class NewPost(tk.Frame):
         posts_div_tag = html_webpage.find("div", id="posts")
         if not posts_div_tag:
             raise ValueError("Error: No element with id 'posts' found.")
+        
         config_data: dict = open_json(CONFIG_JSON_PATH)
         post_html: bs = open_html(config_data["post_component"])
         post_commenting:bool = config_data["post_commenting"]
         post_messaging:bool = config_data["post_messaging"]
         email:str = config_data["email"]
+        base_link = config_data["base_link"]
+        title = self.title_field.get_text()
+
         post_html = self.configure_content(post_html, media_paths[0], caption, post_date)
         if post_messaging:
-            post_html = self.configure_messaging(post_html, email)
+            post_html = self.configure_messaging(post_html, email, title, media_paths[0], caption, base_link)
+        if post_commenting:
+            #TODO configure_commenting(post_html, email)
+            pass
         posts_div_tag.insert(0, post_html)     
         write_html_file(HTML_FILE_PATH, html_webpage)
     
-    def configure_messaging(self, post_html:bs, email:str):
+    def configure_messaging(self, post_html:bs, email:str, title, media, caption, base_link):
         message_html:bs = open_html(MESSAGE_HTML)
         if not message_html:
             raise ValueError("Error: message html not found.")
         message_form_tag = message_html.find("form", id="message_form")
-        if not message_form_tag:
-            raise ValueError("Error: id = message_form not found in message form html")
+        message_image_tag = message_html.find("input", id="message_image")
+        message_title_tag = message_html.find("input", id="message_title")
+        message_caption_tag = message_html.find("input", id="message_caption")
         message_div_tag = post_html.find("div", id="message_div")
+        if not message_form_tag:
+            raise ValueError("Error: id = message_form not found in message html")
+        if not message_image_tag:
+            raise ValueError("Error: id = message_image not found in message html.")
+        if not message_title_tag:
+            raise ValueError("Error: id = message_title not found in message html.")
+        if not message_caption_tag:
+            raise ValueError("Error: id = message_caption not found in message html.")
         if not message_div_tag:
             raise ValueError("Error: id = message_div not found in post html.")
+        
+        #Adds Email to form 
         formsubmit_link = "https://formsubmit.co/" + email
         message_form_tag["action"] = formsubmit_link
         message_div_tag.insert(0,message_form_tag)
+
+        #Adds Image to form 
+        media_link = format_media_link(base_link, media)
+        #message_image = f'\"<img src=\"{media_link}\" alt=\"post image\">\"'
+        message_image = media_link
+        message_image_tag["value"] = message_image
+
+        #Adds Title to form
+        message_title_tag["value"] = title
+
+        #Adds Caption to form 
+        message_caption_tag["value"] = caption
         return post_html
 
     def configure_content(self, post_html:bs, image:str, caption:str, post_date:str) -> bs: 
@@ -187,7 +216,6 @@ class NewPost(tk.Frame):
         if h1_tag:
             h1_tag.insert(0,title)
 
-        
         return post_html
 
 def open_html(html_file_path:str) -> bs:
@@ -214,3 +242,9 @@ def get_date() -> str:
     unformatted_date:date = date.today()
     today_date: str = unformatted_date.strftime("%m-%d-%Y")
     return today_date
+
+def format_media_link(base_link:str, media_path:str) -> str:
+    media_path = media_path.replace(" ", "%")
+    media_link:str = base_link + media_path
+    return media_link
+    

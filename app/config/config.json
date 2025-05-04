@@ -2,5 +2,6 @@
     "post_component":"html_components/post/default_2.html",
     "post_commenting": true,
     "post_messaging": true,
-    "email": "8e2308e9935d31f75b6fc3fb137d2c63"
+    "email": "8e2308e9935d31f75b6fc3fb137d2c63",
+    "base_link": "http://127.0.0.1:5500/" 
 }
