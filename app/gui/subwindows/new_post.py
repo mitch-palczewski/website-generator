@@ -160,7 +160,6 @@ class NewPost(tk.Frame):
         #Adds Email to form 
         formsubmit_link = "https://formsubmit.co/" + email
         message_form_tag["action"] = formsubmit_link
-        message_div_tag.insert(0,message_form_tag)
 
         #Adds Image to form 
         media_link = format_media_link(base_link, media)
@@ -173,6 +172,10 @@ class NewPost(tk.Frame):
 
         #Adds Caption to form 
         message_caption_tag["value"] = caption
+
+        message_div_tag.insert(0,message_html)
+
+
         return post_html
 
     def configure_content(self, post_html:bs, image:str, caption:str, post_date:str) -> bs: 

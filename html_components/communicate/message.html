@@ -1,47 +1,53 @@
-<form
-  id="message_form"
-  target="_blank"
-  action="https://formsubmit.co/8e2308e9935d31f75b6fc3fb137d2c63"
-  method="POST"
->
-<input type="hidden" name="_format" value="html">
-<input type="hidden" name="Title" id="message_title" value=''>
-<input type="hidden" name="Image" id="message_image" value=''>
-<input type="hidden" name="Caption" id="message_caption" value=''>
+<div class="group relative">
+  <h2>Message</h2>
+  <div
+    class="transition-opacity duration-100 delay-1000 opacity-0 group-hover:opacity-100 group-hover:delay-0"
+  >
+    <form
+      id="message_form"
+      target="_blank"
+      action="https://formsubmit.co/8e2308e9935d31f75b6fc3fb137d2c63"
+      method="POST"
+    >
+      <input type="hidden" name="_format" value="html" />
+      <input type="hidden" name="Title" id="message_title" value="" />
+      <input type="hidden" name="Image" id="message_image" value="" />
+      <input type="hidden" name="Caption" id="message_caption" value="." />
 
-
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mb-2">
-    <div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mb-2">
+        <div>
+          <input
+            type="text"
+            name="name"
+            class="p-1 w-full border focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Full Name"
+            required
+          />
+        </div>
+        <div>
+          <input
+            type="email"
+            name="email"
+            class="p-1 w-full border focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Email"
+            required
+          />
+        </div>
+      </div>
       <input
         type="text"
-        name="name"
+        name="message"
+        rows="3"
         class="p-1 w-full border focus:outline-none focus:ring-2 focus:ring-blue-500"
-        placeholder="Full Name"
+        placeholder="Message"
         required
       />
-    </div>
-    <div>
-      <input
-        type="email"
-        name="email"
-        class="p-1 w-full border focus:outline-none focus:ring-2 focus:ring-blue-500"
-        placeholder="Email"
-        required
-      />
-    </div>
+      <button
+        type="submit"
+        class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white p-1 border border-blue-500 hover:border-transparent w-full"
+      >
+        Submit Message
+      </button>
+    </form>
   </div>
-  <input
-    type="text"
-    name="message"
-    rows="3"
-    class="p-1 w-full border focus:outline-none focus:ring-2 focus:ring-blue-500"
-    placeholder="Message"
-    required
-  />
-  <button
-    type="submit"
-    class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white p-1 border border-blue-500 hover:border-transparent w-full"
-  >
-    Submit Message
-  </button>
-</form>
+</div>
