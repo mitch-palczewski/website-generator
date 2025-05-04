@@ -77,7 +77,7 @@ class NewPost(tk.Frame):
         caption:str = self.text_field.get_text()
         post_date:str = get_date()
         local_media_paths = []
-        
+
         if len(self.media) == 0 and caption == "":
             #Build out if text is blank
             print("Upload Media or Text")
@@ -105,6 +105,10 @@ class NewPost(tk.Frame):
         else:
             raise ValueError("Error: No element with id 'posts' found.")
         write_html_file(HTML_FILE_PATH, html_webpage)
+    
+    def configure_messaging(self, post_html:bs, commenting:bool, message:bool, email:str):
+        pass
+
 
     def configure_content(self, post_html:bs, image:str, caption:str, post_date:str) -> bs: 
         """
