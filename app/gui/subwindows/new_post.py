@@ -49,24 +49,38 @@ class NewPost(tk.Frame):
         
         #BODY
             #BODY LEFT
+        body_left_frame = tk.Frame(self.body_frame)
+        body_left_frame.grid(column=0, row=0, sticky=tk.N)
         media_list= MediaList(
-            self.body_frame, 
+            body_left_frame, 
             self.media, 
             self.tk_images)
-        media_list.grid(column=0,row=1, sticky=tk.NS)
         get_media_btn = GetMediaBtn(
-            self.body_frame, 
+            body_left_frame, 
             self.media, 
             self.tk_images, 
             media_list, 
             max_items=MAX_MEDIA_ITEMS)
-        get_media_btn.grid(column=0,row=0, sticky=tk.N)
+        get_media_btn.pack(pady=10)
+        media_list.pack()
 
             #BODY RIGHT
-        text_field_label = tk.Label(self.body_frame, text = "Post Text")
-        text_field_label.grid(column=1, row=0, sticky=tk.N)
-        self.text_field = TextField(self.body_frame)
-        self.text_field.grid(column=1,row=1, sticky=tk.N)
+                #TITLE ENTRY
+        body_right_frame = tk.Frame(self.body_frame)
+        body_right_frame.columnconfigure(0, weight=1)
+        body_right_frame.columnconfigure(1, weight=3)
+        body_right_frame.grid(column=1, row=0)
+
+        title_field_label = tk.Label(body_right_frame, text = "Title:")
+        title_field_label.grid(column=0, row=0, sticky=tk.E)
+        self.title_field = TextField(body_right_frame, 1)
+        self.title_field.grid(column=1,row=0, sticky=tk.N)
+
+                #CAPTION ENTRY
+        caption_field_label = tk.Label(body_right_frame, text = "Caption:")
+        caption_field_label.grid(column=0, row=1, sticky=tk.NE, pady=30)
+        self.caption_field = TextField(body_right_frame, 8)
+        self.caption_field.grid(column=1,row=1, sticky=tk.N,pady=30)
 
         #Footer
         build_post_btn = tk.Button(self.main_frame, text="Build Post", command=self.build_post)
@@ -74,7 +88,7 @@ class NewPost(tk.Frame):
         pass
 
     def build_post(self):
-        caption:str = self.text_field.get_text()
+        caption:str = self.caption_field.get_text()
         post_date:str = get_date()
         local_media_paths = []
 
@@ -108,7 +122,6 @@ class NewPost(tk.Frame):
     
     def configure_messaging(self, post_html:bs, commenting:bool, message:bool, email:str):
         pass
-
 
     def configure_content(self, post_html:bs, image:str, caption:str, post_date:str) -> bs: 
         """

@@ -9,7 +9,7 @@ except ImportError:
 
 
 class TextField(tk.Frame):
-    def __init__(self, container):
+    def __init__(self, container, feild_height):
         super().__init__(container)
         self.main_frame = tk.Frame(self, bg="blue")
         self.main_frame.pack(padx=10, pady=10)
@@ -17,7 +17,7 @@ class TextField(tk.Frame):
         self.text_field = tk.Text(
             master=self.main_frame, 
             width=50,
-            height=8,
+            height= feild_height,
             wrap="word",
             padx=10,
             pady=4)
