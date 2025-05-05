@@ -1,3 +1,5 @@
+
+/*Required Script*/ 
 function openMessageFrom(title, media, caption) {
   document.getElementById("message_title").value = title;
   document.getElementById("message_image").value = media;
@@ -8,3 +10,4 @@ function openMessageFrom(title, media, caption) {
 function closeMessageForm() {
   document.getElementById("message_popup").classList.remove("active");
 }
+/*Required Script End*/

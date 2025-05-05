@@ -3,7 +3,7 @@ import shutil
 import os
 import json
 from bs4 import BeautifulSoup as bs
-from datetime import date
+from datetime import date, datetime
 from urllib.parse import quote
 
 
@@ -22,6 +22,7 @@ MESSAGE_HTML = "html_components\communicate\message.html"
 ASSET_FOLDER_PATH = "assets"
 MAX_MEDIA_ITEMS = 1
 HTML_FILE_PATH = "index.html"
+POSTS_JSON_PATH = "posts.json"
 
 class NewPost(tk.Frame):
     def __init__(self, container, main_window):
@@ -91,6 +92,8 @@ class NewPost(tk.Frame):
 
     def build_post(self):
         caption:str = self.caption_field.get_text()
+        if caption.endswith("\n"):
+            caption = caption[:-1]
         
         local_media_paths = []
 
@@ -105,7 +108,7 @@ class NewPost(tk.Frame):
         
         #IF post is single image
         if len(local_media_paths) == 1:
-            self.build_single_media_html(local_media_paths, caption)
+            self.build_single_media_post(local_media_paths[0], caption)
             self.main_window.load_content("Landing")
         #IF post is text only 
         elif len(local_media_paths) == 0: 
@@ -114,7 +117,7 @@ class NewPost(tk.Frame):
             print("Posts with multiple media or video elements not supported at this time.") 
     
 
-    def build_single_media_html(self, media_paths: list, caption:str):
+    def build_single_media_post(self, media:str, caption:str):
         html_webpage: bs = open_html(HTML_FILE_PATH)
         if not html_webpage:
             raise ValueError("Error: HTML webpage not found in file system.")
@@ -123,22 +126,46 @@ class NewPost(tk.Frame):
             raise ValueError("Error: No element with id 'posts' found.")
         
         config_data: dict = open_json(CONFIG_JSON_PATH)
+        posts_data:dict = open_json(POSTS_JSON_PATH)
+
         post_html: bs = open_html(config_data["post_component"])
-        post_commenting:bool = config_data["post_commenting"]
         post_messaging:bool = config_data["post_messaging"]
-        media = media_paths[0]
         title = self.title_field.get_text()
+        if title.endswith("\n"):
+            title = title[:-1]
         base_link = config_data["base_link"]
         media_link = format_media_link(base_link, media)
+        new_post_id = get_unique_id(posts_data.keys())
 
+        insert_post_id(post_html, new_post_id)
         insert_date(post_html)
         insert_title(post_html, title)
         insert_image(post_html, media)
         insert_caption(post_html, caption)
         insert_message_btn(post_messaging, post_html, title, media_link, caption)
-        
         posts_div_tag.insert(0, post_html)     
         write_html_file(HTML_FILE_PATH, html_webpage)
+
+        json_post_entry = {
+            "date": str(datetime.now()),
+            "title": title,
+            "media_link": media_link,
+            "caption": caption,
+            "base_link": base_link 
+        }
+        posts_data[new_post_id] = json_post_entry
+        write_json_file(POSTS_JSON_PATH, posts_data)
+
+
+        
+def insert_post_id(post_html: bs, new_post_id):
+    post_div_tag = post_html.find("div", id="post_id")
+    if not post_div_tag:
+        post_div_tag = post_html.find("div")
+    if not post_div_tag:
+        raise ValueError("Error: No <div> tag found for new_post_id element.")
+    if post_div_tag:
+        post_div_tag["id"] = new_post_id
 
 def insert_date(post_html:bs):
     post_date:str = get_date()
@@ -185,9 +212,9 @@ def insert_message_btn(post_messaging:bool, post_html:bs, title:str, media_link:
         message_btn_tag.decompose()
         return
     onclick_value = "openMessageFrom('{}','{}', '{}')".format(title, media_link, caption)
-    #onclick_soup = bs(onclick_value, 'html.parser')
     message_btn_tag["onclick"] = onclick_value
     message_btn_tag['onclick'] = message_btn_tag['onclick'].replace('\n', '')
+
 
     
 
@@ -200,14 +227,21 @@ def open_html(html_file_path:str) -> bs:
         html_file_soup = bs(file, "html.parser")
     return html_file_soup
 
-def open_json(json_file_path:str) -> dict:
-    with open(json_file_path, "r") as json_file:
-        json_data: dict = json.load(json_file)
-    return json_data
-
 def write_html_file(html_file_path:str, html:bs) -> None:
     with open(html_file_path, "w", encoding="utf-8") as file:
         file.write(str(html))
+
+def open_json(json_file_path:str):
+    try:
+        with open(json_file_path, "r") as json_file:
+            json_data = json.load(json_file)
+    except:
+        json_data = {}
+    return json_data
+
+def write_json_file(json_file, data):
+    with open(json_file, "w") as file:
+        json.dump(data, file, indent=4)
 
 def move_media_to_folder(media:str, folder:str) -> str:
     shutil.copy(media, folder)
@@ -224,4 +258,13 @@ def format_media_link(base_link:str, media_path:str) -> str:
     media_path = quote(media_path, safe=":/?&=") 
     media_link:str = base_link + media_path
     return media_link
-    
+
+def get_unique_id(dict_key_ids: list):
+    highest_id = 0
+    for id in dict_key_ids:
+        id_int = int(id)
+        if id_int > highest_id:
+            highest_id = id_int
+    new_id = highest_id + 1
+    return f"{new_id:06d}" 
+            

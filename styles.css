@@ -1,5 +1,5 @@
 /*Required Styles*/
-/* Overlay background */
+/* Messaging Overlay background */
 .overlay {
   position: fixed;
   top: 0;
@@ -15,7 +15,7 @@
   transition: opacity 0.3s ease-in-out;
 }
 
-/* Modal content */
+/*Messaging Modal content */
 .modal {
   background: white;
   padding: 20px;
@@ -24,7 +24,7 @@
   width: 300px;
 }
 
-/* Show modal when active */
+/* Show messaging modal when active */
 .overlay.active {
   opacity: 1;
   visibility: visible;
