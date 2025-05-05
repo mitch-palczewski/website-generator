@@ -223,8 +223,5 @@ def get_date() -> str:
 def format_media_link(base_link:str, media_path:str) -> str:
     media_path = quote(media_path, safe=":/?&=") 
     media_link:str = base_link + media_path
-    print(f"Base Link: {base_link}")
-    print(f"Media Path: {media_path}")
-    print(f"Media Link: {media_link}")
     return media_link
     
