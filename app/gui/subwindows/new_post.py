@@ -4,6 +4,8 @@ import os
 import json
 from bs4 import BeautifulSoup as bs
 from datetime import date
+from urllib.parse import quote
+
 
 try:
     from ctypes import windll
@@ -182,8 +184,11 @@ def insert_message_btn(post_messaging:bool, post_html:bs, title:str, media_link:
     if not post_messaging:
         message_btn_tag.decompose()
         return
-    onclick_value = f"openMessageFrom(title='{title}', caption='{caption}')"
+    onclick_value = "openMessageFrom('{}','{}', '{}')".format(title, media_link, caption)
+    #onclick_soup = bs(onclick_value, 'html.parser')
     message_btn_tag["onclick"] = onclick_value
+    message_btn_tag['onclick'] = message_btn_tag['onclick'].replace('\n', '')
+
     
 
 
@@ -216,7 +221,10 @@ def get_date() -> str:
     return today_date
 
 def format_media_link(base_link:str, media_path:str) -> str:
-    media_path = media_path.replace(" ", "%")
+    media_path = quote(media_path, safe=":/?&=") 
     media_link:str = base_link + media_path
+    print(f"Base Link: {base_link}")
+    print(f"Media Path: {media_path}")
+    print(f"Media Link: {media_link}")
     return media_link
     
