@@ -89,7 +89,7 @@ class NewPost(tk.Frame):
 
     def build_post(self):
         caption:str = self.caption_field.get_text()
-        post_date:str = get_date()
+        
         local_media_paths = []
 
         if len(self.media) == 0 and caption == "":
@@ -103,7 +103,7 @@ class NewPost(tk.Frame):
         
         #IF post is single image
         if len(local_media_paths) == 1:
-            self.build_single_media_html(local_media_paths, caption, post_date)
+            self.build_single_media_html(local_media_paths, caption)
             self.main_window.load_content("Landing")
         #IF post is text only 
         elif len(local_media_paths) == 0: 
@@ -112,7 +112,7 @@ class NewPost(tk.Frame):
             print("Posts with multiple media or video elements not supported at this time.") 
     
 
-    def build_single_media_html(self, media_paths: list, caption:str, post_date:str):
+    def build_single_media_html(self, media_paths: list, caption:str):
         html_webpage: bs = open_html(HTML_FILE_PATH)
         if not html_webpage:
             raise ValueError("Error: HTML webpage not found in file system.")
@@ -124,102 +124,71 @@ class NewPost(tk.Frame):
         post_html: bs = open_html(config_data["post_component"])
         post_commenting:bool = config_data["post_commenting"]
         post_messaging:bool = config_data["post_messaging"]
-        email:str = config_data["email"]
-        base_link = config_data["base_link"]
+        media = media_paths[0]
         title = self.title_field.get_text()
+        base_link = config_data["base_link"]
+        media_link = format_media_link(base_link, media)
 
-        post_html = self.configure_content(post_html, media_paths[0], caption, post_date)
-        if post_messaging:
-            post_html = self.configure_messaging(post_html, email, title, media_paths[0], caption, base_link)
-        if post_commenting:
-            #TODO configure_commenting(post_html, email)
-            pass
+        insert_date(post_html)
+        insert_title(post_html, title)
+        insert_image(post_html, media)
+        insert_caption(post_html, caption)
+        insert_message_btn(post_messaging, post_html, title, media_link, caption)
+        
         posts_div_tag.insert(0, post_html)     
         write_html_file(HTML_FILE_PATH, html_webpage)
+
+def insert_date(post_html:bs):
+    post_date:str = get_date()
+    h6_tag = post_html.find("h6", id="date")
+    if not h6_tag:
+        h6_tag = post_html.find("h6")
+    if not h6_tag:
+        raise ValueError("Error: No <h6> tag found for date element.")
+    if h6_tag:
+        h6_tag.insert(0,post_date)
+
+def insert_title(post_html:bs, title:str):
+    h1_tag = post_html.find("h1", id="title")
+    if not h1_tag:
+        h1_tag = post_html.find("h6")
+    if not h1_tag:
+        raise ValueError("Error: No <h6> tag found for date element.")
+    if h1_tag:
+        h1_tag.insert(0,title)
+
+def insert_image(post_html:bs, image:str):
+    img_tag = post_html.find("img", id="media")
+    if not img_tag:
+        img_tag = post_html.find("img")
+    if not img_tag:
+        raise ValueError("Error: No <img> tag found for media element.")
+    if img_tag:
+        img_tag["src"] = image
+
+def insert_caption(post_html:bs, caption:str):
+    p_tag = post_html.find("p", id="caption")
+    if not p_tag:
+        p_tag = post_html.find("p")
+    if not p_tag:
+        raise ValueError("Error: No <p> tag found for caption element.")
+    if p_tag:
+        p_tag.insert(0,caption)
+
+def insert_message_btn(post_messaging:bool, post_html:bs, title:str, media_link:str, caption:str):
+    message_btn_tag = post_html.find("button", id="message_btn")
+    if not message_btn_tag:
+        raise ValueError("Error: No <button id=message_btn> tag found.")
+    if not post_messaging:
+        message_btn_tag.decompose()
+        return
+    onclick_value = f"openMessageFrom(title='{title}', caption='{caption}')"
+    message_btn_tag["onclick"] = onclick_value
     
-    def configure_messaging(self, post_html:bs, email:str, title, media, caption, base_link):
-        message_html:bs = open_html(MESSAGE_HTML)
-        if not message_html:
-            raise ValueError("Error: message html not found.")
-        message_form_tag = message_html.find("form", id="message_form")
-        message_image_tag = message_html.find("input", id="message_image")
-        message_title_tag = message_html.find("input", id="message_title")
-        message_caption_tag = message_html.find("input", id="message_caption")
-        message_div_tag = post_html.find("div", id="message_div")
-        if not message_form_tag:
-            raise ValueError("Error: id = message_form not found in message html")
-        if not message_image_tag:
-            raise ValueError("Error: id = message_image not found in message html.")
-        if not message_title_tag:
-            raise ValueError("Error: id = message_title not found in message html.")
-        if not message_caption_tag:
-            raise ValueError("Error: id = message_caption not found in message html.")
-        if not message_div_tag:
-            raise ValueError("Error: id = message_div not found in post html.")
-        
-        #Adds Email to form 
-        formsubmit_link = "https://formsubmit.co/" + email
-        message_form_tag["action"] = formsubmit_link
-
-        #Adds Image to form 
-        media_link = format_media_link(base_link, media)
-        #message_image = f'\"<img src=\"{media_link}\" alt=\"post image\">\"'
-        message_image = media_link
-        message_image_tag["value"] = message_image
-
-        #Adds Title to form
-        message_title_tag["value"] = title
-
-        #Adds Caption to form 
-        message_caption_tag["value"] = caption
-
-        message_div_tag.insert(0,message_html)
 
 
-        return post_html
 
-    def configure_content(self, post_html:bs, image:str, caption:str, post_date:str) -> bs: 
-        """
-        Edits the inserts data into the HTML component 
-        """
-        #Inserts Caption
-        p_tag = post_html.find("p", id="caption")
-        if not p_tag:
-            p_tag = post_html.find("p")
-        if not p_tag:
-            raise ValueError("Error: No <p> tag found for caption element.")
-        if p_tag:
-            p_tag.insert(0,caption)
-        
-        #Inserts Image
-        img_tag = post_html.find("img", id="media")
-        if not img_tag:
-            img_tag = post_html.find("img")
-        if not img_tag:
-            raise ValueError("Error: No <img> tag found for media element.")
-        if img_tag:
-            img_tag["src"] = image
 
-        #Inserts Date
-        h6_tag = post_html.find("h6", id="date")
-        if not h6_tag:
-            h6_tag = post_html.find("h6")
-        if not h6_tag:
-            raise ValueError("Error: No <h6> tag found for date element.")
-        if h6_tag:
-            h6_tag.insert(0,post_date)
-        
-        #Inserts Title
-        title = self.title_field.get_text()
-        h1_tag = post_html.find("h1", id="title")
-        if not h1_tag:
-            h1_tag = post_html.find("h6")
-        if not h1_tag:
-            raise ValueError("Error: No <h6> tag found for date element.")
-        if h1_tag:
-            h1_tag.insert(0,title)
-
-        return post_html
 
 def open_html(html_file_path:str) -> bs:
     with open(html_file_path, "r", encoding="utf-8") as file:
