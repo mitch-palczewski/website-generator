@@ -36,7 +36,7 @@ class ConfigureMessaging(tk.Frame):
         self.config_data = Model.open_json(CONFIG_JSON_PATH)
         self.messaging = self.config_data["post_messaging"]
 
-        self.messaging_toggle = tk.Button(container ,command=self.toggle_message)
+        self.messaging_toggle = tk.Button(self, command=self.toggle_message)
         self.messaging_toggle.pack()
 
         self.set_messaging_toggle()
@@ -46,6 +46,8 @@ class ConfigureMessaging(tk.Frame):
             self.messaging = False
         else: 
             self.messaging = True
+        self.config_data["post_messaging"] = self.messaging
+        Model.write_json_file(CONFIG_JSON_PATH, self.config_data)
         self.set_messaging_toggle()
         pass
 
@@ -53,8 +55,7 @@ class ConfigureMessaging(tk.Frame):
         if self.messaging:
             self.messaging_toggle.config(text="Disable Messaging",
                                          bg="#72c5c0")
-            self.messaging_toggle.pack()
         else: 
             self.messaging_toggle.config(text="Enable Messaging",
                                          bg="grey")
-            self.messaging_toggle.pack()
+        self.messaging_toggle.pack()
