@@ -1,0 +1,5 @@
+CONFIG_JSON_PATH = "app\config\config.json"
+MESSAGE_HTML = "html_components\communicate\message.html"
+ASSET_FOLDER_PATH = "assets"
+HTML_FILE_PATH = "index.html"
+POSTS_JSON_PATH = "posts.json"

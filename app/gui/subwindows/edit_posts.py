@@ -21,11 +21,3 @@ class EditPosts(tk.Frame):
         self.main_frame.pack(fill='both')
         self.header_frame = tk.Frame(self.main_frame)
         self.header_frame.pack(fill='x',padx=10, pady=10)
-
-        #HEADER
-        landing_btn = tk.Button(
-            self.header_frame, 
-            text="Landing Page", 
-            command=lambda: main_window.load_content("Landing")
-        )
-        landing_btn.pack(side="right")

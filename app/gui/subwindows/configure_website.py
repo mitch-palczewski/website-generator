@@ -9,19 +9,74 @@ except ImportError:
     print("Error: windll not imported. Text may be blurred")
     pass
 
-from gui.components.get_media import GetMediaBtn, MediaList
-from gui.components.text_field import TextField
-
+from gui.subwindows.configure_windows.general_configuration import GeneralConfiguration
 class ConfigureWebsite(tk.Frame):
     def __init__(self, container, main_window):
         super().__init__(container)
 
         #GROUPER FRAMES
-        self.main_frame = tk.Frame(self, bg="red")
-        self.main_frame.pack(fill='both')
-        self.header_frame = tk.Frame(self.main_frame)
-        self.header_frame.pack(fill='x',padx=10, pady=10)
+        main_frame = tk.Frame(self, bg="red")
+        main_frame.pack(fill='both')
 
         #HEADER
-        landing_btn = tk.Button(self.header_frame, text="Landing Page", command=lambda: main_window.load_content("Landing"))
-        landing_btn.pack(side="right")
+        header_frame = tk.Frame(main_frame, bg="green")
+        header_frame.columnconfigure(0, weight=1)
+        header_frame.columnconfigure(1, weight=1)
+        header_frame.columnconfigure(2, weight=1)
+        header_frame.columnconfigure(3, weight=1)
+        header_frame.pack(fill="x", expand=True)
+        btn_padx = 10
+        btn_pady = 5
+        general_config_btn = tk.Button(
+            header_frame, 
+            text="General Configuration", 
+            command=lambda:self.load_content("GeneralConfiguration")
+        )
+        general_config_btn.grid(column=0, row=0, sticky=tk.EW, padx=btn_padx, pady=btn_pady)
+        config_post_btn = tk.Button(
+            header_frame, 
+            text="Configure Post", 
+            command=lambda:self.load_content("ConfigurePost")
+        )
+        config_post_btn.grid(column=1, row=0, sticky=tk.EW, padx=btn_padx, pady=btn_pady)
+        config_header_btn = tk.Button(
+            header_frame, 
+            text="Configure Header", 
+            command=lambda:self.load_content("ConfigureHeader")
+        )
+        config_header_btn.grid(column=2, row=0, sticky=tk.EW, padx=btn_padx, pady=btn_pady)
+        config_footer_btn = tk.Button(
+            header_frame, 
+            text="Configure Footer", 
+            command=lambda:self.load_content("ConfigureFooter")
+        )
+        config_footer_btn.grid(column=3, row=0, sticky=tk.EW, padx=btn_padx, pady=btn_pady)
+        
+
+        #BODY
+        self.body_frame = tk.Frame(self, bg="brown")
+        self.body_frame.pack(fill='both', expand= True,padx=10, pady=10)
+        self.body_content = None
+
+
+        self.load_content("GeneralConfiguration")
+
+        
+    def new_content_frame(self):
+        if self.body_content:
+            self.body_content.destroy()
+        self.body_content = tk.Frame(self.body_frame, bg="green")
+        self.body_content.pack(fill='both', expand= True,padx=10, pady=10)
+
+    def load_content(self, content:str):
+        """
+        Accepts content: "GeneralConfiguration"
+        """
+        self.new_content_frame()
+        if content == "GeneralConfiguration":
+            general_config = GeneralConfiguration(self.body_content)
+            general_config.pack(fill='both', expand= True)
+            pass
+        pass
+
+        

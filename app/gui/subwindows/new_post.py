@@ -16,8 +16,9 @@ except ImportError:
 
 from gui.components.get_media import GetMediaBtn, MediaList
 from gui.components.text_field import TextField
+from util.model import Model
+from config import CONFIG_JSON_PATH
 
-CONFIG_JSON_PATH = "app\config\config.json"
 MESSAGE_HTML = "html_components\communicate\message.html"
 ASSET_FOLDER_PATH = "assets"
 MAX_MEDIA_ITEMS = 1
@@ -34,23 +35,11 @@ class NewPost(tk.Frame):
         #GROUPER FRAMES
         self.main_frame = tk.Frame(self, bg="red")
         self.main_frame.pack(fill='both')
-        self.header_frame = tk.Frame(self.main_frame)
-        self.header_frame.pack(fill='x',padx=10, pady=10)
         self.body_frame = tk.Frame(self.main_frame)
         self.body_frame.columnconfigure(0, weight=1)
         self.body_frame.columnconfigure(1, weight=1)
         self.body_frame.pack(fill='both', expand= True, padx=10, pady=10)
-
-        #HEADER
-        landing_btn = tk.Button(
-            self.header_frame, 
-            text="Landing Page", 
-            command=lambda: main_window.load_content("Landing"))
-        landing_btn.pack(side="right")
-        lbl = tk.Label(self.header_frame, text= "NEW POST PAGE")
-        lbl.pack()
-
-        
+       
         #BODY
             #BODY LEFT
         body_left_frame = tk.Frame(self.body_frame)
