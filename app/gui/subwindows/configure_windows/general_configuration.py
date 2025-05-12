@@ -9,7 +9,7 @@ except ImportError:
     print("Error: windll not imported. Text may be blurred")
     pass
 
-from util.model import Model
+from util.model_controller import Model
 from config import CONFIG_JSON_PATH
 from gui.components.text_field import TextField
 

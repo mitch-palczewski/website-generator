@@ -16,7 +16,7 @@ except ImportError:
 
 from gui.components.get_media import GetMediaBtn, MediaList
 from gui.components.text_field import TextField
-from util.model import Model
+from util.model_controller import Model
 from config import CONFIG_JSON_PATH
 
 MESSAGE_HTML = "html_components\communicate\message.html"
