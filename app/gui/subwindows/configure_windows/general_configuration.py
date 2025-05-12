@@ -105,8 +105,7 @@ class EditMessaging(tk.Frame):
     def update_email(self):
         new_email = self.email_field.get_text()
         if is_email(new_email):
-            
-            EmailValidation(self)
+            EmailValidation(self, new_email)
         elif is_hashed_email(new_email):
             pass
         else:
@@ -114,11 +113,11 @@ class EditMessaging(tk.Frame):
         pass
 
 class EmailValidation():
-    def __init__(self, master):
+    def __init__(self, master, new_email):
         new_window = tk.Toplevel(master)
         new_window.title("New Window")
         new_window.geometry("300x600")
-        label = tk.Label(new_window, text="This is a new window!")
+        label = tk.Label(new_window, text=f"You entered: {new_email}. \n Activate Your Account \n You will have recieved a email from FormSubmit. \"Action Required: Activate FormSubmit\" \n Replace Email with radom-like string and update.")
         label.pack(padx=20, pady=20)
         new_window.grab_set()
         
