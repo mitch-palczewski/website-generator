@@ -83,7 +83,6 @@ class EditMessaging(tk.Frame):
         self.body.columnconfigure(2, weight=1)
         self.body.pack()
 
-
         self.email_lbl = tk.Label(self.body, text="Email: ")
         self.email_lbl.grid(column=0, row=0)
 

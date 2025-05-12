@@ -32,7 +32,6 @@ class MainWindow(tk.Tk):
         self.body_frame.pack(fill='both', expand= True,padx=10, pady=10)
         self.body_content = None
         
-        
         self.load_content("Landing")
 
 
@@ -86,3 +85,4 @@ class MainWindow(tk.Tk):
   
         self.body_content.pack(fill='both', expand= True, padx=10, pady=10)
         pass
+
