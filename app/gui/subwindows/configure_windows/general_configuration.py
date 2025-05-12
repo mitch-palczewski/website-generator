@@ -1,7 +1,8 @@
 import tkinter as tk
 import re
 from bs4 import BeautifulSoup as bs
-from tkinter.messagebox import showinfo, askokcancel
+from tkinter import font, ttk
+from tkinter.messagebox import showinfo, askyesno
 try:
     from ctypes import windll
     windll.shcore.SetProcessDpiAwareness(1)
@@ -9,7 +10,7 @@ except ImportError:
     print("Error: windll not imported. Text may be blurred")
     pass
 
-from util.model_controller import Model
+from util.model_controller import Controller
 from config import CONFIG_JSON_PATH
 from gui.components.text_field import TextField
 
@@ -22,54 +23,100 @@ class GeneralConfiguration(tk.Frame):
         main_frame.columnconfigure(0, weight=1)
         main_frame.columnconfigure(1, weight=1)
         main_frame.pack(fill='both')
-        left_frame = tk.Frame(main_frame )
+
+        left_frame = tk.Frame(main_frame,bg="yellow")
         left_frame.grid(column=0, row=0, sticky=tk.NSEW)
-        
+        right_frame = tk.Frame(main_frame )
+        right_frame.grid(column=1, row=0, sticky=tk.NSEW)
+
         messaging_frame = ConfigureMessaging(left_frame)
-        messaging_frame.pack(pady=10)
+        messaging_frame.pack()
         
         
+
+
+
 
 
 class ConfigureMessaging(tk.Frame):
     def __init__(self, container):
         super().__init__(container)
-        self.config_data = Model.open_json(CONFIG_JSON_PATH)
-        self.messaging = self.config_data["post_messaging"]
-
+        FONT_SM = font.Font(family="Helvetica", size=10, weight="bold")
+        FONT_MD = font.Font(family="Helvetica", size=15, weight="bold")
+        FONT_LG = font.Font(family="Helvetica", size=15, weight="bold")
+        self.enable_messaging_btn = tk.Button(self, text="Enable Messaging", command=self.enable_messaging, font=FONT_LG)
+        self.disable_messaging_btn = tk.Button(self, text="Disable Messaging", command=self.disable_messaging, font=FONT_LG)
+        
+        #ENABLED MESSING FRAME
         self.body = tk.Frame(self)
+        self.body.columnconfigure(0,weight=1)
+        self.body.columnconfigure(1,weight=1)
+        self.body.columnconfigure(2,weight=1)
+        lbl = tk.Label(self.body, text="Email:   ", font=FONT_MD)
+        lbl.grid(column=0,row=0)
+        self.text_field = ttk.Entry(
+            master=self.body, 
+            font=FONT_MD,
+            width= 38,
+            state="disabled")
+        self.text_field.grid(column=1, row=0, columnspan=2, pady=5)
+        self.edit_btn = tk.Button(self.body, text="Edit", font=FONT_SM, command=self.edit)
+        self.edit_btn.grid(column=1, row=1, padx=5, sticky=tk.EW)  
+        self.update_btn = tk.Button(self.body, text="Update", font=FONT_SM, command=self.update)
+        self.cancel_btn = tk.Button(self.body, text="Cancel", font=FONT_SM, command=self.cancel)
+
+        #INIT
+        self.config_data = Controller.get_config_data()
+        if self.config_data["post_messaging"]:
+            self.enable_messaging()
+        else:
+            self.disable_messaging()
+
+
+    def enable_messaging(self):
+        self.load_config_email()
+        self.enable_messaging_btn.pack_forget()
+        self.disable_messaging_btn.pack(pady=10)
         self.body.pack()
+        
+    def disable_messaging(self):
+        self.disable_messaging_btn.pack_forget()
+        self.body.pack_forget()
+        self.enable_messaging_btn.pack(pady=10)
 
-        self.messaging_toggle = tk.Button(self.body, command=self.toggle_message)
-        self.messaging_toggle.pack()
+    def edit(self):
+        self.edit_btn.pack_forget()
+        self.update_btn.grid(column=1, row=1, sticky=tk.EW, padx=5)
+        self.cancel_btn.grid(column=2, row=1, sticky=tk.EW, padx=5)
+        self.text_field.config(state="normal")
 
-        self.edit_messaging = None
+    def update(self):
+        new_email = self.text_field.get()
+        if askyesno(title="Change Email", message=f"Are you sure you want to replace {self.email} with {new_email}"):
+            Controller.update_base_link(new_email)
+        self.update_btn.grid_forget()
+        self.cancel_btn.grid_forget()
+        self.edit_btn.grid(column=1, row=1, padx=5, sticky=tk.EW)  
+        self.text_field.config(state="disabled")
+        self.load_config_email()
 
-        self.set_messaging_toggle()
+    def cancel(self):
+        self.update_btn.grid_forget()
+        self.cancel_btn.grid_forget()
+        self.edit_btn.grid(column=1, row=1, padx=5, sticky=tk.EW)  
+        self.text_field.config(state="disabled")
+        self.load_config_email()
     
-    def toggle_message(self):
-        if self.messaging:
-            self.messaging = False
-        else: 
-            self.messaging = True
-        self.config_data["post_messaging"] = self.messaging
-        Model.write_json_file(CONFIG_JSON_PATH, self.config_data)
-        self.set_messaging_toggle()
+    def load_config_email(self):
+        self.config_data = Controller.get_config_data()
+        self.email = self.config_data["email"]
+        self.text_field.config(state="normal")
+        self.text_field.delete(0, tk.END)
+        self.text_field.insert(0, self.email)
+        self.text_field.config(state="disabled")
+        
+   
 
-
-    def set_messaging_toggle(self):
-        if self.messaging:
-            self.messaging_toggle.config(text="Disable Messaging",
-                                         bg="#72c5c0")
-            self.edit_messaging_group = tk.Frame(self.body)
-            self.edit_messaging_group.pack()
-            self.edit_messaging = EditMessaging(self.edit_messaging_group, self.config_data)
-            self.edit_messaging.pack()
-        else: 
-            self.messaging_toggle.config(text="Enable Messaging",
-                                         bg="grey")
-            if self.edit_messaging:
-                self.edit_messaging_group.pack_forget()
 
 class EditMessaging(tk.Frame):
     def __init__(self, container, config_data):

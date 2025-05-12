@@ -60,10 +60,10 @@ class Landing(tk.Frame):
 
         base_link = BaseLink(self.body)
         base_link.pack()
+
         pass
 
 class BaseLink(tk.Frame):
-    
     def __init__(self, container):
         super().__init__(container)
         FONT_LG = font.Font(family="Helvetica", size=20, weight="bold")
@@ -100,7 +100,7 @@ class BaseLink(tk.Frame):
     def edit(self):
         self.edit_btn.grid_forget()
         self.update_btn.grid(column=2, row=0,padx=5)
-        self.cancel_btn.grid(column=3, row=0,padx=5)
+        self.cancel_btn.grid(column=3, row=0, padx=5)
         self.text_field.config(state="normal")
 
     def update(self):

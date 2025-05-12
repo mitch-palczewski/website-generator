@@ -1,5 +1,6 @@
 import json
-import requests
+import re
+import hashlib
 from urllib.parse import quote
 CONFIG_JSON_PATH = "app\config\config.json"
 POSTS_JSON_PATH = "posts.json"
@@ -24,6 +25,17 @@ class Model:
             return string[len(prefix):] 
         return string
 
+    def is_email(string:str) -> bool:
+        pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+        return bool(re.match(pattern, string))
+
+    def is_hashed_email(string:str) -> bool:
+        hashed = False
+        pattern = r'[a-zA-Z0-9]'
+        if (re.match(pattern, string) and len(string) > 15):
+            hashed = True
+        return hashed
+    
    
     
 
@@ -53,6 +65,20 @@ class Controller:
             post["media_link"] = new_media_link
             post["base_link"] = new_base_link
         Model.write_json_file(POSTS_JSON_PATH, posts_data)
+    
+    def update_email(new_email):
+        config_data = Controller.get_config_data()
+        if new_email == config_data["email"]:
+            return
+        if Model.is_email(new_email):
+            config_data["email"] = new_email
+            Model.write_json_file(CONFIG_JSON_PATH, config_data)
+            return
+        if Model.is_hashed_email(new_email):
+            config_data["email"] = new_email
+            Model.write_json_file(CONFIG_JSON_PATH, config_data)
+            return
+        
 
     def format_media_link(base_link:str, media_path:str) -> str:
         if not base_link.endswith("/"):
@@ -60,3 +86,5 @@ class Controller:
         media_path = quote(media_path, safe=":/?&=") 
         media_link:str = base_link + media_path
         return media_link
+
+
