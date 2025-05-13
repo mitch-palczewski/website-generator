@@ -10,7 +10,7 @@ except ImportError:
     print("Error: windll not imported. Text may be blurred")
     pass
 
-from util.model_controller import Controller
+from util.model_controller import Controller, HtmlController
 from config import CONFIG_JSON_PATH
 from gui.components.text_field import TextField
 
@@ -29,7 +29,7 @@ class GeneralConfiguration(tk.Frame):
         right_frame = tk.Frame(main_frame )
         right_frame.grid(column=1, row=0, sticky=tk.NSEW)
 
-        messaging_frame = ConfigureMessaging(left_frame)
+        messaging_frame = ConfigureMessaging(self)
         messaging_frame.pack()
         
         
@@ -78,11 +78,15 @@ class ConfigureMessaging(tk.Frame):
         self.enable_messaging_btn.pack_forget()
         self.disable_messaging_btn.pack(pady=10)
         self.body.pack()
+        HtmlController.insert_message_popup()
+        HtmlController.unhide_message_btn()
         
     def disable_messaging(self):
         self.disable_messaging_btn.pack_forget()
         self.body.pack_forget()
         self.enable_messaging_btn.pack(pady=10)
+        HtmlController.delete_message_popup()
+        HtmlController.hide_message_btn()
 
     def edit(self):
         self.edit_btn.pack_forget()
@@ -92,12 +96,20 @@ class ConfigureMessaging(tk.Frame):
 
     def update(self):
         new_email = self.text_field.get()
-        if askyesno(title="Change Email", message=f"Are you sure you want to replace {self.email} with {new_email}"):
-            Controller.update_base_link(new_email)
+        self.config_data = Controller.get_config_data()
+        self.email = self.config_data["email"]
         self.update_btn.grid_forget()
         self.cancel_btn.grid_forget()
         self.edit_btn.grid(column=1, row=1, padx=5, sticky=tk.EW)  
         self.text_field.config(state="disabled")
+        if new_email == self.email:
+            return
+        if askyesno(title="Change Email", message=f"Are you sure you want to replace {self.email} with {new_email}"):
+            Controller.update_email(new_email)
+            HtmlController.config_message_email()
+            HtmlController.delete_message_popup()
+            HtmlController.insert_message_popup()
+
         self.load_config_email()
 
     def cancel(self):
@@ -114,67 +126,3 @@ class ConfigureMessaging(tk.Frame):
         self.text_field.delete(0, tk.END)
         self.text_field.insert(0, self.email)
         self.text_field.config(state="disabled")
-        
-   
-
-
-class EditMessaging(tk.Frame):
-    def __init__(self, container, config_data):
-        super().__init__(container)
-        self.config_data = config_data
-
-        #Grouper Frame
-        self.body = tk.Frame(container)
-        self.body.columnconfigure(0,weight=1)
-        self.body.columnconfigure(1, weight=1)
-        self.body.columnconfigure(2, weight=1)
-        self.body.pack()
-
-        self.email_lbl = tk.Label(self.body, text="Email: ")
-        self.email_lbl.grid(column=0, row=0)
-
-        self.email_field = TextField(self.body,1)
-        self.email_field.grid(column=1,row=0)
-        self.init_email_field()
-
-        self.update_btn = tk.Button(self.body, text= "Update", command=self.update_email)
-        self.update_btn.grid(column=2, row=0)
-
-
-    
-    def init_email_field(self):
-        email = self.config_data["email"]
-        if email:
-            self.email_field.set_text(email)
-        pass
-
-    def update_email(self):
-        new_email = self.email_field.get_text()
-        if is_email(new_email):
-            EmailValidation(self, new_email)
-        elif is_hashed_email(new_email):
-            pass
-        else:
-            showinfo(title="Error", message="Error input email or hashed email.")
-        pass
-
-class EmailValidation():
-    def __init__(self, master, new_email):
-        new_window = tk.Toplevel(master)
-        new_window.title("New Window")
-        new_window.geometry("300x600")
-        label = tk.Label(new_window, text=f"You entered: {new_email}. \n Activate Your Account \n You will have recieved a email from FormSubmit. \"Action Required: Activate FormSubmit\" \n Replace Email with radom-like string and update.")
-        label.pack(padx=20, pady=20)
-        new_window.grab_set()
-        
-
-def is_email(string:str) -> bool:
-    pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
-    return bool(re.match(pattern, string))
-
-def is_hashed_email(string:str) -> bool:
-    hashed = False
-    pattern = r'[a-zA-Z0-9]'
-    if (re.match(pattern, string) and len(string) > 30 and len(string) < 34):
-        hashed = True
-    return hashed

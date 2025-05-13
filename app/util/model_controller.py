@@ -1,9 +1,11 @@
 import json
 import re
-import hashlib
 from urllib.parse import quote
+from bs4 import BeautifulSoup as bs
 CONFIG_JSON_PATH = "app\config\config.json"
 POSTS_JSON_PATH = "posts.json"
+MESSAGE_HTML = "html_components\communicate\message.html"
+HTML_FILE_PATH = "index.html"
 
 class Model:
     #JSON
@@ -54,8 +56,6 @@ class Controller:
             return
         config_data["base_link"] = new_base_link
         Model.write_json_file(CONFIG_JSON_PATH, config_data)
-        #UPDATE posts.json
-
         posts_data:dict = Controller.get_posts_data()
         for post_id, post in posts_data.items():
             base_link = post["base_link"]
@@ -87,4 +87,88 @@ class Controller:
         media_link:str = base_link + media_path
         return media_link
 
+class HtmlModel:
+    def open_html(html_file_path:str) -> bs:
+        with open(html_file_path, "r", encoding="utf-8") as file:
+            html_file_soup = bs(file, "html.parser")
+        if not html_file_soup:
+            raise ValueError(f"Error: file not found {html_file_path}")   
+        return html_file_soup
 
+    def write_html_file(html_file_path:str, html:bs) -> None:
+        html=html.prettify()
+        with open(html_file_path, "w", encoding="utf-8") as file:
+            file.write(str(html))
+        pass
+
+class HtmlController:
+
+    #MESSAGING
+    def insert_message_popup():
+        config_data = Controller.get_config_data()
+        email = config_data["email"]
+        if not email:
+            print("Messaging HTML will not be inserted untill an Email is attached")
+            return
+        html_webpage:bs = HtmlModel.open_html(HTML_FILE_PATH)
+        if not html_webpage:
+            raise ValueError("Error: HTML webpage not found in file system.")
+        message_popup_tag:bs = html_webpage.find("div", id="message_popup")
+        if message_popup_tag:
+            return
+        message_html:bs = HtmlModel.open_html(MESSAGE_HTML)
+        if not message_html:
+            raise ValueError("Error: message html not found in file system.")
+        footer_tag:bs = html_webpage.find("footer")
+        if not footer_tag:
+            raise ValueError("Error: No element with id 'footer' found.")
+        footer_tag.insert_after(message_html)
+        HtmlModel.write_html_file(HTML_FILE_PATH, html_webpage)
+    
+    def delete_message_popup():
+        html_webpage:bs = HtmlModel.open_html(HTML_FILE_PATH)
+        if not html_webpage:
+            raise ValueError("Error: HTML webpage not found in file system.")
+        message_popup_tag:bs = html_webpage.find("div", id="message_popup")
+        if message_popup_tag:  
+            message_popup_tag.decompose()
+            HtmlModel.write_html_file(HTML_FILE_PATH, html_webpage)
+    
+    def hide_message_btn():
+        html_webpage:bs = HtmlModel.open_html(HTML_FILE_PATH)
+        if not html_webpage:
+            raise ValueError("Error: HTML webpage not found in file system.")
+        message_btns = html_webpage.find_all("button", id="message_btn")
+        for message_btn in message_btns:
+            class_list = message_btn.get("class", [])
+            class_list.append(" hidden")
+            message_btn["class"] = class_list
+        HtmlModel.write_html_file(HTML_FILE_PATH, html_webpage)
+    
+    def unhide_message_btn():
+        html_webpage:bs = HtmlModel.open_html(HTML_FILE_PATH)
+        if not html_webpage:
+            raise ValueError("Error: HTML webpage not found in file system.")
+        message_btns = html_webpage.find_all("button", id="message_btn")
+        for message_btn in message_btns:
+            class_list = message_btn.get("class", [])
+            if (len(class_list) != 0 and "hidden" in class_list):
+                class_list = class_list.remove("hidden")
+                message_btn["class"] = class_list
+        HtmlModel.write_html_file(HTML_FILE_PATH, html_webpage)
+    
+    def config_message_email():
+        config_data = Controller.get_config_data()
+        email = config_data["email"]
+        if not email:
+            print("Email = None")
+            return
+        message_html:bs = HtmlModel.open_html(MESSAGE_HTML)
+        if not message_html:
+            raise ValueError("Error: message html not found in file system.")
+        message_form_tag = message_html.find("form", id="message_form")
+        if not message_form_tag:
+            raise ValueError("Error: No element with id 'message_form' found.")
+        form_submit_link = "https://formsubmit.co/" + email
+        message_form_tag["action"] = form_submit_link
+        HtmlModel.write_html_file(MESSAGE_HTML, message_html)
