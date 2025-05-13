@@ -105,6 +105,14 @@ class HtmlController:
 
     #MESSAGING
     def insert_message_popup():
+        """
+            Target: 
+                File: index.html
+                After: footer 
+
+            Embedding: 
+                File: message.html  
+        """
         config_data = Controller.get_config_data()
         email = config_data["email"]
         if not email:
@@ -126,6 +134,12 @@ class HtmlController:
         HtmlModel.write_html_file(HTML_FILE_PATH, html_webpage)
     
     def delete_message_popup():
+        """
+            Target: 
+                File: index.html 
+                Tag: div
+                ID: message_popup 
+        """
         html_webpage:bs = HtmlModel.open_html(HTML_FILE_PATH)
         if not html_webpage:
             raise ValueError("Error: HTML webpage not found in file system.")
@@ -135,6 +149,12 @@ class HtmlController:
             HtmlModel.write_html_file(HTML_FILE_PATH, html_webpage)
     
     def hide_message_btn():
+        """
+            Target: 
+                File: index.html 
+                Tag: button
+                ID: message_btn
+        """
         html_webpage:bs = HtmlModel.open_html(HTML_FILE_PATH)
         if not html_webpage:
             raise ValueError("Error: HTML webpage not found in file system.")
@@ -146,6 +166,12 @@ class HtmlController:
         HtmlModel.write_html_file(HTML_FILE_PATH, html_webpage)
     
     def unhide_message_btn():
+        """
+            Target: 
+                File: index.html 
+                Tag: button
+                ID: message_btn
+        """
         html_webpage:bs = HtmlModel.open_html(HTML_FILE_PATH)
         if not html_webpage:
             raise ValueError("Error: HTML webpage not found in file system.")
@@ -157,7 +183,15 @@ class HtmlController:
                 message_btn["class"] = class_list
         HtmlModel.write_html_file(HTML_FILE_PATH, html_webpage)
     
-    def config_message_email():
+    def update_email():
+        """
+            Target:
+                File: index.html
+                Tag: form
+                ID: message_form
+            Embedding:
+                Config: email
+        """
         config_data = Controller.get_config_data()
         email = config_data["email"]
         if not email:

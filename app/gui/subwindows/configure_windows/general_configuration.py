@@ -47,7 +47,7 @@ class ConfigureMessaging(tk.Frame):
         self.enable_messaging_btn = tk.Button(self, text="Enable Messaging", command=self.enable_messaging, font=FONT_LG)
         self.disable_messaging_btn = tk.Button(self, text="Disable Messaging", command=self.disable_messaging, font=FONT_LG)
         
-        #ENABLED MESSING FRAME
+        #ENABLED MESSEGING FRAME
         self.body = tk.Frame(self)
         self.body.columnconfigure(0,weight=1)
         self.body.columnconfigure(1,weight=1)
@@ -76,7 +76,7 @@ class ConfigureMessaging(tk.Frame):
     def enable_messaging(self):
         self.load_config_email()
         self.enable_messaging_btn.pack_forget()
-        self.disable_messaging_btn.pack(pady=10)
+        self.disable_messaging_btn.pack(pady=10, padx=10)
         self.body.pack()
         HtmlController.insert_message_popup()
         HtmlController.unhide_message_btn()
@@ -84,7 +84,7 @@ class ConfigureMessaging(tk.Frame):
     def disable_messaging(self):
         self.disable_messaging_btn.pack_forget()
         self.body.pack_forget()
-        self.enable_messaging_btn.pack(pady=10)
+        self.enable_messaging_btn.pack(pady=10, padx=10)
         HtmlController.delete_message_popup()
         HtmlController.hide_message_btn()
 
@@ -106,7 +106,7 @@ class ConfigureMessaging(tk.Frame):
             return
         if askyesno(title="Change Email", message=f"Are you sure you want to replace {self.email} with {new_email}"):
             Controller.update_email(new_email)
-            HtmlController.config_message_email()
+            HtmlController.update_email()
             HtmlController.delete_message_popup()
             HtmlController.insert_message_popup()
 

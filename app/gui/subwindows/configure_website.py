@@ -29,8 +29,8 @@ class ConfigureWebsite(tk.Frame):
         btn_pady = 5
         general_config_btn = tk.Button(
             header_frame, 
-            text="General Configuration", 
-            command=lambda:self.load_content("GeneralConfiguration")
+            text="Configure Messaging", 
+            command=lambda:self.load_content("ConfigureMessaging")
         )
         general_config_btn.grid(column=0, row=0, sticky=tk.EW, padx=btn_padx, pady=btn_pady)
         config_post_btn = tk.Button(
@@ -59,7 +59,7 @@ class ConfigureWebsite(tk.Frame):
         self.body_content = None
 
 
-        self.load_content("GeneralConfiguration")
+        self.load_content("ConfigureMessaging")
 
         
     def new_content_frame(self):
@@ -70,10 +70,10 @@ class ConfigureWebsite(tk.Frame):
 
     def load_content(self, content:str):
         """
-        Accepts content: "GeneralConfiguration"
+        Accepts content: "ConfigureMessaging"
         """
         self.new_content_frame()
-        if content == "GeneralConfiguration":
+        if content == "ConfigureMessaging":
             general_config = GeneralConfiguration(self.body_content)
             general_config.pack(fill='both', expand= True)
             pass
