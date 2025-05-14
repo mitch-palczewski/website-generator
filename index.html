@@ -4,60 +4,34 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>
-   Scrapbook
-  </title>
+<title>Scrapbook</title>
 <link href="styles.css" rel="stylesheet"/>
-<script src="https://cdn.tailwindcss.com">
-</script>
+<script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="flex flex-col min-h-screen">
 <header class="bg-blue-600 text-white p-4">
-<h1 class="text-3xl font-bold text-center">
-    Header Section
-   </h1>
+<h1 class="text-3xl font-bold text-center">Header Section</h1>
 </header>
 <main class="flex-1 p-4">
 <!--vvv Grid div-->
-<div class="grid gap-6 grid-cols-1 md:grid-cols-3 lg:grid-cols-4" id="posts"><div class="bg-gray-200 p-2 shadow" id="000006">
-<h1 id="title">This is a test Title </h1>
+<div class="grid gap-6 grid-cols-1 md:grid-cols-3 lg:grid-cols-4" id="posts"><div class="bg-gray-200 p-2 shadow" id="000001">
+<h1 id="title">asdasd</h1>
 <h6 class="text-right" id="date">05-14-2025</h6>
-<img alt="" class="w-full h-auto object-cover rounded pb-2" id="media" src="assets\Screenshot 2025-01-08 134310.png"/>
+<img alt="" class="w-full h-auto object-cover rounded pb-2" id="media" src="assets\Screenshot 2024-12-01 163626.png"/>
 <div class="p-2"></div>
 <div class="bg-gray-300 p-2">
-<p id="caption">This pattern is very useful when you need both the index and value in situations such as logging, writing detailed output, or handling conditional logic based on the index. Would you like help exploring more advanced list processing techniques or any specific use cases involving enumeration</p>
+<p id="caption">asdasd</p>
 </div>
-<button id="message_btn" onclick="openMessageFrom('This is a test Title ','https://mitch-palczewski.github.io/assets%5CScreenshot%202025-01-08%20134310.png', 'This pattern is very useful when you need both the index and value in situations such as logging, writing detailed output, or handling conditional logic based on the index. Would you like help exploring more advanced list processing techniques or any specific use cases involving enumeration')">
+<button id="message_btn" onclick="openMessageFrom('asdasd','https://mitch-palczewski.github.io/assets/Screenshot%202024-12-01%20163626.png', 'asdasd')">
     Message
   </button>
 </div>
 
-<div class="bg-gray-200 p-2 shadow" id="000005">
-<h1 id="title">
-      world
-     </h1>
-<h6 class="text-right" id="date">
-      05-09-2025
-     </h6>
-<img alt="" class="w-full h-auto object-cover rounded pb-2" id="media" src="assets\Screenshot 2025-01-08 134310.png"/>
-<div class="p-2">
-</div>
-<div class="bg-gray-300 p-2">
-<p id="caption">
-       hello
-      </p>
-</div>
-<button class="" id="message_btn" onclick="openMessageFrom('world','http://127.0.0.1:5500/assets%5CScreenshot%202025-01-08%20134310.png', 'hello')">
-      Message
-     </button>
-</div>
 </div>
 <!--^^^ Grid /div-->
 </main>
 <footer class="bg-blue-600 text-white p-4">
-<p class="text-center">
-    Footer Section
-   </p>
+<p class="text-center">Footer Section</p>
 </footer>
 <div class="overlay" id="message_popup">
 <div class="modal">
@@ -76,15 +50,12 @@
 </div>
 <input class="p-1 w-full border focus:outline-none focus:ring-2 focus:ring-blue-500" name="message" placeholder="Message" required="" rows="3" type="text"/>
 <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white p-1 border border-blue-500 hover:border-transparent w-full" type="submit">
-      Submit Message
-     </button>
+            Submit Message
+          </button>
 </form>
-<button onclick="closeMessageForm()">
-     Close
-    </button>
+<button onclick="closeMessageForm()">Close</button>
 </div>
 </div>
-<script src="script.js">
-</script>
+<script src="script.js"></script>
 </body>
 </html>

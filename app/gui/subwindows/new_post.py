@@ -123,7 +123,7 @@ class NewPost(tk.Frame):
         if title.endswith("\n"):
             title = title[:-1]
         base_link = config_data["base_link"]
-        media_link = format_media_link(base_link, media)
+        media_link = Controller.format_media_link(base_link, media)
         new_post_id = get_unique_id(posts_data.keys())
 
         insert_post_id(post_html, new_post_id)

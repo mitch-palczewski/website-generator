@@ -6,6 +6,7 @@ CONFIG_JSON_PATH = "app\config\config.json"
 POSTS_JSON_PATH = "posts.json"
 MESSAGE_HTML = "html_components\communicate\message.html"
 HTML_FILE_PATH = "index.html"
+ASSET_FOLDER_PATH = "assets"
 
 class Model:
     #JSON
@@ -38,6 +39,15 @@ class Model:
             hashed = True
         return hashed
     
+    def encode_path(path:str):
+        """
+        Encodes a path for URL use
+        """
+        segments = path.split('/')
+        encoded_segments = [quote(segment, safe="") for segment in segments]
+        encoded_path = "/".join(encoded_segments)
+        return encoded_path
+
    
     
 
@@ -97,13 +107,23 @@ class Controller:
         Model.write_json_file(CONFIG_JSON_PATH, config_data)
         HtmlController.update_grid_cols()
 
-        
     def format_media_link(base_link:str, media_path:str) -> str:
+        """
+        Encodes a media element for URL use
+        """
+        asset_folder_path_slash = ASSET_FOLDER_PATH
+        if not asset_folder_path_slash.endswith("/"):
+            asset_folder_path_slash += "/"
         if not base_link.endswith("/"):
             base_link = base_link + "/" 
-        media_path = quote(media_path, safe=":/?&=") 
-        media_link:str = base_link + media_path
-        return media_link
+        if media_path.startswith(ASSET_FOLDER_PATH):
+            relative_path = media_path[len(asset_folder_path_slash):]
+            encoded_relative_path = Model.encode_path(relative_path)
+            return base_link + asset_folder_path_slash + encoded_relative_path
+        else:
+            encoded_relative_path = Model.encode_path(media_path)
+            return base_link + encoded_relative_path
+
 
 class HtmlModel:
     def open_html(html_file_path:str) -> bs:
