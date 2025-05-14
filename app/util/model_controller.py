@@ -78,8 +78,26 @@ class Controller:
             config_data["email"] = new_email
             Model.write_json_file(CONFIG_JSON_PATH, config_data)
             return
-        
+    
+    def update_tab_title(new_tab_title:str):
+        if new_tab_title == "":
+            print("tab title cannot be null")
+            return
+        config_data = Controller.get_config_data()
+        config_data["tab_title"] = new_tab_title
+        Model.write_json_file(CONFIG_JSON_PATH, config_data)
+        HtmlController.update_tab_title()
+    
+    def update_grid_cols(cols_sm:int, cols_md:int, cols_lg:int):
+        if int(cols_sm) < 1 or int(cols_md) < 1 or int(cols_lg) < 1:
+            print(f"Cannot have negative number of columns. {cols_sm}, {cols_md}, {cols_lg}")
+            return
+        config_data = Controller.get_config_data()
+        config_data["grid_cols"] = {"sm": cols_sm, "md": cols_md, "lg": cols_lg}
+        Model.write_json_file(CONFIG_JSON_PATH, config_data)
+        HtmlController.update_grid_cols()
 
+        
     def format_media_link(base_link:str, media_path:str) -> str:
         if not base_link.endswith("/"):
             base_link = base_link + "/" 
@@ -206,3 +224,39 @@ class HtmlController:
         form_submit_link = "https://formsubmit.co/" + email
         message_form_tag["action"] = form_submit_link
         HtmlModel.write_html_file(MESSAGE_HTML, message_html)
+        HtmlController.delete_message_popup()
+        HtmlController.insert_message_popup()
+
+    def update_tab_title():
+        config_data = Controller.get_config_data()
+        tab_title = config_data["tab_title"]
+        html_webpage:bs = HtmlModel.open_html(HTML_FILE_PATH)
+        if not html_webpage:
+            raise ValueError("Error: HTML webpage not found in file system.")
+        title_tag:bs = html_webpage.find("title")
+        if title_tag:
+            title_tag.clear()
+            title_tag.insert(0, tab_title)
+        HtmlModel.write_html_file(HTML_FILE_PATH, html_webpage)
+
+    def update_grid_cols():
+        config_data = Controller.get_config_data()
+        grid_cols = config_data["grid_cols"]
+        html_webpage:bs = HtmlModel.open_html(HTML_FILE_PATH)
+        if not html_webpage:
+            raise ValueError("Error: HTML webpage not found in file system.")
+        posts_tag :bs = html_webpage.find("div", id="posts")
+        if not posts_tag:
+            raise ValueError("Error: No element with id 'posts' found.")
+        class_list = posts_tag.get("class", [])
+        for index, class_item in enumerate(class_list):
+            if (class_item.startswith("grid-cols-") 
+                or class_item.startswith("md:grid-cols-") 
+                or class_item.startswith("lg:grid-cols-") 
+                ):
+                class_list[index] = ""
+        class_list.append(f"grid-cols-{grid_cols['sm']}")
+        class_list.append(f"md:grid-cols-{grid_cols['md']}")
+        class_list.append(f"lg:grid-cols-{grid_cols['lg']}")
+        posts_tag["class"] = class_list
+        HtmlModel.write_html_file(HTML_FILE_PATH, html_webpage)

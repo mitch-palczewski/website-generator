@@ -70,7 +70,7 @@ class NewPost(tk.Frame):
 
         caption_field_label = tk.Label(body_right_frame, text = "Caption:")
         caption_field_label.grid(column=0, row=1, sticky=tk.NE, pady=30)
-        self.caption_field = TextField(body_right_frame, 8)
+        self.caption_field = TextField(body_right_frame, field_height=30)
         self.caption_field.grid(column=1,row=1, sticky=tk.N,pady=30)
 
         #Footer

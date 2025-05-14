@@ -1,8 +1,6 @@
 import tkinter as tk
-import re
-from bs4 import BeautifulSoup as bs
 from tkinter import font, ttk
-from tkinter.messagebox import showinfo, askyesno
+from tkinter.messagebox import askyesno
 try:
     from ctypes import windll
     windll.shcore.SetProcessDpiAwareness(1)
@@ -11,10 +9,8 @@ except ImportError:
     pass
 
 from util.model_controller import Controller, HtmlController
-from config import CONFIG_JSON_PATH
-from gui.components.text_field import TextField
 
-class GeneralConfiguration(tk.Frame):
+class ConfigMessaging(tk.Frame):
     def __init__(self, container):
         super().__init__(container)
 
@@ -29,16 +25,10 @@ class GeneralConfiguration(tk.Frame):
         right_frame = tk.Frame(main_frame )
         right_frame.grid(column=1, row=0, sticky=tk.NSEW)
 
-        messaging_frame = ConfigureMessaging(self)
+        messaging_frame = MessagingSettings(self)
         messaging_frame.pack()
         
-        
-
-
-
-
-
-class ConfigureMessaging(tk.Frame):
+class MessagingSettings(tk.Frame):
     def __init__(self, container):
         super().__init__(container)
         FONT_SM = font.Font(family="Helvetica", size=10, weight="bold")
@@ -71,7 +61,6 @@ class ConfigureMessaging(tk.Frame):
             self.enable_messaging()
         else:
             self.disable_messaging()
-
 
     def enable_messaging(self):
         self.load_config_email()
@@ -107,9 +96,6 @@ class ConfigureMessaging(tk.Frame):
         if askyesno(title="Change Email", message=f"Are you sure you want to replace {self.email} with {new_email}"):
             Controller.update_email(new_email)
             HtmlController.update_email()
-            HtmlController.delete_message_popup()
-            HtmlController.insert_message_popup()
-
         self.load_config_email()
 
     def cancel(self):

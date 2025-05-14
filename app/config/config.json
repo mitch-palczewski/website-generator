@@ -2,5 +2,11 @@
     "post_component": "html_components/post/default.html",
     "post_messaging": true,
     "email": "8e2308e9935d31f75b6fc3fb137d2c63",
-    "base_link": "https://mitch-palczewski.github.io/"
+    "base_link": "https://mitch-palczewski.github.io/",
+    "tab_title": "Scrapbook",
+    "grid_cols": {
+        "sm": "1",
+        "md": "3",
+        "lg": "4"
+    }
 }
