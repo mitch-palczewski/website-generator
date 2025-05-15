@@ -9,6 +9,7 @@ except ImportError:
     pass
 
 from util.model_controller import Controller
+from util.controller import JsonController
 from config import CONFIG_JSON_PATH
 
 BUTTON_WIDTH = 30
@@ -107,7 +108,7 @@ class BaseLink(tk.Frame):
     def update(self):
         new_base_link = self.text_field.get()
         if askyesno(title="Change Base Link", message=f"Are you sure you want to replace {self.base_link} with {new_base_link}"):
-            Controller.update_base_link(new_base_link)
+            JsonController.update_base_link(new_base_link)
         self.update_btn.grid_forget()
         self.cancel_btn.grid_forget()
         self.edit_btn.grid(column=2, row=0, padx=5)

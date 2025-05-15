@@ -18,7 +18,7 @@ class FileModel:
     pass
 
 class StringModel:
-    def remove_prefix(string, prefix):
+    def remove_prefix(string:str, prefix:str):
         if string.startswith(prefix):
             return string[len(prefix):] 
         return string

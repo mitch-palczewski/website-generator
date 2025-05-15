@@ -23,7 +23,10 @@ class Model:
             json.dump(data, file, indent=4)
     
     #STRING
-    def remove_prefix(string, prefix):
+    def remove_prefix(string:str, prefix:str) -> str:
+        """
+        Removes a prefix from a string 
+        """
         if string.startswith(prefix):
             return string[len(prefix):] 
         return string
@@ -62,6 +65,7 @@ class Controller:
     
     def update_base_link(new_base_link:str):
         config_data = Controller.get_config_data()
+        old_base_link = config_data["base_link"]
         if new_base_link == config_data["base_link"]:
             return
         config_data["base_link"] = new_base_link
@@ -70,7 +74,7 @@ class Controller:
         for post_id, post in posts_data.items():
             base_link = post["base_link"]
             media_link = post["media_link"]
-            media = Model.remove_prefix(media_link, base_link)
+            media:str = Model.remove_prefix(string=media_link, prefix=base_link)
             new_media_link = Controller.format_media_link(new_base_link, media)
             post["media_link"] = new_media_link
             post["base_link"] = new_base_link
