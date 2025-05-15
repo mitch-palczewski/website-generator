@@ -20,5 +20,5 @@ class ConfigPost(tk.Frame):
         body = tk.Frame(self, bg="red")
         body.pack()
         
-        component_editor = HtmlComponentEditor(body, POST_COMPONENT_PATH)
+        component_editor = HtmlComponentEditor(body, POST_COMPONENT_PATH, "post")
         component_editor.pack()

@@ -4,15 +4,22 @@ import re
 from urllib.parse import quote
 from bs4 import BeautifulSoup as bs
 CONFIG_JSON_PATH = "app\config\config.json"
+HTML_VALIDATION_PATH = "app\config\html_validation.json"
 POSTS_JSON_PATH = "posts.json"
 MESSAGE_HTML = "html_components\communicate\message.html"
+HTML_POST_FOLDER = "html_components\post"
+HTML_HEADER_FOLDER = "html_components\header"
+HTML_FOOTER_FOLDER = "html_components\footer"
 HTML_FILE_PATH = "index.html"
 ASSET_FOLDER_PATH = "assets"
 
 from util.model import Model, HtmlModel, StringModel, JsonModel
+from tkinter.messagebox import showwarning
+from tkinter import filedialog
 
 class Controller:
     pass
+    
 
 class StringController:
     pass
@@ -32,6 +39,10 @@ class JsonController:
         if not key in config_data.keys():
             ValueError(f"Key: {key} not in config.json. Config Json Keys: {config_data.keys()}")
         return config_data[key]
+
+    def get_html_validation() -> dict:
+        html_validation = JsonModel.open_json(HTML_VALIDATION_PATH)
+        return html_validation
         
     def set_config_data(key:str, data):
         config_data:dict = JsonController.get_config_data()
@@ -55,7 +66,10 @@ class JsonController:
             post["base_link"] = new_base_link
         JsonModel.write_json_file(POSTS_JSON_PATH, posts_data)
     
-    def update_media_link(post, new_base_link:str):
+    def update_media_link(post:dict, new_base_link:str):
+        """
+        Replaces Base link in posts.json {"media_link"}
+        """
         base_link:str = post["base_link"]
         media_link:str = post["media_link"]
         media:str = StringModel.remove_prefix(string=media_link, prefix=base_link)
@@ -68,5 +82,29 @@ class JsonController:
 
 
 class HtmlController:
-
-    pass
+    def validate_html(type:str, html:str):
+        valid = True
+        invalid_ids = []
+        html_validation = JsonController.get_html_validation()
+        required_ids = html_validation[type]
+        for id in required_ids:
+            index = html.find(id)
+            if index == -1:
+                valid = False
+                invalid_ids.append(id)
+        if not valid:
+            showwarning(title="Invalid HTML", message=f"Invalid HTML. \n Missing ids {invalid_ids}")
+        return valid
+    
+    def save_component_file(html, component_type):
+        if component_type == "post":
+            HtmlModel.save_html_file(html, HTML_POST_FOLDER, component_type)
+            return
+        if component_type == "header":
+            HtmlModel.save_html_file(html, HTML_HEADER_FOLDER, component_type)
+            return
+        if component_type == "footer":
+            HtmlModel.save_html_file(html, HTML_FOOTER_FOLDER, component_type)
+            return
+        
+    

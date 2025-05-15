@@ -1,6 +1,8 @@
 import json
 import os
 import re
+import tkinter as tk
+from tkinter import filedialog
 from urllib.parse import quote
 from bs4 import BeautifulSoup as bs
 
@@ -54,6 +56,7 @@ class HtmlModel:
             html_file_soup = bs(file, "html.parser")
         if not html_file_soup:
             raise ValueError(f"Error: file not found {html_file_path}")   
+        html_file_soup = html_file_soup.prettify()
         return html_file_soup
 
     def write_html_file(html_file_path:str, html:bs) -> None:
@@ -61,3 +64,27 @@ class HtmlModel:
         with open(html_file_path, "w", encoding="utf-8") as file:
             file.write(str(html))
         pass
+
+    def format_html(html):
+        if type(html) != bs:
+            html = bs(html, "html.parser")
+        html=html.prettify()
+        return html
+    
+    def save_html_file(html, inital_directory, type):
+        file_path = filedialog.asksaveasfilename(
+            initialdir=inital_directory,
+            defaultextension=".html", 
+            filetypes=[("HTML Files", "*.html"), ("All Files", "*.*")],
+            title=f"Save {type} HTML File As"
+        )
+        
+        if file_path:
+            with open(file_path, 'w') as file:
+                file.write(html)
+            print(f"File saved to: {file_path}")
+
+class TkModel:
+    def clear_frame(frame:tk.Frame):
+        for widget in frame.winfo_children():
+            widget.destroy()
