@@ -11,6 +11,7 @@ except ImportError:
 
 from gui.subwindows.configure_windows.config_messaging import ConfigMessaging
 from gui.subwindows.configure_windows.general_config import GeneralConfig
+from gui.subwindows.configure_windows.config_post import ConfigPost
 class ConfigureWebsite(tk.Frame):
     def __init__(self, container, main_window):
         super().__init__(container)
@@ -44,19 +45,19 @@ class ConfigureWebsite(tk.Frame):
         config_post_btn = tk.Button(
             header_frame, 
             text="Configure Post", 
-            command=lambda:self.load_content("ConfigurePost")
+            command=lambda:self.load_content("ConfigPost")
         )
         config_post_btn.grid(column=2, row=0, sticky=tk.EW, padx=btn_padx, pady=btn_pady)
         config_header_btn = tk.Button(
             header_frame, 
             text="Configure Header", 
-            command=lambda:self.load_content("ConfigureHeader")
+            command=lambda:self.load_content("ConfigHeader")
         )
         config_header_btn.grid(column=3, row=0, sticky=tk.EW, padx=btn_padx, pady=btn_pady)
         config_footer_btn = tk.Button(
             header_frame, 
             text="Configure Footer", 
-            command=lambda:self.load_content("ConfigureFooter")
+            command=lambda:self.load_content("ConfigFooter")
         )
         config_footer_btn.grid(column=4, row=0, sticky=tk.EW, padx=btn_padx, pady=btn_pady)
         
@@ -77,14 +78,20 @@ class ConfigureWebsite(tk.Frame):
 
     def load_content(self, content:str):
         """
-        Accepts content: "GeneralConfig", "ConfigMessaging", 
+        Accepts content: "GeneralConfig", "ConfigMessaging", "ConfigPost"
         """
         self.new_content_frame()
         if content == "ConfigMessaging":
             config_messaging = ConfigMessaging(self.body_content)
             config_messaging.pack(fill='both', expand= True)
+            return
         if content == "GeneralConfig":
             general_config = GeneralConfig(self.body_content)
             general_config.pack(fill='both', expand= True)
-
+            return
+        if content == "ConfigPost":
+            config_post = ConfigPost(self.body_content)
+            config_post.pack(fill='both', expand= True)
+            return
+        print(f"{content} is not set up")
         

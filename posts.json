@@ -2,8 +2,15 @@
     "000001": {
         "date": "2025-05-14 18:28:45.510800",
         "title": "asdasd",
-        "media_link": "https://mitch-palczewski.github.io/assets/Screenshot%202024-12-01%20163626.png",
+        "media_link": "https://mitch-palczewski.github.io///assets/Screenshot%25252525202024-12-01%2525252520163626.png",
         "caption": "asdasd",
+        "base_link": "https://mitch-palczewski.github.io/"
+    },
+    "000002": {
+        "date": "2025-05-14 21:31:45.022494",
+        "title": "heloo",
+        "media_link": "https://mitch-palczewski.github.io///assets/Screenshot%2525252520%25252525282%25252525292.png",
+        "caption": "asdkasdakndlkansdknaksn",
         "base_link": "https://mitch-palczewski.github.io/"
     }
 }

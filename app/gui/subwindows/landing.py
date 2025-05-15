@@ -22,6 +22,7 @@ class Landing(tk.Frame):
     def __init__(self, container, main_window):
         super().__init__(container)
         BUTTON_FONT = font.Font(family="Helvetica", size=20, weight="bold")
+        FONT_XL = font.Font(family="Helvetica", size=30, weight="bold")
 
         #GROUPER
         self.body = tk.Frame(self, bg="red")
@@ -34,7 +35,7 @@ class Landing(tk.Frame):
             command=lambda: main_window.load_content("NewPost"),
             width=BUTTON_WIDTH,
             height=BUTTON_HEIGHT,
-            font= BUTTON_FONT
+            font= FONT_XL
         )
         new_post_btn.pack(padx=BUTTON_PADDING, pady=BUTTON_PADDING)
 
@@ -44,19 +45,19 @@ class Landing(tk.Frame):
             command=lambda: main_window.load_content("ConfigureWebsite"),
             width=BUTTON_WIDTH,
             height=BUTTON_HEIGHT,
-            font=BUTTON_FONT
+            font=FONT_XL
         )
         configure_post_btn.pack(padx=BUTTON_PADDING, pady=BUTTON_PADDING)
 
-        edit_post_btn = tk.Button(
-            self.body,
-            text="Edit Posts",
-            command=lambda: main_window.load_content("EditPosts"),
-            width=BUTTON_WIDTH,
-            height=BUTTON_HEIGHT,
-            font=BUTTON_FONT
-        )
-        edit_post_btn.pack(padx=BUTTON_PADDING, pady=BUTTON_PADDING)
+        # edit_post_btn = tk.Button(
+        #     self.body,
+        #     text="Edit Posts",
+        #     command=lambda: main_window.load_content("EditPosts"),
+        #     width=BUTTON_WIDTH,
+        #     height=BUTTON_HEIGHT,
+        #     font=BUTTON_FONT
+        # )
+        # edit_post_btn.pack(padx=BUTTON_PADDING, pady=BUTTON_PADDING)
 
         base_link = BaseLink(self.body)
         base_link.pack()
