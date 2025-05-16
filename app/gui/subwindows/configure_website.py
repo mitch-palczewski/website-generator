@@ -12,6 +12,11 @@ except ImportError:
 from gui.subwindows.configure_windows.config_messaging import ConfigMessaging
 from gui.subwindows.configure_windows.general_config import GeneralConfig
 from gui.subwindows.configure_windows.config_post import ConfigPost
+from gui.subwindows.configure_windows.config_header import ConfigHeader
+from gui.subwindows.configure_windows.config_footer import ConfigFooter
+
+
+
 class ConfigureWebsite(tk.Frame):
     def __init__(self, container, main_window):
         super().__init__(container)
@@ -92,6 +97,14 @@ class ConfigureWebsite(tk.Frame):
         if content == "ConfigPost":
             config_post = ConfigPost(self.body_content)
             config_post.pack(fill='both', expand= True)
+            return
+        if content == "ConfigHeader":
+            config_header = ConfigHeader(self.body_content)
+            config_header.pack(fill='both', expand= True)
+            return
+        if content == "ConfigFooter":
+            config_footer = ConfigFooter(self.body_content)
+            config_footer.pack(fill='both', expand= True)
             return
         print(f"{content} is not set up")
         

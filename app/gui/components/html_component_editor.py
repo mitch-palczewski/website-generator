@@ -21,22 +21,29 @@ class HtmlComponentEditor(tk.Frame):
         """
         component_type Literal ["post", "header", "footer"]
         """
-        self.component_folder = component_folder
         super().__init__(container)
+        self.component_folder = component_folder
+        self.component_type = component_type
+        self.selected_component_path = None
+        #GROUPER FRAME
         body = tk.Frame(self, bg="blue")
         body.columnconfigure(0, weight=1)
         body.columnconfigure(1, weight=3)
-        body.pack(padx=10, pady=10, fill="both", expand=True)
-        #text Field
-        self.text_editor = TextEditor(body, self, component_type, component_folder)
+        body.pack(padx=10, fill="both", expand=True)
+        footer = tk.Frame(self, bg="blue")
+        footer.pack(padx=10, fill="both", expand=True)
+        #BODY RIGHT
+        self.text_editor = TextEditor(body, component_type, component_folder, html_component_editor= self)
         self.text_editor.grid(column=1,row=0)
-        
-        #SELECTOR
+        #BODY LEFT
         scroll_frame = ScrollFrame(body)
         scroll_frame.grid(column=0, row=0)
         inner_scroll_frame = scroll_frame.inner_frame
         self.scroll_body = tk.Frame(inner_scroll_frame)
         self.scroll_body.pack(expand=True, fill="both")
+        #FOOTER
+        input_btn = tk.Button(footer,text=f"Update {component_type} HTML", command=self.update_html, bg="orange")
+        input_btn.pack(expand=True, fill='both', padx=10, pady=10)
 
         self.load_components()
 
@@ -44,28 +51,41 @@ class HtmlComponentEditor(tk.Frame):
         TkModel.clear_frame(self.scroll_body)
         components = os.listdir(self.component_folder)
         for component in components:
-            c = Component(self.scroll_body, component, self.component_folder, self.text_editor)
+            c = Component(
+                container = self.scroll_body, 
+                html_component_editor = self, 
+                component= component, 
+                component_folder= self.component_folder, 
+                text_editor= self.text_editor)
             c.pack()
+    
+    def update_html(self):
+        HtmlController.update_component(
+            component_type=self.component_type, 
+            component_path = self.selected_component_path)
+
+    def set_selected_component_path(self, path):
+        self.selected_component_path = path
 
     
 
 class TextEditor(tk.Frame):
-    def __init__(self, container, html_component_editor: HtmlComponentEditor,component_type:str, component_folder:str):
+    def __init__(self, container, component_type:str, component_folder:str, html_component_editor: HtmlComponentEditor):
         super().__init__(container)
         self.component_type = component_type
         self.component_folder = component_folder
         self.html_component_editor = html_component_editor
 
-        self.text_field = ScrolledText(self, height=30)
+        self.text_field = ScrolledText(self, height=28)
         self.text_field.pack()
         footer = tk.Frame(self, bg="blue")
-        footer.pack(fill='x', expand=True)
+        footer.pack(fill='x', expand=True, ipady=10, ipadx=10)
         format_btn = tk.Button(footer, text="Format", command=self.format)
-        format_btn.pack(side=tk.LEFT, padx=5, pady=3)
+        format_btn.pack(side=tk.LEFT, padx=5)
         self.save_btn = tk.Button(footer, text="Save", command=self.save)
-        self.save_btn.pack(side=tk.RIGHT, padx=5, pady=3)
+        self.save_btn.pack(side=tk.RIGHT, padx=5)
         self.validate_btn = tk.Button(footer, text="Validate", command=self.validate)
-        self.validate_btn.pack(side=tk.RIGHT, padx=5, pady=3)
+        self.validate_btn.pack(side=tk.RIGHT, padx=5)
     
     def load_html(self, component_path:str):
         self.selected_component_path = component_path
@@ -97,7 +117,6 @@ class TextEditor(tk.Frame):
         HtmlController.save_component_file(html, self.component_type)
         self.html_component_editor.load_components()
         
-
     def change_validate_btn_color(self, color):
         self.validate_btn.config(bg=color)
         
@@ -105,8 +124,9 @@ class TextEditor(tk.Frame):
         self.save_btn.config(bg=color)
 
 class Component(tk.Frame):
-    def __init__(self, container, component:str, component_folder:str, text_editor:TextEditor):
+    def __init__(self, container, html_component_editor: HtmlComponentEditor,component:str, component_folder:str, text_editor:TextEditor):
         super().__init__(container)
+        self.html_component_editor = html_component_editor
         component_path = os.path.join(component_folder, component)
         self.text_editor = text_editor
         
@@ -118,6 +138,7 @@ class Component(tk.Frame):
         btn.pack()
     
     def load(self, component_path:str):
+        self.html_component_editor.set_selected_component_path(component_path)
         self.text_editor.load_html(component_path)
 
 

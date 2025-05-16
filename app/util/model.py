@@ -56,7 +56,6 @@ class HtmlModel:
             html_file_soup = bs(file, "html.parser")
         if not html_file_soup:
             raise ValueError(f"Error: file not found {html_file_path}")   
-        html_file_soup = html_file_soup.prettify()
         return html_file_soup
 
     def write_html_file(html_file_path:str, html:bs) -> None:
@@ -65,7 +64,7 @@ class HtmlModel:
             file.write(str(html))
         pass
 
-    def format_html(html):
+    def format_html(html) -> str:
         if type(html) != bs:
             html = bs(html, "html.parser")
         html=html.prettify()

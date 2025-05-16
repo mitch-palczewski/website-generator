@@ -10,7 +10,7 @@ MESSAGE_HTML = "html_components\communicate\message.html"
 HTML_POST_FOLDER = "html_components\post"
 HTML_HEADER_FOLDER = "html_components\header"
 HTML_FOOTER_FOLDER = "html_components\footer"
-HTML_FILE_PATH = "index.html"
+HTML_WEBPAGE_PATH = "index.html"
 ASSET_FOLDER_PATH = "assets"
 
 from util.model import Model, HtmlModel, StringModel, JsonModel
@@ -79,6 +79,11 @@ class JsonController:
             new_base_link += "/"
         new_media_link = new_base_link + media
         return new_media_link
+    
+    def update_selected_post_component(post_component_path:str):
+        config_data = JsonController.get_config_data()
+        config_data["post_component"] = post_component_path
+        JsonModel.write_json_file(CONFIG_JSON_PATH, config_data)
 
 
 class HtmlController:
@@ -106,5 +111,30 @@ class HtmlController:
         if component_type == "footer":
             HtmlModel.save_html_file(html, HTML_FOOTER_FOLDER, component_type)
             return
-        
+    
+    def update_component(component_type:str, component_path:str):
+        """
+        component_type: "post", "header", "footer"
+        """
+        if component_type == "post":
+            JsonController.update_selected_post_component(component_path)
+            return
+        if component_type == "header":
+            HtmlController.update_header(component_path)
+            return
+        raise ValueError(f"Invalid component_type {component_type}")
+
+    def update_header(component_path):
+        html_webpage:bs = HtmlModel.open_html(HTML_WEBPAGE_PATH)
+        new_header:bs = HtmlModel.open_html(component_path)
+        new_header_tag = new_header.find("header")
+        webpage_header_tag = html_webpage.find("header")
+        if not webpage_header_tag:
+            ValueError("Error: No <header> tag found in webpage")
+        if not new_header_tag:
+            webpage_header_tag.clear()
+            webpage_header_tag.append(new_header)
+        else:
+            webpage_header_tag.replace_with(new_header)
+        HtmlModel.write_html_file(HTML_WEBPAGE_PATH, html_webpage)
     
