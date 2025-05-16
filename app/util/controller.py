@@ -122,6 +122,9 @@ class HtmlController:
         if component_type == "header":
             HtmlController.update_header(component_path)
             return
+        if component_type == "footer":
+            HtmlController.update_footer(component_path)
+            return
         raise ValueError(f"Invalid component_type {component_type}")
 
     def update_header(component_path):
@@ -138,3 +141,17 @@ class HtmlController:
             webpage_header_tag.replace_with(new_header)
         HtmlModel.write_html_file(HTML_WEBPAGE_PATH, html_webpage)
     
+    def update_footer(component_path):
+        html_webpage:bs = HtmlModel.open_html(HTML_WEBPAGE_PATH)
+        new_footer:bs = HtmlModel.open_html(component_path)
+        new_footer_tag = new_footer.find("footer")
+        webpage_footer_tag = html_webpage.find("footer")
+        if not webpage_footer_tag:
+            ValueError("Error: No <header> tag found in webpage")
+        if not new_footer_tag:
+            webpage_footer_tag.clear()
+            webpage_footer_tag.append(new_footer)
+        else:
+            webpage_footer_tag.replace_with(new_footer)
+        HtmlModel.write_html_file(HTML_WEBPAGE_PATH, html_webpage)
+        pass
