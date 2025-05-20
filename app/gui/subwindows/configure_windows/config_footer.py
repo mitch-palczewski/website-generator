@@ -7,8 +7,9 @@ except ImportError:
     pass
 
 from gui.components.html_component_editor import HtmlComponentEditor
+import os
 
-FOOTER_COMPONENT_PATH = "html_components\header"
+FOOTER_COMPONENT_PATH = os.path.join("html_components", "footer")
 
 class ConfigFooter(tk.Frame):
     def __init__(self, container):

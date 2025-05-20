@@ -1,6 +1,7 @@
 import json
 import os
 import re
+import shutil
 import tkinter as tk
 from tkinter import filedialog
 from urllib.parse import quote
@@ -87,3 +88,10 @@ class TkModel:
     def clear_frame(frame:tk.Frame):
         for widget in frame.winfo_children():
             widget.destroy()
+
+class FileModel:
+    def move_media_to_folder(media:str, folder:str) -> str:
+        shutil.copy(media, folder)
+        file_name = os.path.basename(media)
+        new_path = os.path.join(folder, file_name)
+        return new_path
