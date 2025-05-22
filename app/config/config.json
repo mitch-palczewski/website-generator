@@ -1,5 +1,5 @@
 {
-    "post_component": "html_components\\post\\tidal.html",
+    "post_component": "html_components\\post\\default.html",
     "post_messaging": true,
     "email": "8e2308e9935d31f75b6fc3fb137d2c63",
     "base_link": "https://mitch-palczewski.github.io/",
@@ -13,6 +13,7 @@
         "c1": "#e0e4f8",
         "c2": "#7890f8",
         "c3": "#60735b",
-        "c4": "#e5d07a"
+        "c4": "#e5d07a",
+        "c5": "#E0DAC3"
     }
 }
