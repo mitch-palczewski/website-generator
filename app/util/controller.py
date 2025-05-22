@@ -1,5 +1,7 @@
 from datetime import date
 from bs4 import BeautifulSoup as bs
+import os
+import glob
 
 CONFIG_JSON_PATH = "app\config\config.json"
 HTML_VALIDATION_PATH = "app\config\html_validation.json"
@@ -63,10 +65,25 @@ class JsonController:
         if not key in config_data.keys():
             ValueError(f"Key: {key} not in config.json. Config Json Keys: {config_data.keys()}")
         return config_data[key]
+    
+    def get_post_component_basename():
+        """
+        Retuns the basename of the post component in config.json
+        """
+        post_component_path = JsonController.get_config_data("post_component")
+        post_component = os.path.basename(post_component_path)
+        return post_component
 
     def get_html_validation() -> dict:
         html_validation = JsonModel.open_json(HTML_VALIDATION_PATH)
         return html_validation
+    
+    def set_post_component(path = None, basename=None):
+        if not path and not basename:
+            ValueError("Error need to set post_component by path or basename")
+        if basename:
+            path = FileController.get_post_component_path(basename)
+        JsonController.set_config_data("post_component", path)
         
     def set_config_data(key:str, data):
         config_data:dict = JsonController.get_config_data()
@@ -129,7 +146,7 @@ class HtmlController:
     
     def set_webpage_html(html):
         HtmlModel.write_html_file(HTML_WEBPAGE_PATH, html)
-    
+
     def update_component(component_type:str, component_path:str):
         """
         component_type: "post", "header", "footer"
@@ -199,10 +216,27 @@ class HtmlController:
             return file_path
         
 class FileController:
+    def get_post_component_basenames()->list:
+        basenames = os.listdir(HTML_POST_FOLDER)
+        return basenames
+    
+    def get_post_component_paths() -> list:
+        basenames = FileController.get_post_component_basenames()
+        paths:list = []
+        for basename in basenames:
+            path = os.path.join(HTML_POST_FOLDER, basename)
+            paths.append(path)
+        return paths
+    
+    def get_post_component_path(basename:str):
+        path:str = os.path.join(HTML_POST_FOLDER, basename)
+        return path
+
     def add_media_to_assets_folder(media:list):
         media_paths = []
         for element in media:
             new_path:str = FileModel.move_media_to_folder(element, ASSET_FOLDER_PATH)
             media_paths.append(new_path)
         return media_paths
- 
+
+    

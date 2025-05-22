@@ -30,6 +30,12 @@ class NewPost(tk.Frame):
         self.main_window:tk.Frame = main_window
         self.media = []
         self.tk_images = []
+        self.post_components:list = FileController.get_post_component_basenames()
+        self.post_component_paths = FileController.get_post_component_paths()
+        self.post_option = tk.StringVar(self)
+        self.post_component_basename = JsonController.get_post_component_basename()
+        self.post_component_path = JsonController.get_config_data("post_component")
+
 
         #GROUPER FRAMES
         self.config(bg=C1)
@@ -63,6 +69,14 @@ class NewPost(tk.Frame):
         body_right_frame.columnconfigure(1, weight=3)
         body_right_frame.grid(column=1, row=0, ipadx=5, sticky=tk.NSEW, padx=10, pady=10)
 
+        post_option_menu = ttk.OptionMenu(
+            body_right_frame,
+            self.post_option,
+            self.post_component_basename,
+            *self.post_components,
+            command= lambda value: JsonController.set_post_component(basename=value)
+        )
+        post_option_menu.grid(column=1, row=0)
 
         title_field_label = tk.Label(body_right_frame, text = "Title:", bg=C2, font=FONT_SM)
         title_field_label.grid(column=0, row=1, sticky=tk.E)
@@ -105,6 +119,9 @@ class NewPost(tk.Frame):
         if title.endswith("\n"):
             title = title[:-1]
         return title
+
+    def update_selected_post_component():
+        pass
 
     def build_post(self):
         caption:str = self.get_caption_text()
