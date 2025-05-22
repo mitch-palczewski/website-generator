@@ -10,24 +10,25 @@ except ImportError:
 
 from util.model_controller import Controller
 from util.controller import JsonController
-from config import CONFIG_JSON_PATH
 
-BUTTON_WIDTH = 30
-BUTTON_HEIGHT = 3
+BUTTON_WIDTH = 25
+BUTTON_HEIGHT = 2
 BUTTON_PADDING = 15
-
-
-
+colors = JsonController.get_config_data("colors")
+C1 = colors["c1"]
+C2 = colors["c2"]
+C3 = colors["c3"]
+C4 = colors["c4"]
 
 class Landing(tk.Frame):
     def __init__(self, container, main_window):
         super().__init__(container)
         BUTTON_FONT = font.Font(family="Helvetica", size=20, weight="bold")
         FONT_XL = font.Font(family="Helvetica", size=30, weight="bold")
-
+        self.config(bg=C1)
         #GROUPER
-        self.body = tk.Frame(self, bg="red")
-        self.body.pack( expand=True,padx=40, ipady=10, fill='x')
+        self.body = tk.Frame(self, bg=C2, border=3, relief="groove")
+        self.body.pack( expand=True, padx=40, pady=80, fill='both')
         
         #BODY
         new_post_btn = tk.Button(
@@ -36,9 +37,10 @@ class Landing(tk.Frame):
             command=lambda: main_window.load_content("NewPost"),
             width=BUTTON_WIDTH,
             height=BUTTON_HEIGHT,
-            font= FONT_XL
+            font= FONT_XL,
+            bg="white"
         )
-        new_post_btn.pack(padx=BUTTON_PADDING, pady=BUTTON_PADDING)
+        new_post_btn.pack(padx=BUTTON_PADDING, pady=(80,BUTTON_PADDING))
 
         configure_post_btn = tk.Button(
             self.body,
@@ -46,7 +48,8 @@ class Landing(tk.Frame):
             command=lambda: main_window.load_content("ConfigureWebsite"),
             width=BUTTON_WIDTH,
             height=BUTTON_HEIGHT,
-            font=FONT_XL
+            font=FONT_XL,
+            bg="white"
         )
         configure_post_btn.pack(padx=BUTTON_PADDING, pady=BUTTON_PADDING)
 
@@ -75,15 +78,15 @@ class BaseLink(tk.Frame):
         self.base_link_var = tk.StringVar()
 
         #GROUPER
-        self.body = tk.Frame(self, bg="red")
+        self.body = tk.Frame(self, bg=C4)
         self.body.columnconfigure(0, weight=1)
         self.body.columnconfigure(1, weight=3)
         self.body.columnconfigure(2, weight=1)
         self.body.columnconfigure(3, weight=1)
-        self.body.pack(fill='x')
+        self.body.pack(fill='x', pady=2, padx=2)
 
         #BODY
-        self.lbl = tk.Label(self.body, text="Base Link:   ", font=FONT_LG)
+        self.lbl = tk.Label(self.body, text="Base Link:   ", font=FONT_LG, bg="white")
         self.lbl.grid(column=0, row=0)
 
         self.text_field = ttk.Entry(
@@ -93,10 +96,10 @@ class BaseLink(tk.Frame):
             state="disabled")
         self.text_field.grid(column=1,row=0)
 
-        self.edit_btn = tk.Button(self.body, text="Edit", font=FONT_SM, command=self.edit)
+        self.edit_btn = tk.Button(self.body, text="Edit", font=FONT_SM, command=self.edit, bg="white")
         self.edit_btn.grid(column=2, row=0, padx=5)  
-        self.update_btn = tk.Button(self.body, text="Update", font=FONT_SM, command=self.update)
-        self.cancel_btn = tk.Button(self.body, text="Cancel", font=FONT_SM, command=self.cancel)
+        self.update_btn = tk.Button(self.body, text="Update", font=FONT_SM, command=self.update, bg="white")
+        self.cancel_btn = tk.Button(self.body, text="Cancel", font=FONT_SM, command=self.cancel, bg="white")
         self.load_config_base_link()
 
     def edit(self):

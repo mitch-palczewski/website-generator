@@ -9,28 +9,36 @@ except ImportError:
     pass
 
 from util.model_controller import Controller, HtmlController
+from util.controller import JsonController
+colors = JsonController.get_config_data("colors")
+C1 = colors["c1"]
+C2 = colors["c2"]
+C3 = colors["c3"]
+C4 = colors["c4"]
+
 
 class ConfigMessaging(tk.Frame):
     def __init__(self, container):
         super().__init__(container)
 
         #GROUPER FRAMES
-        main_frame = tk.Frame(self, bg="red")
+        main_frame = tk.Frame(self, bg=C1)
         main_frame.columnconfigure(0, weight=1)
         main_frame.columnconfigure(1, weight=1)
-        main_frame.pack(fill='both')
+        main_frame.pack(fill='both', expand=True)
 
-        left_frame = tk.Frame(main_frame,bg="yellow")
+        left_frame = tk.Frame(main_frame,bg=C1)
         left_frame.grid(column=0, row=0, sticky=tk.NSEW)
-        right_frame = tk.Frame(main_frame )
+        right_frame = tk.Frame(main_frame, bg=C1 )
         right_frame.grid(column=1, row=0, sticky=tk.NSEW)
 
-        messaging_frame = MessagingSettings(self)
+        messaging_frame = MessagingSettings(left_frame)
         messaging_frame.pack()
         
 class MessagingSettings(tk.Frame):
     def __init__(self, container):
         super().__init__(container)
+        self.config(bg=C1)
         FONT_SM = font.Font(family="Helvetica", size=10, weight="bold")
         FONT_MD = font.Font(family="Helvetica", size=15, weight="bold")
         FONT_LG = font.Font(family="Helvetica", size=15, weight="bold")
@@ -38,10 +46,11 @@ class MessagingSettings(tk.Frame):
         self.disable_messaging_btn = tk.Button(self, text="Disable Messaging", command=self.disable_messaging, font=FONT_LG)
         
         #ENABLED MESSEGING FRAME
-        self.body = tk.Frame(self)
+        self.body = tk.Frame(self, bg=C1)
         self.body.columnconfigure(0,weight=1)
         self.body.columnconfigure(1,weight=1)
         self.body.columnconfigure(2,weight=1)
+        self.body.pack()
         lbl = tk.Label(self.body, text="Email:   ", font=FONT_MD)
         lbl.grid(column=0,row=0)
         self.text_field = ttk.Entry(

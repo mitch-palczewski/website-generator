@@ -1,9 +1,6 @@
-import json
-import os
-import re
-from datetime import datetime, date
-from urllib.parse import quote
+from datetime import date
 from bs4 import BeautifulSoup as bs
+
 CONFIG_JSON_PATH = "app\config\config.json"
 HTML_VALIDATION_PATH = "app\config\html_validation.json"
 POSTS_JSON_PATH = "posts.json"
@@ -16,7 +13,6 @@ ASSET_FOLDER_PATH = "assets"
 
 from util.model import Model, HtmlModel, StringModel, JsonModel, FileModel
 from tkinter.messagebox import showwarning
-from tkinter import filedialog
 
 class Controller:
     def get_todays_date()->str:

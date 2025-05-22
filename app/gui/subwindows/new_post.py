@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk, font
 from bs4 import BeautifulSoup as bs
 from datetime import datetime
 
@@ -14,27 +15,35 @@ from gui.components.text_field import TextField
 from util.controller import JsonController, HtmlController, FileController, Controller, StringController
 
 MAX_MEDIA_ITEMS = 1
+CAPTION_FEILD_HEIGHT = 25
+colors = JsonController.get_config_data("colors")
+C1 = colors["c1"]
+C2 = colors["c2"]
+C3 = colors["c3"]
+C4 = colors["c4"]
 
 
 class NewPost(tk.Frame):
     def __init__(self, container, main_window):
         super().__init__(container)
+        FONT_SM = font.Font(family="Helvetica", size=10)
         self.main_window:tk.Frame = main_window
         self.media = []
         self.tk_images = []
 
         #GROUPER FRAMES
-        self.main_frame = tk.Frame(self, bg="red")
-        self.main_frame.pack(fill='both')
-        self.body_frame = tk.Frame(self.main_frame)
+        self.config(bg=C1)
+        self.main_frame = tk.Frame(self, bg=C1)
+        self.main_frame.pack(fill='both', padx=10, pady=10)
+        self.body_frame = tk.Frame(self.main_frame, bg=C1)
         self.body_frame.columnconfigure(0, weight=1)
         self.body_frame.columnconfigure(1, weight=1)
-        self.body_frame.pack(fill='both', expand= True, padx=10, pady=10)
+        self.body_frame.pack(fill='both', expand= True)
        
         #BODY
             #BODY LEFT
-        body_left_frame = tk.Frame(self.body_frame)
-        body_left_frame.grid(column=0, row=0, sticky=tk.N)
+        body_left_frame = tk.Frame(self.body_frame, bg=C2)
+        body_left_frame.grid(column=0, row=0, sticky=tk.NSEW, ipadx=5, ipady=5, padx=10,pady=10)
         media_list= MediaList(
             body_left_frame, 
             self.media, 
@@ -45,28 +54,45 @@ class NewPost(tk.Frame):
             self.tk_images, 
             media_list, 
             max_items=MAX_MEDIA_ITEMS)
-        get_media_btn.pack(pady=10)
+        get_media_btn.pack(padx=10, pady=10, fill="x")
         media_list.pack()
 
             #BODY RIGHT
-        body_right_frame = tk.Frame(self.body_frame)
+        body_right_frame = tk.Frame(self.body_frame, bg=C2)
         body_right_frame.columnconfigure(0, weight=1)
         body_right_frame.columnconfigure(1, weight=3)
-        body_right_frame.grid(column=1, row=0)
+        body_right_frame.grid(column=1, row=0, ipadx=5, sticky=tk.NSEW, padx=10, pady=10)
 
-        title_field_label = tk.Label(body_right_frame, text = "Title:")
-        title_field_label.grid(column=0, row=0, sticky=tk.E)
+
+        title_field_label = tk.Label(body_right_frame, text = "Title:", bg=C2, font=FONT_SM)
+        title_field_label.grid(column=0, row=1, sticky=tk.E)
         self.title_field = TextField(body_right_frame, 1)
-        self.title_field.grid(column=1,row=0, sticky=tk.N)
+        self.title_field.grid(column=1,row=1, sticky=tk.N, pady=10)
 
-        caption_field_label = tk.Label(body_right_frame, text = "Caption:")
-        caption_field_label.grid(column=0, row=1, sticky=tk.NE, pady=30)
-        self.caption_field = TextField(body_right_frame, field_height=30)
-        self.caption_field.grid(column=1,row=1, sticky=tk.N,pady=30)
+        caption_field_label = tk.Label(body_right_frame, text = "Caption:", bg=C2, font=FONT_SM)
+        caption_field_label.grid(column=0, row=2, sticky=tk.NE, pady=30)
+        self.caption_field = TextField(body_right_frame, field_height=CAPTION_FEILD_HEIGHT)
+        self.caption_field.grid(column=1,row=2, sticky=tk.N,pady=30)
 
         #Footer
-        build_post_btn = tk.Button(self.main_frame, text="Build Post", command=self.build_post)
+        footer_frame = tk.Frame(self.main_frame, bg=C1)
+        footer_frame.pack(expand=True, fill='x', padx=10, pady=10)
+        build_post_font = font.Font(family="Helvetica", size=15, weight="bold")
+        build_post_btn = tk.Button(
+            footer_frame, 
+            text="Build Post", 
+            command=self.build_post, 
+            font=build_post_font, 
+            bg=C4,
+            width=20)
         build_post_btn.pack(side="right")
+
+        column_span_lbl = tk.Label(footer_frame, text="Column Span:", bg=C1)
+        column_span_lbl.pack(side="left")
+        self.column_span = tk.StringVar(value=1)
+        column_span_spinbox = ttk.Spinbox(footer_frame, from_=1, to=10, textvariable=self.column_span, wrap=True, width=4)
+        column_span_spinbox.pack(side='left')
+        
     
     def get_caption_text(self)->str:
         caption = self.caption_field.get_text()
@@ -94,10 +120,39 @@ class NewPost(tk.Frame):
             self.main_window.load_content("Landing")
         #IF post is text only 
         elif len(local_media_paths) == 0: 
-            print("Text only Posts not supported at this time")
+            self.build_text_only_post(caption)
+            self.main_window.load_content("Landing")
         else:
             print("Posts with multiple media or video elements not supported at this time.") 
     
+    def build_text_only_post(self, caption:str):
+        html_webpage: bs = HtmlController.get_webpage_html()
+        posts_div_tag = html_webpage.find("div", id="posts")
+        if not posts_div_tag:
+            raise ValueError("Error: No element with id 'posts' found.")
+        config_data: dict = JsonController.get_config_data()
+        base_link = config_data["base_link"]
+        posts_data:dict = JsonController.get_posts_data()
+        post_html: bs = HtmlController.get_post_component()
+        post_messaging:bool = config_data["post_messaging"]
+        title = self.get_title_text()
+        new_post_id = Controller.get_unique_id(posts_data.keys())
+        insert_post_id(post_html, new_post_id, self.column_span.get())
+        insert_date(post_html)
+        insert_title(post_html, title)
+        delete_media(post_html)
+        insert_caption(post_html, caption)
+        insert_message_btn(post_messaging, post_html, title, "", caption)
+        posts_div_tag.insert(0, post_html)     
+        HtmlController.set_webpage_html(html_webpage)
+        json_post_entry = {
+            "date": str(datetime.now()),
+            "title": title,
+            "media_link": "",
+            "caption": caption,
+            "base_link": base_link 
+        }
+        JsonController.append_posts_data(post=json_post_entry, post_id= new_post_id)
 
     def build_single_media_post(self, media:str, caption:str):
         html_webpage: bs = HtmlController.get_webpage_html()
@@ -114,7 +169,7 @@ class NewPost(tk.Frame):
         media_link = StringController.format_media_link(base_link, media)
         new_post_id = Controller.get_unique_id(posts_data.keys())
 
-        insert_post_id(post_html, new_post_id)
+        insert_post_id(post_html, new_post_id, self.column_span.get())
         insert_date(post_html)
         insert_title(post_html, title)
         insert_image(post_html, media)
@@ -134,14 +189,17 @@ class NewPost(tk.Frame):
 
 
         
-def insert_post_id(post_html: bs, new_post_id):
+def insert_post_id(post_html: bs, new_post_id, column_span:str):
+    column_span_class = 'col-span-' + column_span
     post_div_tag = post_html.find("div", id="post_id")
     if not post_div_tag:
         post_div_tag = post_html.find("div")
     if not post_div_tag:
         raise ValueError("Error: No <div> tag found for new_post_id element.")
-    if post_div_tag:
-        post_div_tag["id"] = new_post_id
+    post_div_tag["id"] = new_post_id
+    post_div_tag['class'].append(column_span_class)
+
+
 
 def insert_date(post_html:bs):
     post_date:str = Controller.get_todays_date()
@@ -191,13 +249,6 @@ def insert_message_btn(post_messaging:bool, post_html:bs, title:str, media_link:
     message_btn_tag["onclick"] = onclick_value
     message_btn_tag['onclick'] = message_btn_tag['onclick'].replace('\n', '')
 
-
-def get_unique_id(dict_key_ids: list):
-    highest_id = 0
-    for id in dict_key_ids:
-        id_int = int(id)
-        if id_int > highest_id:
-            highest_id = id_int
-    new_id = highest_id + 1
-    return f"{new_id:06d}" 
-            
+def delete_media(post_html:bs):
+    media_tag = post_html.find("img", id="media")
+    media_tag.extract()

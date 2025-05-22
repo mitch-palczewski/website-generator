@@ -8,7 +8,14 @@ except ImportError:
     print("Error: windll not imported. Text may be blurred")
     pass
 
-from util.model_controller import Controller, HtmlController
+from util.model_controller import Controller
+from util.controller import JsonController
+colors = JsonController.get_config_data("colors")
+C1 = colors["c1"]
+C2 = colors["c2"]
+C3 = colors["c3"]
+C4 = colors["c4"]
+
 """
 TODO 
 Title
@@ -21,31 +28,35 @@ class GeneralConfig(tk.Frame):
         FONT_SM = font.Font(family="Helvetica", size=10, weight="bold")
         FONT_MD = font.Font(family="Helvetica", size=15, weight="bold")
         FONT_LG = font.Font(family="Helvetica", size=15, weight="bold")
-        
+        self.config(bg=C1)
+
         #GROUPER FRAMES
-        body = tk.Frame(self, bg="red")
-        body.pack(fill='both', padx=30)
+        body = tk.Frame(self, bg=C1)
+        body.columnconfigure(0, weight=1)
+        body.columnconfigure(1,weight=1)
+        body.pack(fill='both', padx=30, pady=30, expand=True)
         tab_title_config = TabTitleConfig(body)
-        tab_title_config.pack()
+        tab_title_config.grid(column=0, row=0, sticky=tk.W, pady=10)
         column_config = ColumnConfig(body)
-        column_config.pack()
+        column_config.grid(column=0, row=1, sticky=tk.W, pady=10)
 
         
 
 class TabTitleConfig(tk.Frame):
     def __init__(self, container):
         super().__init__(container)
+        self.config(bg="white")
         FONT_SM = font.Font(family="Helvetica", size=10, weight="bold")
         FONT_MD = font.Font(family="Helvetica", size=15, weight="bold")
         FONT_LG = font.Font(family="Helvetica", size=15, weight="bold")
-        self.config_data = Controller.get_config_data()
-        body= tk.Frame(self)
+        self.config_data = JsonController.get_config_data()
+        body= tk.Frame(self, bg = "white")
         body.columnconfigure(0, weight=1)
         body.columnconfigure(1, weight=1)
         body.columnconfigure(2, weight=1)
         body.columnconfigure(3, weight=1)
-        body.pack()
-        lbl = tk.Label(body, text="Tab Title: ", font=FONT_LG)
+        body.pack(padx=5, pady=5)
+        lbl = tk.Label(body, text="Web Tab Title: ", font=FONT_LG, bg="white")
         lbl.grid(column=0, row=0)
         self.entry = ttk.Entry(
             master=body, 
@@ -69,6 +80,7 @@ class TabTitleConfig(tk.Frame):
 class ColumnConfig(tk.Frame):
     def __init__(self, container):
         super().__init__(container)
+        self.config(bg="white")
         FONT_SM = font.Font(family="Helvetica", size=10, weight="bold")
         FONT_MD = font.Font(family="Helvetica", size=15, weight="bold")
         FONT_LG = font.Font(family="Helvetica", size=15, weight="bold")
@@ -76,25 +88,25 @@ class ColumnConfig(tk.Frame):
         self.config_data = Controller.get_config_data()
         self.grid_cols = self.config_data["grid_cols"]
 
-        body= tk.Frame(self)
+        body= tk.Frame(self, bg="white")
         body.columnconfigure(0, weight=1)
         body.columnconfigure(1, weight=1)
         body.columnconfigure(2, weight=1)
         body.columnconfigure(3, weight=1)
         body.columnconfigure(4, weight=1)
         body.columnconfigure(5, weight=1)
-        body.pack()
+        body.pack(padx=5, pady=5)
 
 
-        screen_size_lbl = tk.Label(body, text="Screensize", font=FONT_SM)
+        screen_size_lbl = tk.Label(body, text="Screensize", font=FONT_SM, bg="white")
         screen_size_lbl.grid(column=1, row=0, padx=10, columnspan=3)
-        lbl = tk.Label(body, text="Webpage Columns: ", font=FONT_LG)
+        lbl = tk.Label(body, text="Webpage Columns: ", font=FONT_LG, bg="white")
         lbl.grid(column=0, row=2)
-        sm_lbl = tk.Label(body, text="Small", font=FONT_MD)
+        sm_lbl = tk.Label(body, text="Small", font=FONT_MD, bg="white")
         sm_lbl.grid(column=1, row=1, padx=10)
-        md_lbl = tk.Label(body, text="Medium", font=FONT_MD)
+        md_lbl = tk.Label(body, text="Medium", font=FONT_MD, bg="white")
         md_lbl.grid(column=2, row=1, padx=10)
-        lg_lbl = tk.Label(body, text="Large", font=FONT_MD)
+        lg_lbl = tk.Label(body, text="Large", font=FONT_MD, bg="white")
         lg_lbl.grid(column=3, row=1, padx=10)
 
         self.sm_entry = ttk.Entry( 

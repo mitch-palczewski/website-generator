@@ -1,7 +1,5 @@
 import tkinter as tk
-import shutil
-import os
-from bs4 import BeautifulSoup as bs
+from tkinter import font
 try:
     from ctypes import windll
     windll.shcore.SetProcessDpiAwareness(1)
@@ -15,18 +13,25 @@ from gui.subwindows.configure_windows.config_post import ConfigPost
 from gui.subwindows.configure_windows.config_header import ConfigHeader
 from gui.subwindows.configure_windows.config_footer import ConfigFooter
 
+from util.controller import JsonController
+colors = JsonController.get_config_data("colors")
+C1 = colors["c1"]
+C2 = colors["c2"]
+C3 = colors["c3"]
+C4 = colors["c4"]
 
 
 class ConfigureWebsite(tk.Frame):
     def __init__(self, container, main_window):
         super().__init__(container)
+        FONT_SM = font.Font(family="Helvetica", size=10)
 
         #GROUPER FRAMES
-        main_frame = tk.Frame(self, bg="red")
+        main_frame = tk.Frame(self, bg=C1)
         main_frame.pack(fill='both')
 
         #HEADER
-        header_frame = tk.Frame(main_frame, bg="green")
+        header_frame = tk.Frame(main_frame, bg=C1)
         header_frame.columnconfigure(0, weight=1)
         header_frame.columnconfigure(1, weight=1)
         header_frame.columnconfigure(2, weight=1)
@@ -34,41 +39,51 @@ class ConfigureWebsite(tk.Frame):
         header_frame.columnconfigure(4, weight=1)
         header_frame.pack(fill="x", expand=True)
         btn_padx = 10
-        btn_pady = 5
+        btn_pady = 10
         general_config_btn = tk.Button(
             header_frame, 
             text="General Configuration", 
-            command=lambda:self.load_content("GeneralConfig")
+            command=lambda:self.load_content("GeneralConfig"),
+            bg=C4,
+            font=FONT_SM
         )
         general_config_btn.grid(column=0, row=0, sticky=tk.EW, padx=btn_padx, pady=btn_pady)
         config_messaging_btn = tk.Button(
             header_frame, 
             text="Configure Messaging", 
-            command=lambda:self.load_content("ConfigMessaging")
+            command=lambda:self.load_content("ConfigMessaging"),
+            bg=C4,
+            font=FONT_SM
         )
         config_messaging_btn.grid(column=1, row=0, sticky=tk.EW, padx=btn_padx, pady=btn_pady)   
         config_post_btn = tk.Button(
             header_frame, 
             text="Configure Post", 
-            command=lambda:self.load_content("ConfigPost")
+            command=lambda:self.load_content("ConfigPost"),
+            bg=C4,
+            font=FONT_SM
         )
         config_post_btn.grid(column=2, row=0, sticky=tk.EW, padx=btn_padx, pady=btn_pady)
         config_header_btn = tk.Button(
             header_frame, 
             text="Configure Header", 
-            command=lambda:self.load_content("ConfigHeader")
+            command=lambda:self.load_content("ConfigHeader"),
+            bg=C4,
+            font=FONT_SM
         )
         config_header_btn.grid(column=3, row=0, sticky=tk.EW, padx=btn_padx, pady=btn_pady)
         config_footer_btn = tk.Button(
             header_frame, 
             text="Configure Footer", 
-            command=lambda:self.load_content("ConfigFooter")
+            command=lambda:self.load_content("ConfigFooter"),
+            bg=C4,
+            font=FONT_SM
         )
         config_footer_btn.grid(column=4, row=0, sticky=tk.EW, padx=btn_padx, pady=btn_pady)
         
         #BODY
         self.body_frame = tk.Frame(self, bg="brown")
-        self.body_frame.pack(fill='both', expand= True,padx=10, pady=10)
+        self.body_frame.pack(fill='both', expand= True)
         self.body_content = None
 
 
@@ -79,7 +94,7 @@ class ConfigureWebsite(tk.Frame):
         if self.body_content:
             self.body_content.destroy()
         self.body_content = tk.Frame(self.body_frame, bg="green")
-        self.body_content.pack(fill='both', expand= True,padx=10, pady=10)
+        self.body_content.pack(fill='both', expand= True)
 
     def load_content(self, content:str):
         """

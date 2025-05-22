@@ -17,9 +17,6 @@ class Model:
         encoded_path = "/".join(encoded_segments)
         return encoded_path
 
-class FileModel: 
-    pass
-
 class StringModel:
     def remove_prefix(string:str, prefix:str):
         if string.startswith(prefix):
