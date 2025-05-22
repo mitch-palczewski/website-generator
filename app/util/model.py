@@ -75,11 +75,11 @@ class HtmlModel:
             filetypes=[("HTML Files", "*.html"), ("All Files", "*.*")],
             title=f"Save {type} HTML File As"
         )
-        
         if file_path:
             with open(file_path, 'w') as file:
                 file.write(html)
             print(f"File saved to: {file_path}")
+        return file_path
 
 class TkModel:
     def clear_frame(frame:tk.Frame):

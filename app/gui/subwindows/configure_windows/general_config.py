@@ -18,8 +18,6 @@ C4 = colors["c4"]
 
 """
 TODO 
-Title
-Columns
 Icon
 """
 class GeneralConfig(tk.Frame):

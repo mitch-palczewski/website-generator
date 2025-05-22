@@ -57,11 +57,14 @@ class HtmlComponentEditor(tk.Frame):
 
         self.load_components()
 
-    def load_components(self):
+    def load_components(self, selected_component_path = None):
         self.component_btns = []
         self.selected_component_path = None
-        TkModel.clear_frame(self.scroll_body)
+        selected_component = None
         components = os.listdir(self.component_folder)
+        if selected_component_path:
+            selected_component = os.path.basename(selected_component_path)
+        TkModel.clear_frame(self.scroll_body)
         self.text_editor.clear_text()
         self.input_btn.pack_forget()
         for component in components:
@@ -73,15 +76,22 @@ class HtmlComponentEditor(tk.Frame):
                 text_editor= self.text_editor)
             c.pack()
             self.component_btns.append(c)
+            if selected_component == component:
+                self.selected_component_path = selected_component_path
+                c.load(selected_component_path)
+
+            
     
     def update_html(self):
         HtmlController.update_component(
             component_type=self.component_type, 
             component_path = self.selected_component_path)
 
-    def set_selected_component_path(self, component, path):
+    def set_selected_component_path(self, selected_component, path):
         self.selected_component_path = path
-        self.input_btn.config(text=f"Update {self.component_type} with {component}")
+        if self.component_type == "post":
+            return
+        self.input_btn.config(text=f"Update {self.component_type} with {selected_component}")
         self.input_btn.pack(expand=True, fill='both', padx=10, pady=10)
     
     def set_btn_color(self, color):
@@ -137,8 +147,8 @@ class TextEditor(tk.Frame):
         
     def save(self):
         html = self.text_field.get('1.0', tk.END)
-        HtmlController.save_component_file(html, self.component_type)
-        self.html_component_editor.load_components()
+        file_path = HtmlController.save_component_file(html, self.component_type)
+        self.html_component_editor.load_components(file_path)
         
     def change_validate_btn_color(self, color):
         self.validate_btn.config(bg=color)

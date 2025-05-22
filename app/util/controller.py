@@ -189,14 +189,14 @@ class HtmlController:
     
     def save_component_file(html, component_type):
         if component_type == "post":
-            HtmlModel.save_html_file(html, HTML_POST_FOLDER, component_type)
-            return
+            file_path = HtmlModel.save_html_file(html, HTML_POST_FOLDER, component_type)
+            return file_path
         if component_type == "header":
-            HtmlModel.save_html_file(html, HTML_HEADER_FOLDER, component_type)
-            return
+            file_path = HtmlModel.save_html_file(html, HTML_HEADER_FOLDER, component_type)
+            return file_path
         if component_type == "footer":
-            HtmlModel.save_html_file(html, HTML_FOOTER_FOLDER, component_type)
-            return
+            file_path = HtmlModel.save_html_file(html, HTML_FOOTER_FOLDER, component_type)
+            return file_path
         
 class FileController:
     def add_media_to_assets_folder(media:list):
