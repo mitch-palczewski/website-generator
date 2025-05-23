@@ -27,6 +27,8 @@ class NewPost(tk.Frame):
     def __init__(self, container, main_window):
         super().__init__(container)
         FONT_SM = font.Font(family="Helvetica", size=10)
+        FONT_MD = font.Font(family="Helvetica", size=14)
+        FONT_LG = font.Font(family="Helvetica", size=16)
         self.main_window:tk.Frame = main_window
         self.media = []
         self.tk_images = []
@@ -68,7 +70,11 @@ class NewPost(tk.Frame):
         body_right_frame.columnconfigure(0, weight=1)
         body_right_frame.columnconfigure(1, weight=3)
         body_right_frame.grid(column=1, row=0, ipadx=5, sticky=tk.NSEW, padx=10, pady=10)
-
+        
+        post_option_style = ttk.Style(self)
+        post_option_style.configure('Custom.TMenubutton', font=FONT_LG, width = 25, background="white", relief = "solid", borderwith = 3, bordercolor='SystemButtonFace')
+        post_option_lbl = tk.Label(body_right_frame, text="Post Component:", bg=C2, font=FONT_SM)
+        post_option_lbl.grid(column=0,row=0, sticky=tk.E, pady=2)
         post_option_menu = ttk.OptionMenu(
             body_right_frame,
             self.post_option,
@@ -76,7 +82,9 @@ class NewPost(tk.Frame):
             *self.post_components,
             command= lambda value: JsonController.set_post_component(basename=value)
         )
-        post_option_menu.grid(column=1, row=0)
+        post_option_menu.config(style='Custom.TMenubutton')
+        post_option_menu["menu"].config(font=FONT_MD, bg="white")
+        post_option_menu.grid(column=1, row=0, sticky=tk.NW, pady=10, padx=(30,0))
 
         title_field_label = tk.Label(body_right_frame, text = "Title:", bg=C2, font=FONT_SM)
         title_field_label.grid(column=0, row=1, sticky=tk.E)

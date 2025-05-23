@@ -16,10 +16,18 @@ C2 = colors["c2"]
 C3 = colors["c3"]
 C4 = colors["c4"]
 
+LBL_TEXT = (
+    "This is an Eperimental feature that utilizes https://formsubmit.co/ infrustructure."
+    "\n **WARNING** This features may expose your Email "
+    "\n To Activate your formsubmit account send yourself a message, in your email \n"
+    "(could be in spam) activate your account and repalce your email with the provided \n"
+    "hashed value. Something like 8e2398w9435df1f75b6fc3fb137d2c63")
+
 
 class ConfigMessaging(tk.Frame):
     def __init__(self, container):
         super().__init__(container)
+   
 
         #GROUPER FRAMES
         main_frame = tk.Frame(self, bg=C1)
@@ -34,6 +42,10 @@ class ConfigMessaging(tk.Frame):
 
         messaging_frame = MessagingSettings(left_frame)
         messaging_frame.pack()
+
+        lbl = tk.Label(right_frame, bg=C1,justify='left',text=LBL_TEXT)
+        lbl.pack( fill='x')
+        
         
 class MessagingSettings(tk.Frame):
     def __init__(self, container):
