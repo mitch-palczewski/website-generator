@@ -17,18 +17,18 @@ C3 = colors["c3"]
 C4 = colors["c4"]
 
 LBL_TEXT = (
-    "This is an Eperimental feature that utilizes https://formsubmit.co/ infrustructure."
-    "\n **WARNING** This features may expose your Email "
-    "\n To Activate your formsubmit account send yourself a message, in your email \n"
-    "(could be in spam) activate your account and repalce your email with the provided \n"
-    "hashed value. Something like 8e2398w9435df1f75b6fc3fb137d2c63")
+    "This is an Eperimental feature that utilizes"
+    "\nhttps://formsubmit.co/ infrustructure."
+    "\n\n **WARNING** This features may expose your Email "
+    "\n\nTo Activate your formsubmit account send yourself a message, \nin your email "
+    "(could be in spam) activate your \naccount and repalce your email with the provided \n"
+    "hashed value.\nSomething like 8e2398w9435df1f75b6fc3fb137d2c63")
 
 
 class ConfigMessaging(tk.Frame):
     def __init__(self, container):
         super().__init__(container)
-   
-
+        FONT_MD = font.Font(family="Helvetica", size=14, weight="bold")
         #GROUPER FRAMES
         main_frame = tk.Frame(self, bg=C1)
         main_frame.columnconfigure(0, weight=1)
@@ -43,8 +43,8 @@ class ConfigMessaging(tk.Frame):
         messaging_frame = MessagingSettings(left_frame)
         messaging_frame.pack()
 
-        lbl = tk.Label(right_frame, bg=C1,justify='left',text=LBL_TEXT)
-        lbl.pack( fill='x')
+        lbl = tk.Label(right_frame, bg="white",justify='left',text=LBL_TEXT, font=FONT_MD)
+        lbl.pack( fill='x', padx=10, pady=10)
         
         
 class MessagingSettings(tk.Frame):

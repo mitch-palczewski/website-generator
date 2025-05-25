@@ -1,6 +1,7 @@
 from datetime import date
 from bs4 import BeautifulSoup as bs
 import os
+import json
 import glob
 
 CONFIG_JSON_PATH = "app\config\config.json"
@@ -48,7 +49,11 @@ class StringController:
         else:
             encoded_relative_path = Model.encode_path(media_path)
             return base_link + encoded_relative_path
-    pass
+    
+    def format_string_for_html(string:str):
+        string = string.replace("\\", "\\\\")  
+        string = string.replace("'", "\\'")
+        return string
 
 class JsonController:
     def get_posts_data() -> dict:

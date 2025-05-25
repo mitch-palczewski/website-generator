@@ -38,6 +38,9 @@ class GeneralConfig(tk.Frame):
         column_config = ColumnConfig(body)
         column_config.grid(column=0, row=1, sticky=tk.W, pady=10)
 
+class IconConfig(tk.Frame):
+    def __init__(self, container):
+        super().__init__(container)
         
 
 class TabTitleConfig(tk.Frame):

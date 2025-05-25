@@ -215,7 +215,7 @@ class NewPost(tk.Frame):
 
         
 def insert_post_id(post_html: bs, new_post_id, column_span:str):
-    column_span_class = 'col-span-' + column_span
+    column_span_class = 'lg:col-span-' + column_span
     post_div_tag = post_html.find("div", id="post_id")
     if not post_div_tag:
         post_div_tag = post_html.find("div")
@@ -270,7 +270,10 @@ def insert_message_btn(post_messaging:bool, post_html:bs, title:str, media_link:
     if not post_messaging:
         message_btn_tag.decompose()
         return
-    onclick_value = "openMessageFrom('{}','{}', '{}')".format(title, media_link, caption)
+    formated_media_link = media_link.replace("\\", "/")
+    formated_title = StringController.format_string_for_html(title)
+    formated_caption = StringController.format_string_for_html(caption)
+    onclick_value = "openMessageFrom('{}','{}', '{}')".format(formated_title, formated_media_link, formated_caption)
     message_btn_tag["onclick"] = onclick_value
     message_btn_tag['onclick'] = message_btn_tag['onclick'].replace('\n', '')
 

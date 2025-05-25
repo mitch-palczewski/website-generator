@@ -26,5 +26,152 @@
         "media_link": "https://mitch-palczewski.github.io/assets/Screenshot%20%281%29.png",
         "caption": "yes",
         "base_link": "https://mitch-palczewski.github.io/"
+    },
+    "000005": {
+        "date": "2025-05-23 19:02:19.035660",
+        "title": "cool picture",
+        "media_link": "https://mitch-palczewski.github.io/assets/Screenshot%20%282%292.png",
+        "caption": "hello hello hello",
+        "base_link": "https://mitch-palczewski.github.io/"
+    },
+    "000006": {
+        "date": "2025-05-23 19:02:54.319483",
+        "title": "yes yes ",
+        "media_link": "https://mitch-palczewski.github.io/assets/Screenshot%202024-12-30%20184722.png",
+        "caption": "this is cool",
+        "base_link": "https://mitch-palczewski.github.io/"
+    },
+    "000007": {
+        "date": "2025-05-23 19:04:35.669600",
+        "title": "asdasd",
+        "media_link": "https://mitch-palczewski.github.io/assets/Screenshot%202025-01-04%20224728.png",
+        "caption": "asdasdasd",
+        "base_link": "https://mitch-palczewski.github.io/"
+    },
+    "000008": {
+        "date": "2025-05-25 10:47:06.768522",
+        "title": "Space Simulation War Daiva",
+        "media_link": "https://mitch-palczewski.github.io/assets/Screenshot%202024-12-01%20163626.png",
+        "caption": "Light Of KAriyuga",
+        "base_link": "https://mitch-palczewski.github.io/"
+    },
+    "000009": {
+        "date": "2025-05-25 11:05:57.875170",
+        "title": "Stroy-7 ",
+        "media_link": "https://mitch-palczewski.github.io/assets/Screenshot%202024-12-01%20163626.png",
+        "caption": "How It Works\n- Container Height:\nThe container's height is set to 66.67vh (roughly two\u2011thirds of the viewport height) so it occupies a consistent part of the screen. The overflow-y-auto ensures that if the content exceeds this height, it will scroll.\n- Image Scaling:\nThe image uses:\n- w-full to use the full width of its container.\n- max-h-[50vh] to restrict its maximum height to 50% of the viewport height, ensuring it won't become too tall.\n- object-contain ensures the entire image is visible without distortion, preserving its aspect ratio.\n(Alternatively, you could use object-scale-down if you prefer the image to scale down only when necessary while maintaining its intrinsic size when possible.)\nThis setup makes sure that if the original image is very tall, it will shrink to fit within the defined maximum height.\n\n\n",
+        "base_link": "https://mitch-palczewski.github.io/"
+    },
+    "000010": {
+        "date": "2025-05-25 11:12:08.140629",
+        "title": "Fashion Show 87 by YOKO MIKI",
+        "media_link": "https://mitch-palczewski.github.io/assets/Screenshot%202024-12-01%20163125.png",
+        "caption": "Artists deposit a wealth of elements beyond mere pigment when they make marks on a canvas. Each gesture captures a moment of emotional intensity\u2014a direct imprint of the artist\u2019s internal world. In the act of mark-making, an artist may channel feelings, memories, or even moments of unresolved tension, thereby transferring an aspect of their psychological and emotional state onto the surface. The brushstroke or line becomes a physical manifestation of thought, where spontaneous, seemingly impulsive actions reveal the inner rhythms of the mind.",
+        "base_link": "https://mitch-palczewski.github.io/"
+    },
+    "000011": {
+        "date": "2025-05-25 11:23:18.391232",
+        "title": "This is coool image",
+        "media_link": "https://mitch-palczewski.github.io/assets/Screenshot%20%282%292.png",
+        "caption": "Beyond the emotional and psychological dimensions, mark-making often encodes elements of personal narrative and identity. The patterns, textures, and rhythms embedded in the work can serve as a visual biography\u2014a coded language that speaks to the artist's experiences, beliefs, and the cultural milieu in which they live. Whether it\u2019s a deliberate repetition of a shape or an unpredictable splash of color, each mark contributes to a layered narrative that bridges individual expression with broader societal commentary. In this way, the work transforms into a living document of social, political, or even existential dialogues.",
+        "base_link": "https://mitch-palczewski.github.io/"
+    },
+    "000012": {
+        "date": "2025-05-25 11:24:22.260432",
+        "title": "On physicality",
+        "media_link": "",
+        "caption": "The physicality of each mark is also a unique signature\u2014a trace of the artist\u2019s bodily presence and technique. The pressure, speed, and direction of a stroke capture the kinetic energy and intention behind its creation. In this sense, mark-making is akin to a dance between the artist\u2019s mind, body, and the medium itself. The resulting texture and form offer viewers sensory cues that go beyond the visual, inviting them to sense the motion and energy that animated the work during its creation.",
+        "base_link": "https://mitch-palczewski.github.io/"
+    },
+    "000013": {
+        "date": "2025-05-25 11:37:09.709738",
+        "title": "hello",
+        "media_link": "https://mitch-palczewski.github.io/assets/Screenshot%20%282%292.png",
+        "caption": "hello's are good",
+        "base_link": "https://mitch-palczewski.github.io/"
+    },
+    "000014": {
+        "date": "2025-05-25 11:47:23.959059",
+        "title": "bananas \\ apples",
+        "media_link": "https://mitch-palczewski.github.io/assets/Screenshot%20%282%29.png",
+        "caption": "hello\"is ' not good",
+        "base_link": "https://mitch-palczewski.github.io/"
+    },
+    "000015": {
+        "date": "2025-05-25 11:49:29.266119",
+        "title": "hello / / apples",
+        "media_link": "https://mitch-palczewski.github.io/assets/Screenshot%202024-12-01%20163125.png",
+        "caption": "bananas \\ \" // are good '",
+        "base_link": "https://mitch-palczewski.github.io/"
+    },
+    "000016": {
+        "date": "2025-05-25 11:50:33.922474",
+        "title": "asdasd '' asd",
+        "media_link": "https://mitch-palczewski.github.io/assets/Screenshot%202024-12-01%20163125.png",
+        "caption": "asdasda ",
+        "base_link": "https://mitch-palczewski.github.io/"
+    },
+    "000017": {
+        "date": "2025-05-25 11:51:30.300477",
+        "title": "asdasd",
+        "media_link": "https://mitch-palczewski.github.io/assets/Screenshot%20%282%29.png",
+        "caption": "asdasd '' asda",
+        "base_link": "https://mitch-palczewski.github.io/"
+    },
+    "000018": {
+        "date": "2025-05-25 11:52:13.884224",
+        "title": "asdas",
+        "media_link": "",
+        "caption": "asda '",
+        "base_link": "https://mitch-palczewski.github.io/"
+    },
+    "000019": {
+        "date": "2025-05-25 11:56:06.091381",
+        "title": "asdas'",
+        "media_link": "https://mitch-palczewski.github.io/assets/Screenshot%20%282%292.png",
+        "caption": "aas'' asdas",
+        "base_link": "https://mitch-palczewski.github.io/"
+    },
+    "000020": {
+        "date": "2025-05-25 11:57:45.945285",
+        "title": "asdas",
+        "media_link": "https://mitch-palczewski.github.io/assets/Screenshot%202024-12-01%20163626.png",
+        "caption": "da' asdasd'",
+        "base_link": "https://mitch-palczewski.github.io/"
+    },
+    "000021": {
+        "date": "2025-05-25 11:57:55.327187",
+        "title": "asdasd",
+        "media_link": "",
+        "caption": "asdasd\"",
+        "base_link": "https://mitch-palczewski.github.io/"
+    },
+    "000022": {
+        "date": "2025-05-25 11:58:03.230182",
+        "title": "",
+        "media_link": "",
+        "caption": "asdasd\\dasda",
+        "base_link": "https://mitch-palczewski.github.io/"
+    },
+    "000023": {
+        "date": "2025-05-25 11:58:13.522559",
+        "title": "",
+        "media_link": "",
+        "caption": "asdasda\\\\/asdasd",
+        "base_link": "https://mitch-palczewski.github.io/"
+    },
+    "000024": {
+        "date": "2025-05-25 11:58:20.325001",
+        "title": "",
+        "media_link": "",
+        "caption": "\\nasda",
+        "base_link": "https://mitch-palczewski.github.io/"
+    },
+    "000025": {
+        "date": "2025-05-25 11:58:30.846263",
+        "title": "",
+        "media_link": "",
+        "caption": "/a\\/;/a\\/dasdasd\\/\\",
+        "base_link": "https://mitch-palczewski.github.io/"
     }
 }

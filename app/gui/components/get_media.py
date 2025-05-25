@@ -29,15 +29,15 @@ class MediaList(tk.Frame):
         self.tk_images = tk_images
         self.config(bg="white")
         self.media_content = tk.Frame(self, bg="white", width=MAX_IMG_WIDTH+20)
-        self.media_content.pack(fill='both', expand= True,padx=10, pady=10)
+        self.media_content.pack(fill='both',padx=10, pady=10)
 
     def update(self):
         self.media_content.destroy()
         self.media_content = tk.Frame(self, bg="white", width=MAX_IMG_WIDTH+20)
-        self.media_content.pack(fill='both', expand= True, padx=10, pady=10)
+        self.media_content.pack(fill='both', padx=10, pady=10)
         for index, m in enumerate(self.media):
-            lbl = tk.Label(self.media_content, text=m, bg="white")
-            lbl.pack()
+            #lbl = tk.Label(self.media_content, text=m, bg="white")
+            #lbl.pack()
             img_group = tk.Frame(self.media_content, bg="white")
             img_group.columnconfigure(0, weight=4)
             img_group.columnconfigure(1, weight=1)

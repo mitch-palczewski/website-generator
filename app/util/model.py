@@ -33,6 +33,8 @@ class StringModel:
         if (re.match(pattern, string) and len(string) > 15):
             hashed = True
         return hashed
+
+            
     
 
 class JsonModel:
