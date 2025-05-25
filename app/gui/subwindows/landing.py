@@ -10,6 +10,7 @@ except ImportError:
 
 from util.model_controller import Controller
 from util.controller import JsonController
+from util.serve_localhost import start_server
 
 BUTTON_WIDTH = 25
 BUTTON_HEIGHT = 2
@@ -25,6 +26,7 @@ class Landing(tk.Frame):
         super().__init__(container)
         BUTTON_FONT = font.Font(family="Helvetica", size=20, weight="bold")
         FONT_XL = font.Font(family="Helvetica", size=30, weight="bold")
+        FONT_MD = font.Font(family="Helvetica", size=16, weight="bold")
         self.config(bg=C1)
         #GROUPER
         self.body = tk.Frame(self, bg=C2, border=3, relief="groove")
@@ -63,8 +65,21 @@ class Landing(tk.Frame):
         # )
         # edit_post_btn.pack(padx=BUTTON_PADDING, pady=BUTTON_PADDING)
 
+        
+
         base_link = BaseLink(self.body)
         base_link.pack()
+
+        test_webpage_btn = tk.Button(
+            self.body,
+            text="Test With Local Host",
+            command= start_server,
+            width=40,
+            height= 1,
+            font=FONT_MD,
+            bg="white"
+        )
+        test_webpage_btn.pack(padx=BUTTON_PADDING, pady=BUTTON_PADDING)
 
         pass
 

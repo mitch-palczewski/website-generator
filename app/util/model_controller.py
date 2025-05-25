@@ -1,3 +1,6 @@
+# This page will be deleted 
+
+
 import json
 import re
 from urllib.parse import quote
@@ -7,6 +10,8 @@ POSTS_JSON_PATH = "posts.json"
 MESSAGE_HTML = "html_components\communicate\message.html"
 HTML_FILE_PATH = "index.html"
 ASSET_FOLDER_PATH = "assets"
+
+from util.serve_localhost import start_server
 
 class Model:
     #JSON
@@ -55,6 +60,9 @@ class Model:
     
 
 class Controller: 
+    def web_page_change():
+        start_server()
+
     def get_config_data() -> dict:
         config_data:dict = Model.open_json(CONFIG_JSON_PATH)
         return config_data

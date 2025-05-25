@@ -14,6 +14,7 @@ from gui.components.get_media import GetMediaBtn, MediaList
 from gui.components.text_field import TextField
 from util.controller import JsonController, HtmlController, FileController, Controller, StringController
 
+
 MAX_MEDIA_ITEMS = 1
 CAPTION_FEILD_HEIGHT = 25
 colors = JsonController.get_config_data("colors")
@@ -149,6 +150,7 @@ class NewPost(tk.Frame):
             self.main_window.load_content("Landing")
         else:
             print("Posts with multiple media or video elements not supported at this time.") 
+        Controller.web_page_change()
     
     def build_text_only_post(self, caption:str):
         html_webpage: bs = HtmlController.get_webpage_html()

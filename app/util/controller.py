@@ -15,6 +15,7 @@ HTML_WEBPAGE_PATH = "index.html"
 ASSET_FOLDER_PATH = "assets"
 
 from util.model import Model, HtmlModel, StringModel, JsonModel, FileModel
+from util.serve_localhost import start_server
 from tkinter.messagebox import showwarning
 
 class Controller:
@@ -31,6 +32,9 @@ class Controller:
                 highest_id = id_int
         new_id = highest_id + 1
         return f"{new_id:06d}" 
+    
+    def web_page_change():
+        start_server()
     
 class StringController:
     def format_media_link(base_link:str, media_path:str) -> str:
@@ -136,6 +140,14 @@ class JsonController:
         config_data["post_component"] = post_component_path
         JsonModel.write_json_file(CONFIG_JSON_PATH, config_data)
 
+    def update_tab_title(new_tab_title:str):
+        if new_tab_title == "":
+            print("tab title cannot be null")
+            return
+        config_data = JsonController.get_config_data()
+        config_data["tab_title"] = new_tab_title
+        JsonModel.write_json_file(CONFIG_JSON_PATH, config_data)
+        HtmlController.update_tab_title()
 
 class HtmlController:
     def get_webpage_html()->bs:
@@ -197,6 +209,18 @@ class HtmlController:
             webpage_footer_tag.replace_with(new_footer)
         HtmlModel.write_html_file(HTML_WEBPAGE_PATH, html_webpage)
 
+    def update_tab_title():
+        config_data = JsonController.get_config_data()
+        tab_title = config_data["tab_title"]
+        html_webpage:bs = HtmlModel.open_html(HTML_WEBPAGE_PATH)
+        if not html_webpage:
+            raise ValueError("Error: HTML webpage not found in file system.")
+        title_tag:bs = html_webpage.find("title")
+        if title_tag:
+            title_tag.clear()
+            title_tag.insert(0, tab_title)
+        HtmlModel.write_html_file(HTML_WEBPAGE_PATH, html_webpage)
+    
     def validate_html(type:str, html:str):
         valid = True
         invalid_ids = []

@@ -55,10 +55,14 @@ class IconConfig(tk.Frame):
         lbl.grid(column=0, row=0)
         btn = tk.Button(body,
                         text= "Upload Image",
-                        command=  self.get_media
+                        command=  self.update_icon
                         ,font=FONT_SM
                         )
         btn.grid(column=1, row=0)
+
+    def update_icon(self):
+        self.get_media()
+        Controller.web_page_change()
 
     def get_media(self):
         filetypes = (
@@ -122,7 +126,8 @@ class TabTitleConfig(tk.Frame):
 
     def update(self):
         new_tab_title = self.entry.get()
-        Controller.update_tab_title(new_tab_title)
+        JsonController.update_tab_title(new_tab_title)
+        Controller.web_page_change()
       
     def cancel(self):
         self.entry.delete(0,tk.END)
@@ -136,7 +141,7 @@ class ColumnConfig(tk.Frame):
         FONT_MD = font.Font(family="Helvetica", size=15, weight="bold")
         FONT_LG = font.Font(family="Helvetica", size=15, weight="bold")
 
-        self.config_data = Controller.get_config_data()
+        self.config_data = JsonController.get_config_data()
         self.grid_cols = self.config_data["grid_cols"]
 
         body= tk.Frame(self, bg="white")

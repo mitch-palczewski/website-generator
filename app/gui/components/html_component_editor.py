@@ -11,7 +11,7 @@ except ImportError:
     pass
 
 from util.model import HtmlModel, TkModel
-from util.controller import HtmlController
+from util.controller import HtmlController, Controller
 from gui.components.scroll_frame import ScrollFrame
 
 from util.controller import JsonController
@@ -86,6 +86,7 @@ class HtmlComponentEditor(tk.Frame):
         HtmlController.update_component(
             component_type=self.component_type, 
             component_path = self.selected_component_path)
+        Controller.web_page_change()
 
     def set_selected_component_path(self, selected_component, path):
         self.selected_component_path = path
