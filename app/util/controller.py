@@ -152,6 +152,8 @@ class HtmlController:
     def set_webpage_html(html):
         HtmlModel.write_html_file(HTML_WEBPAGE_PATH, html)
 
+
+
     def update_component(component_type:str, component_path:str):
         """
         component_type: "post", "header", "footer"
@@ -237,9 +239,13 @@ class FileController:
         path:str = os.path.join(HTML_POST_FOLDER, basename)
         return path
 
-    def add_media_to_assets_folder(media:list):
+    def add_media_to_assets_folder(file_paths:list):
+        """
+        Accepts a list of file paths 
+        Returns a list of new paths local to the project
+        """
         media_paths = []
-        for element in media:
+        for element in file_paths:
             new_path:str = FileModel.move_media_to_folder(element, ASSET_FOLDER_PATH)
             media_paths.append(new_path)
         return media_paths

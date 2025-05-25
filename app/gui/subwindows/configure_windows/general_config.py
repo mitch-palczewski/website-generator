@@ -1,6 +1,9 @@
 import tkinter as tk
+import os 
+from bs4 import BeautifulSoup as bs
 from tkinter import font, ttk
-from tkinter.messagebox import askyesno
+from tkinter import filedialog as fd
+
 try:
     from ctypes import windll
     windll.shcore.SetProcessDpiAwareness(1)
@@ -9,17 +12,14 @@ except ImportError:
     pass
 
 from util.model_controller import Controller
-from util.controller import JsonController
+from util.controller import JsonController, FileController, HtmlController
 colors = JsonController.get_config_data("colors")
 C1 = colors["c1"]
 C2 = colors["c2"]
 C3 = colors["c3"]
 C4 = colors["c4"]
 
-"""
-TODO 
-Icon
-"""
+
 class GeneralConfig(tk.Frame):
     def __init__(self, container):
         super().__init__(container)
@@ -35,13 +35,63 @@ class GeneralConfig(tk.Frame):
         body.pack(fill='both', padx=30, pady=30, expand=True)
         tab_title_config = TabTitleConfig(body)
         tab_title_config.grid(column=0, row=0, sticky=tk.W, pady=10)
+        icon_config = IconConfig(body)
+        icon_config.grid(column=0, row=1, sticky=tk.W, pady=10)
         column_config = ColumnConfig(body)
-        column_config.grid(column=0, row=1, sticky=tk.W, pady=10)
+        column_config.grid(column=0, row=2, sticky=tk.W, pady=10)
+    
 
 class IconConfig(tk.Frame):
     def __init__(self, container):
         super().__init__(container)
-        
+        self.config(bg=C1)
+        FONT_LG = font.Font(family="Helvetica", size=15, weight="bold")
+        FONT_SM = font.Font(family="Helvetica", size=10, weight="bold")
+        body= tk.Frame(self, bg = "white")
+        body.columnconfigure(0, weight=1)
+        body.columnconfigure(1, weight=1)
+        body.pack(padx=5, pady=5)
+        lbl = tk.Label(body, text="Web Tab Icon: ", font=FONT_LG, bg="white")
+        lbl.grid(column=0, row=0)
+        btn = tk.Button(body,
+                        text= "Upload Image",
+                        command=  self.get_media
+                        ,font=FONT_SM
+                        )
+        btn.grid(column=1, row=0)
+
+    def get_media(self):
+        filetypes = (
+            ('PNG', '*.png'),
+            ('ICO', '*.ico'),
+            ('SVG', '*.svg'),
+        )
+        file_path = fd.askopenfilename(
+            title="media upload",
+            initialdir=os.path.expanduser("~"),
+            filetypes=filetypes
+        )
+        if file_path:
+            self.set_webpage_icon(file_path)
+            pass
+    
+    @staticmethod
+    def set_webpage_icon(file_path:str):
+        html_webpage: bs = HtmlController.get_webpage_html()
+        icon_link = html_webpage.find("link", rel="icon")
+        head_tag = html_webpage.find("head")
+        paths = FileController.add_media_to_assets_folder([file_path])
+        icon_path:str = paths[0]
+        if icon_path.endswith(".ico"):
+            html = f"<link rel='icon' type='image/x-icon' href='{icon_path}'>"
+        else: 
+            html = f"<link rel='icon' type='image/png' href='{icon_path}'>"
+        bs_html = bs(html, "html.parser")
+        if icon_link: 
+            icon_link.decompose()
+        head_tag.insert(0, bs_html)
+        HtmlController.set_webpage_html(html_webpage)
+    
 
 class TabTitleConfig(tk.Frame):
     def __init__(self, container):
