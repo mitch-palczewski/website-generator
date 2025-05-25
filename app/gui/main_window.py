@@ -8,6 +8,7 @@ except ImportError:
     pass
 
 from util.controller import JsonController
+from util.serve_localhost import start_server
 from .subwindows.landing import Landing
 from .subwindows.new_post import NewPost
 from .subwindows.configure_website import ConfigureWebsite
@@ -34,6 +35,7 @@ class MainWindow(tk.Tk):
         self.header_frame = tk.Frame(self, bg=C2, relief="ridge", border=3)
         self.header_frame.pack(fill='x', expand=False ,padx=20, pady=10, ipady=10)
         self.landing_btn = None
+        self.test_btn = None
         self.page_title_lbl = None
         
         #BODY
@@ -59,6 +61,20 @@ class MainWindow(tk.Tk):
             bg=C4)
         self.landing_btn.place(relx=1.0, x=-20, y=20, anchor="ne") 
     
+    def pack_test_btn(self):
+        FONT_SM = font.Font(family="Helvetica", size=10)
+        self.test_btn = tk.Button(
+            self.header_frame, 
+            text="Test With Local Host", 
+            command=start_server,
+            font=FONT_SM,
+            bg=C4)
+        self.test_btn.place(relx=0.0, x=20, y=20, anchor="nw") 
+
+    def remove_test_btn(self):
+        if self.test_btn:
+            self.test_btn.pack_forget()
+    
     def remove_landing_page_btn(self):
         if self.landing_btn:
             self.landing_btn.pack_forget()
@@ -83,22 +99,26 @@ class MainWindow(tk.Tk):
         self.new_content_frame()
         if content == "Landing":
             self.remove_landing_page_btn()
+            self.remove_test_btn()
             self.set_page_title("Website Generator")
             landing = Landing(self.body_content, self)
             landing.pack(fill='both', expand= True)
         elif content == "NewPost":
             self.set_page_title("New Post")
             self.pack_landing_page_btn()
+            self.pack_test_btn()
             new_post = NewPost(self.body_content, self)
             new_post.pack(fill='both', expand= True)
         elif content == "ConfigureWebsite":
             self.set_page_title("Configure Website")
             self.pack_landing_page_btn()
+            self.pack_test_btn()
             configure_post = ConfigureWebsite(self.body_content, self)
             configure_post.pack(fill='both', expand= True)
         elif content == "EditPosts":
             self.set_page_title("Edit Posts")
             self.pack_landing_page_btn() 
+            self.pack_test_btn()
             edit_posts = EditPosts(self.body_content, self)
             edit_posts.pack(fill='both', expand= True)
   
