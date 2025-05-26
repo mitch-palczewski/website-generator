@@ -22,11 +22,13 @@ from app.util.serve_localhost import start_server
 from tkinter.messagebox import showwarning, showinfo
 
 class Controller:
+    @staticmethod
     def get_todays_date()->str:
         unformatted_date:date = date.today()
         today_date: str = unformatted_date.strftime("%m-%d-%Y")
         return today_date
     
+    @staticmethod
     def get_unique_id(dict_key_ids: list):
         highest_id = 0
         for id in dict_key_ids:
@@ -36,12 +38,14 @@ class Controller:
         new_id = highest_id + 1
         return f"{new_id:06d}" 
     
+    @staticmethod
     def web_page_change():
         auto_push_git = JsonController.get_config_data("auto_push_git")
         if auto_push_git:
             push_git()
         start_server()
     
+    @staticmethod
     def resource_path(relative_path):
         try:
             base_path = sys._MEIPASS
@@ -51,6 +55,7 @@ class Controller:
 
     
 class StringController:
+    @staticmethod
     def format_media_link(base_link:str, media_path:str) -> str:
         """
         Encodes a media element for URL use
@@ -68,16 +73,19 @@ class StringController:
             encoded_relative_path = Model.encode_path(media_path)
             return base_link + encoded_relative_path
     
+    @staticmethod
     def format_string_for_html(string:str):
         string = string.replace("\\", "\\\\")  
         string = string.replace("'", "\\'")
         return string
 
 class JsonController:
+    @staticmethod
     def get_posts_data() -> dict:
         posts_data:dict = JsonModel.open_json(POSTS_JSON_PATH)
         return posts_data
     
+    @staticmethod
     def get_config_data(key:str = None) -> dict:
         """
         if key = None returns all data
@@ -89,6 +97,7 @@ class JsonController:
             ValueError(f"Key: {key} not in config.json. Config Json Keys: {config_data.keys()}")
         return config_data[key]
     
+    @staticmethod
     def get_post_component_basename():
         """
         Retuns the basename of the post component in config.json
@@ -97,17 +106,20 @@ class JsonController:
         post_component = os.path.basename(post_component_path)
         return post_component
 
+    @staticmethod
     def get_html_validation() -> dict:
         html_validation = JsonModel.open_json(HTML_VALIDATION_PATH)
         return html_validation
     
+    @staticmethod
     def set_post_component(path = None, basename=None):
         if not path and not basename:
             ValueError("Error need to set post_component by path or basename")
         if basename:
             path = FileController.get_post_component_path(basename)
         JsonController.set_config_data("post_component", path)
-        
+    
+    @staticmethod
     def set_config_data(key:str, data):
         config_data:dict = JsonController.get_config_data()
         if not key in config_data.keys():
@@ -115,11 +127,13 @@ class JsonController:
         config_data[key] = data
         JsonModel.write_json_file(CONFIG_JSON_PATH, config_data)
     
+    @staticmethod
     def append_posts_data(post: dict, post_id):
         posts_data = JsonController.get_posts_data()
         posts_data[post_id] = post
         JsonModel.write_json_file(POSTS_JSON_PATH, posts_data)
 
+    @staticmethod
     def update_base_link(new_base_link:str):
         old_base_link = JsonController.get_config_data("base_link")
         if new_base_link == old_base_link:
@@ -127,6 +141,7 @@ class JsonController:
         JsonController.update_posts_base_link(new_base_link)
         JsonController.set_config_data(key="base_link", data = new_base_link)
 
+    @staticmethod
     def update_posts_base_link(new_base_link:str):
         posts_data:dict = JsonController.get_posts_data()
         for post_id, post in posts_data.items():
@@ -135,6 +150,7 @@ class JsonController:
             post["base_link"] = new_base_link
         JsonModel.write_json_file(POSTS_JSON_PATH, posts_data)
     
+    @staticmethod
     def update_media_link(post:dict, new_base_link:str):
         """
         Replaces Base link in posts.json {"media_link"}
@@ -149,11 +165,13 @@ class JsonController:
         new_media_link = new_base_link + media
         return new_media_link
     
+    @staticmethod
     def update_selected_post_component(post_component_path:str):
         config_data = JsonController.get_config_data()
         config_data["post_component"] = post_component_path
         JsonModel.write_json_file(CONFIG_JSON_PATH, config_data)
 
+    @staticmethod
     def update_tab_title(new_tab_title:str):
         if new_tab_title == "":
             print("tab title cannot be null")
@@ -164,20 +182,24 @@ class JsonController:
         HtmlController.update_tab_title()
 
 class HtmlController:
+    @staticmethod
     def get_webpage_html()->bs:
         html_webpage:bs = HtmlModel.open_html(HTML_WEBPAGE_PATH)
         if not html_webpage:
             raise ValueError("Error: HTML webpage not found in file system.")
         return html_webpage
     
+    @staticmethod
     def get_post_component()->bs:
         post_component_path = JsonController.get_config_data("post_component")
         post_html:bs = HtmlModel.open_html(post_component_path)
         return post_html
     
+    @staticmethod
     def set_webpage_html(html):
         HtmlModel.write_html_file(HTML_WEBPAGE_PATH, html)
 
+    @staticmethod
     def update_component(component_type:str, component_path:str):
         """
         component_type: "post", "header", "footer"
@@ -193,6 +215,7 @@ class HtmlController:
             return
         raise ValueError(f"Invalid component_type {component_type}")
 
+    @staticmethod
     def update_header(component_path):
         html_webpage:bs = HtmlController.get_webpage_html()
         new_header:bs = HtmlModel.open_html(component_path)
@@ -207,6 +230,7 @@ class HtmlController:
             webpage_header_tag.replace_with(new_header)
         HtmlModel.write_html_file(HTML_WEBPAGE_PATH, html_webpage)
     
+    @staticmethod
     def update_footer(component_path):
         html_webpage:bs = HtmlModel.open_html(HTML_WEBPAGE_PATH)
         new_footer:bs = HtmlModel.open_html(component_path)
@@ -221,6 +245,7 @@ class HtmlController:
             webpage_footer_tag.replace_with(new_footer)
         HtmlModel.write_html_file(HTML_WEBPAGE_PATH, html_webpage)
 
+    @staticmethod
     def update_tab_title():
         config_data = JsonController.get_config_data()
         tab_title = config_data["tab_title"]
@@ -233,6 +258,7 @@ class HtmlController:
             title_tag.insert(0, tab_title)
         HtmlModel.write_html_file(HTML_WEBPAGE_PATH, html_webpage)
     
+    @staticmethod
     def update_bg_color(color):
         html_webpage:bs = HtmlModel.open_html(HTML_WEBPAGE_PATH)
         main_tag:bs = html_webpage.find("main")
@@ -244,7 +270,7 @@ class HtmlController:
         main_tag["class"] = classes
         HtmlController.set_webpage_html(html_webpage)
         
-
+    @staticmethod
     def validate_html(type:str, html:str):
         valid = True
         invalid_ids = []
@@ -259,6 +285,7 @@ class HtmlController:
             showwarning(title="Invalid HTML", message=f"Invalid HTML. \n Missing ids {invalid_ids}")
         return valid
     
+    @staticmethod
     def save_component_file(html, component_type):
         if component_type == "post":
             file_path = HtmlModel.save_html_file(html, HTML_POST_FOLDER, component_type)
@@ -271,10 +298,12 @@ class HtmlController:
             return file_path
         
 class FileController:
+    @staticmethod
     def get_post_component_basenames()->list:
         basenames = os.listdir(HTML_POST_FOLDER)
         return basenames
     
+    @staticmethod
     def get_post_component_paths() -> list:
         basenames = FileController.get_post_component_basenames()
         paths:list = []
@@ -283,10 +312,12 @@ class FileController:
             paths.append(path)
         return paths
     
+    @staticmethod
     def get_post_component_path(basename:str):
         path:str = os.path.join(HTML_POST_FOLDER, basename)
         return path
 
+    @staticmethod
     def add_media_to_assets_folder(file_paths:list):
         """
         Accepts a list of file paths 

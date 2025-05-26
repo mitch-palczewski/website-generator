@@ -9,6 +9,7 @@ from urllib.parse import quote
 from bs4 import BeautifulSoup as bs
 
 class Model:
+     @staticmethod
      def encode_path(path:str):
         """
         Encodes a path for URL use
@@ -18,6 +19,7 @@ class Model:
         encoded_path = "/".join(encoded_segments)
         return encoded_path
      
+     @staticmethod
      def resource_path(relative_path):
         try:
             base_path = sys._MEIPASS
@@ -26,15 +28,18 @@ class Model:
         return os.path.join(base_path, relative_path)
 
 class StringModel:
+    @staticmethod
     def remove_prefix(string:str, prefix:str):
         if string.startswith(prefix):
             return string[len(prefix):] 
         return string
 
+    @staticmethod
     def is_email(string:str) -> bool:
         pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
         return bool(re.match(pattern, string))
 
+    @staticmethod
     def is_hashed_email(string:str) -> bool:
         hashed = False
         pattern = r'[a-zA-Z0-9]'
@@ -46,6 +51,7 @@ class StringModel:
     
 
 class JsonModel:
+    @staticmethod
     def open_json(json_file_path:str):
         json_file_path = Model.resource_path(json_file_path)
         try:
@@ -55,12 +61,14 @@ class JsonModel:
             json_data = {}
         return json_data
 
+    @staticmethod
     def write_json_file(json_file_path, data):
         json_file_path = Model.resource_path(json_file_path)
         with open(json_file_path, "w") as file:
             json.dump(data, file, indent=4)
 
 class HtmlModel:
+    @staticmethod
     def open_html(html_file_path:str) -> bs:
         html_file_path = Model.resource_path(html_file_path)
         with open(html_file_path, "r", encoding="utf-8") as file:
@@ -69,19 +77,22 @@ class HtmlModel:
             raise ValueError(f"Error: file not found {html_file_path}")   
         return html_file_soup
 
+    @staticmethod
     def write_html_file(html_file_path:str, html:bs) -> None:
         html_file_path = Model.resource_path(html_file_path)
         html=html.prettify()
         with open(html_file_path, "w", encoding="utf-8") as file:
             file.write(str(html))
         pass
-
+    
+    @staticmethod
     def format_html(html) -> str:
         if type(html) != bs:
             html = bs(html, "html.parser")
         html=html.prettify()
         return html
     
+    @staticmethod
     def save_html_file(html, inital_directory, type):
         file_path = filedialog.asksaveasfilename(
             initialdir=inital_directory,
@@ -96,11 +107,13 @@ class HtmlModel:
         return file_path
 
 class TkModel:
+    @staticmethod
     def clear_frame(frame:tk.Frame):
         for widget in frame.winfo_children():
             widget.destroy()
 
 class FileModel:
+    @staticmethod
     def move_media_to_folder(media:str, folder_path:str) -> str:
         folder_path = Model.resource_path(folder_path)
         shutil.copy(media, folder_path)
