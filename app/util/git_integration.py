@@ -3,7 +3,7 @@ import os
 
 from config import get_project_path
 
-def push():
+def push_git():
     repo = git.Repo('.', search_parent_directories=True)
     repo_path = repo.working_tree_dir
     repo = git.Repo(repo_path)
@@ -14,4 +14,4 @@ def push():
     print("Changes pushed successfully!")
 
 
-push()
+push_git()
