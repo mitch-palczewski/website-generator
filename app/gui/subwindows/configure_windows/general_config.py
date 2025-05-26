@@ -3,6 +3,7 @@ import os
 from bs4 import BeautifulSoup as bs
 from tkinter import font, ttk
 from tkinter import filedialog as fd
+from tkinter.colorchooser import askcolor
 
 try:
     from ctypes import windll
@@ -39,7 +40,34 @@ class GeneralConfig(tk.Frame):
         icon_config.grid(column=0, row=1, sticky=tk.W, pady=10)
         column_config = ColumnConfig(body)
         column_config.grid(column=0, row=2, sticky=tk.W, pady=10)
+        bg_config = BackgroundColor(body)
+        bg_config.grid(column=0, row=3, sticky=tk.W, pady=10)
+
+class BackgroundColor(tk.Frame):
+    def __init__(self, container):
+        super().__init__(container)
+        self.config(bg=C1)
+        FONT_LG = font.Font(family="Helvetica", size=15, weight="bold")
+        FONT_SM = font.Font(family="Helvetica", size=10, weight="bold")
+        body= tk.Frame(self, bg = "white")
+        body.columnconfigure(0, weight=1)
+        body.columnconfigure(1, weight=1)
+        body.pack(padx=5, pady=5)
+        lbl = tk.Label(body, text="Web Tab Icon: ", font=FONT_LG, bg="white")
+        lbl.grid(column=0, row=0)
+        btn = tk.Button(body,
+                        text= "Background Color",
+                        command=  self.get_color,
+                        font=FONT_SM
+                        )
+        btn.grid(column=1, row=0)
     
+    def get_color(self):
+        color = askcolor(title="Background Color")
+        print(color)
+        HtmlController.update_bg_color(color[1])
+        Controller.web_page_change()
+        pass
 
 class IconConfig(tk.Frame):
     def __init__(self, container):

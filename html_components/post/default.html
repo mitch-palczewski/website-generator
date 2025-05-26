@@ -1,4 +1,4 @@
-<div id="post_id" class="bg-gray-200 p-2 shadow" >
+<div id="post_id" class="bg-gray-200 p-2 shadow relative">
   <div class="grid grid-cols-2">
     <h1 id="title" class="text-2xl font-bold text-gray-800"></h1>
     <h6 id="date" class="text-right"></h6>
@@ -10,12 +10,12 @@
     alt=""
     loading="lazy"
   />
-  <div class="bg-gray-300 p-2">
+  <div class="bg-gray-300 p-2 mt-4 mb-14">
     <p id="caption"></p>
   </div>
   <button
     id="message_btn"
-    class="mt-2 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300"
+    class="mt-5 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300 absolute bottom-3 left-2 right-2 z-10"
   >
     Comment
   </button>

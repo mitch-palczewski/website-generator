@@ -1,6 +1,7 @@
 from datetime import date
 from bs4 import BeautifulSoup as bs
 import os
+import time
 import json
 import glob
 
@@ -16,7 +17,7 @@ ASSET_FOLDER_PATH = "assets"
 
 from util.model import Model, HtmlModel, StringModel, JsonModel, FileModel
 from util.serve_localhost import start_server
-from tkinter.messagebox import showwarning
+from tkinter.messagebox import showwarning, showinfo
 
 class Controller:
     def get_todays_date()->str:
@@ -164,8 +165,6 @@ class HtmlController:
     def set_webpage_html(html):
         HtmlModel.write_html_file(HTML_WEBPAGE_PATH, html)
 
-
-
     def update_component(component_type:str, component_path:str):
         """
         component_type: "post", "header", "footer"
@@ -221,6 +220,18 @@ class HtmlController:
             title_tag.insert(0, tab_title)
         HtmlModel.write_html_file(HTML_WEBPAGE_PATH, html_webpage)
     
+    def update_bg_color(color):
+        html_webpage:bs = HtmlModel.open_html(HTML_WEBPAGE_PATH)
+        main_tag:bs = html_webpage.find("main")
+        classes = main_tag.get("class", [])
+        for index, class_item in enumerate(classes):
+            if class_item.startswith("bg-"):
+                classes[index] = ""
+        classes.append(f"bg-[{color}]")
+        main_tag["class"] = classes
+        HtmlController.set_webpage_html(html_webpage)
+        
+
     def validate_html(type:str, html:str):
         valid = True
         invalid_ids = []
