@@ -6,8 +6,8 @@ except ImportError:
     print("Error: windll not imported. Text may be blurred")
     pass
 
-from gui.components.html_component_editor import HtmlComponentEditor
-from util.controller import JsonController
+from app.gui.components.html_component_editor import HtmlComponentEditor
+from app.util.controller import JsonController
 colors = JsonController.get_config_data("colors")
 C1 = colors["c1"]
 C2 = colors["c2"]

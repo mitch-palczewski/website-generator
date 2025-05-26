@@ -10,11 +10,11 @@ except ImportError:
     print("Error: windll not imported. Text may be blurred")
     pass
 
-from util.model import HtmlModel, TkModel
-from util.controller import HtmlController, Controller
-from gui.components.scroll_frame import ScrollFrame
+from app.util.model import HtmlModel, TkModel
+from app.util.controller import HtmlController, Controller
+from app.gui.components.scroll_frame import ScrollFrame
 
-from util.controller import JsonController
+from app.util.controller import JsonController
 colors = JsonController.get_config_data("colors")
 C1 = colors["c1"]
 C2 = colors["c2"]

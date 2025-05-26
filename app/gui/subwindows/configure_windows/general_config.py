@@ -12,8 +12,8 @@ except ImportError:
     print("Error: windll not imported. Text may be blurred")
     pass
 
-from util.model_controller import Controller
-from util.controller import JsonController, FileController, HtmlController
+from app.util.model_controller import Controller
+from app.util.controller import JsonController, FileController, HtmlController
 colors = JsonController.get_config_data("colors")
 C1 = colors["c1"]
 C2 = colors["c2"]

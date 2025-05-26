@@ -8,9 +8,9 @@ except ImportError:
     print("Error: windll not imported. Text may be blurred")
     pass
 
-from util.model_controller import Controller
-from util.controller import JsonController
-from util.serve_localhost import start_server
+from app.util.model_controller import Controller
+from app.util.controller import JsonController
+from app.util.serve_localhost import start_server
 
 BUTTON_WIDTH = 25
 BUTTON_HEIGHT = 2

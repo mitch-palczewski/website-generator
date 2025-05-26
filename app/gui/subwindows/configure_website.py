@@ -7,13 +7,12 @@ except ImportError:
     print("Error: windll not imported. Text may be blurred")
     pass
 
-from gui.subwindows.configure_windows.config_messaging import ConfigMessaging
-from gui.subwindows.configure_windows.general_config import GeneralConfig
-from gui.subwindows.configure_windows.config_post import ConfigPost
-from gui.subwindows.configure_windows.config_header import ConfigHeader
-from gui.subwindows.configure_windows.config_footer import ConfigFooter
-
-from util.controller import JsonController
+from app.gui.subwindows.configure_windows.config_messaging import ConfigMessaging
+from app.gui.subwindows.configure_windows.general_config import GeneralConfig
+from app.gui.subwindows.configure_windows.config_post import ConfigPost
+from app.gui.subwindows.configure_windows.config_header import ConfigHeader
+from app.gui.subwindows.configure_windows.config_footer import ConfigFooter
+from app.util.controller import JsonController
 colors = JsonController.get_config_data("colors")
 C1 = colors["c1"]
 C2 = colors["c2"]

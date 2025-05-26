@@ -11,7 +11,7 @@ except ImportError:
     print("Error: windll not imported. Text may be blurred")
     pass
 
-from util.controller import JsonController
+from app.util.controller import JsonController
 MAX_IMG_HEIGHT = 600
 MAX_IMG_WIDTH = 700
 colors = JsonController.get_config_data("colors")

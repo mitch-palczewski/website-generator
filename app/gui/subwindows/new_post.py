@@ -10,9 +10,9 @@ except ImportError:
     print("Error: windll not imported. Text may be blurred")
     pass
 
-from gui.components.get_media import GetMediaBtn, MediaList
-from gui.components.text_field import TextField
-from util.controller import JsonController, HtmlController, FileController, Controller, StringController
+from app.gui.components.get_media import GetMediaBtn, MediaList
+from app.gui.components.text_field import TextField
+from app.util.controller import JsonController, HtmlController, FileController, Controller, StringController
 
 
 MAX_MEDIA_ITEMS = 1

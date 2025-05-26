@@ -16,9 +16,9 @@ HTML_FOOTER_FOLDER = "html_components\footer"
 HTML_WEBPAGE_PATH = "index.html"
 ASSET_FOLDER_PATH = "assets"
 
-from util.model import Model, HtmlModel, StringModel, JsonModel, FileModel
-from util.git_integration import push_git
-from util.serve_localhost import start_server
+from app.util.model import Model, HtmlModel, StringModel, JsonModel, FileModel
+from app.util.git_integration import push_git
+from app.util.serve_localhost import start_server
 from tkinter.messagebox import showwarning, showinfo
 
 class Controller:

@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from util.controller import JsonController
+from app.util.controller import JsonController
 colors = JsonController.get_config_data("colors")
 C1 = colors["c1"]
 C2 = colors["c2"]

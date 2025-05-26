@@ -7,8 +7,8 @@ except ImportError:
     print("Error: windll not imported. Text may be blurred")
     pass
 
-from util.controller import JsonController
-from util.serve_localhost import start_server
+from app.util.controller import JsonController
+from app.util.serve_localhost import start_server
 from .subwindows.landing import Landing
 from .subwindows.new_post import NewPost
 from .subwindows.configure_website import ConfigureWebsite

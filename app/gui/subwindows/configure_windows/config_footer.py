@@ -1,4 +1,5 @@
 import tkinter as tk
+import os
 try:
     from ctypes import windll
     windll.shcore.SetProcessDpiAwareness(1)
@@ -6,11 +7,12 @@ except ImportError:
     print("Error: windll not imported. Text may be blurred")
     pass
 
-from gui.components.html_component_editor import HtmlComponentEditor
-import os
+from app.gui.components.html_component_editor import HtmlComponentEditor
+from app.util.controller import JsonController
+
 
 FOOTER_COMPONENT_PATH = os.path.join("html_components", "footer")
-from util.controller import JsonController
+
 colors = JsonController.get_config_data("colors")
 C1 = colors["c1"]
 

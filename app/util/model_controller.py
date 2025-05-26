@@ -13,7 +13,7 @@ MESSAGE_HTML = "html_components\communicate\message.html"
 HTML_FILE_PATH = "index.html"
 ASSET_FOLDER_PATH = "assets"
 
-from util.serve_localhost import start_server
+from app.util.serve_localhost import start_server
 
 class Model:
     #JSON
