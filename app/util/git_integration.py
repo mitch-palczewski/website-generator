@@ -9,7 +9,7 @@ def push():
     repo = git.Repo(repo_path)
     repo.git.add('--all')  # Add all changes
     repo.index.commit('Automated commit')  # Commit changes
-    origin = repo.remote(name='mitch-palczewski.github.io')
+    origin = repo.remote(name='origin')
     origin.push()  # Push to GitHub
     print("Changes pushed successfully!")
 
