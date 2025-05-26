@@ -1,6 +1,7 @@
 import os
 import git
-from git import InvalidGitRepositoryError
+from git import InvalidGitRepositoryError, GitCommandError
+
 
 def push_git():
     github_repo_url = 'https://github.com/mitch-palczewski/mitch-palczewski.github.io.git'
@@ -25,7 +26,8 @@ def push_git():
         print("Remote 'origin' doesn't exist. Creating it...")
         origin = repo.create_remote('origin', github_repo_url)
     
-    origin.push()
-    print("Changes pushed successfully!")
-
-push_git()
+    try:
+        origin.push()
+        print("Changes pushed successfully!")
+    except GitCommandError as e:
+        print("Failed to push changes. There might be an issue with the remote URL or repository configuration:", e)

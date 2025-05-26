@@ -16,6 +16,7 @@ HTML_WEBPAGE_PATH = "index.html"
 ASSET_FOLDER_PATH = "assets"
 
 from util.model import Model, HtmlModel, StringModel, JsonModel, FileModel
+from util.git_integration import push_git
 from util.serve_localhost import start_server
 from tkinter.messagebox import showwarning, showinfo
 
@@ -36,6 +37,9 @@ class Controller:
     
     def web_page_change():
         start_server()
+        auto_push_git = JsonController.get_config_data("auto_push_git")
+        if auto_push_git:
+            push_git()
     
 class StringController:
     def format_media_link(base_link:str, media_path:str) -> str:
