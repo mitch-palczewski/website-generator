@@ -1,17 +1,31 @@
-import git
 import os
-
-from config import get_project_path
+import git
+from git import InvalidGitRepositoryError
 
 def push_git():
-    repo = git.Repo('.', search_parent_directories=True)
-    repo_path = repo.working_tree_dir
-    repo = git.Repo(repo_path)
-    repo.git.add('--all')  # Add all changes
-    repo.index.commit('Automated commit')  # Commit changes
-    origin = repo.remote(name='origin')
-    origin.push()  # Push to GitHub
-    print("Changes pushed successfully!")
+    github_repo_url = 'https://github.com/mitch-palczewski/mitch-palczewski.github.io.git'
+    
+    try:
+        repo = git.Repo('.', search_parent_directories=True)
+    except InvalidGitRepositoryError:
+        print("No git repository found. Initializing a new repository...")
+        repo = git.Repo.init(os.getcwd())
+        repo.create_remote('origin', github_repo_url)
 
+    repo.git.add('--all') 
+
+    try:
+        repo.index.commit('Automated commit')
+    except Exception as e:
+        print("Commit failed (perhaps no changes?):", e)
+    
+    try:
+        origin = repo.remote(name='origin')
+    except ValueError:
+        print("Remote 'origin' doesn't exist. Creating it...")
+        origin = repo.create_remote('origin', github_repo_url)
+    
+    origin.push()
+    print("Changes pushed successfully!")
 
 push_git()
