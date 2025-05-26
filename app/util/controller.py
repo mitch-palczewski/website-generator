@@ -1,6 +1,7 @@
 from datetime import date
 from bs4 import BeautifulSoup as bs
 import os
+import sys
 import time
 import json
 import glob
@@ -36,10 +37,18 @@ class Controller:
         return f"{new_id:06d}" 
     
     def web_page_change():
-        start_server()
         auto_push_git = JsonController.get_config_data("auto_push_git")
         if auto_push_git:
             push_git()
+        start_server()
+    
+    def resource_path(relative_path):
+        try:
+            base_path = sys._MEIPASS
+        except AttributeError:
+            base_path = os.path.abspath(".")
+        return os.path.join(base_path, relative_path)
+
     
 class StringController:
     def format_media_link(base_link:str, media_path:str) -> str:

@@ -1,6 +1,4 @@
 import tkinter as tk
-from tkinter import font, ttk
-from tkinter.messagebox import askyesno
 try:
     from ctypes import windll
     windll.shcore.SetProcessDpiAwareness(1)

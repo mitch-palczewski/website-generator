@@ -1,5 +1,3 @@
-# Button to get image from file system 
-
 import tkinter as tk
 from tkinter import filedialog as fd, font
 from tkinter.messagebox import showinfo

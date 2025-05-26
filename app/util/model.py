@@ -2,6 +2,7 @@ import json
 import os
 import re
 import shutil
+import sys
 import tkinter as tk
 from tkinter import filedialog
 from urllib.parse import quote
@@ -16,6 +17,13 @@ class Model:
         encoded_segments = [quote(segment, safe="") for segment in segments]
         encoded_path = "/".join(encoded_segments)
         return encoded_path
+     
+     def resource_path(relative_path):
+        try:
+            base_path = sys._MEIPASS
+        except AttributeError:
+            base_path = os.path.abspath(".")
+        return os.path.join(base_path, relative_path)
 
 class StringModel:
     def remove_prefix(string:str, prefix:str):
@@ -39,6 +47,7 @@ class StringModel:
 
 class JsonModel:
     def open_json(json_file_path:str):
+        json_file_path = Model.resource_path(json_file_path)
         try:
             with open(json_file_path, "r") as json_file:
                 json_data = json.load(json_file)
@@ -46,12 +55,14 @@ class JsonModel:
             json_data = {}
         return json_data
 
-    def write_json_file(json_file, data):
-        with open(json_file, "w") as file:
+    def write_json_file(json_file_path, data):
+        json_file_path = Model.resource_path(json_file_path)
+        with open(json_file_path, "w") as file:
             json.dump(data, file, indent=4)
 
 class HtmlModel:
     def open_html(html_file_path:str) -> bs:
+        html_file_path = Model.resource_path(html_file_path)
         with open(html_file_path, "r", encoding="utf-8") as file:
             html_file_soup = bs(file, "html.parser")
         if not html_file_soup:
@@ -59,6 +70,7 @@ class HtmlModel:
         return html_file_soup
 
     def write_html_file(html_file_path:str, html:bs) -> None:
+        html_file_path = Model.resource_path(html_file_path)
         html=html.prettify()
         with open(html_file_path, "w", encoding="utf-8") as file:
             file.write(str(html))
@@ -89,8 +101,9 @@ class TkModel:
             widget.destroy()
 
 class FileModel:
-    def move_media_to_folder(media:str, folder:str) -> str:
-        shutil.copy(media, folder)
+    def move_media_to_folder(media:str, folder_path:str) -> str:
+        folder_path = Model.resource_path(folder_path)
+        shutil.copy(media, folder_path)
         file_name = os.path.basename(media)
-        new_path = os.path.join(folder, file_name)
+        new_path = os.path.join(folder_path, file_name)
         return new_path

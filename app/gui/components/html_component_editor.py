@@ -31,6 +31,7 @@ class HtmlComponentEditor(tk.Frame):
         super().__init__(container)
         self.config(bg=C1)
         FONT_LG = font.Font(family="Helvetica", size=20, weight="bold")
+        component_folder = Controller.resource_path(component_folder)
         self.component_folder = component_folder
         self.component_type = component_type
         self.selected_component_path = None
