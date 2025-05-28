@@ -142,6 +142,7 @@ class BaseLink(tk.Frame):
 
     def load_config_base_link(self):
         self.config_data = Controller.get_config_data()
+
         self.base_link = self.config_data["base_link"]
         self.text_field.config(state="normal")
         self.text_field.delete(0, tk.END)

@@ -6,8 +6,8 @@ import time
 import json
 import glob
 
-CONFIG_JSON_PATH = "app\config\config.json"
-HTML_VALIDATION_PATH = "app\config\html_validation.json"
+CONFIG_JSON_PATH = "config\config.json"
+HTML_VALIDATION_PATH = "config\html_validation.json"
 POSTS_JSON_PATH = "posts.json"
 MESSAGE_HTML = "html_components\communicate\message.html"
 HTML_POST_FOLDER = "html_components\post"
@@ -288,13 +288,13 @@ class HtmlController:
     @staticmethod
     def save_component_file(html, component_type):
         if component_type == "post":
-            file_path = HtmlModel.save_html_file(html, HTML_POST_FOLDER, component_type)
+            file_path = HtmlModel.ask_save_as_html_file(html, HTML_POST_FOLDER, component_type)
             return file_path
         if component_type == "header":
-            file_path = HtmlModel.save_html_file(html, HTML_HEADER_FOLDER, component_type)
+            file_path = HtmlModel.ask_save_as_html_file(html, HTML_HEADER_FOLDER, component_type)
             return file_path
         if component_type == "footer":
-            file_path = HtmlModel.save_html_file(html, HTML_FOOTER_FOLDER, component_type)
+            file_path = HtmlModel.ask_save_as_html_file(html, HTML_FOOTER_FOLDER, component_type)
             return file_path
         
 class FileController:

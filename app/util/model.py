@@ -66,6 +66,12 @@ class JsonModel:
         json_file_path = Model.resource_path(json_file_path)
         with open(json_file_path, "w") as file:
             json.dump(data, file, indent=4)
+    
+    @staticmethod
+    def make_json_file_if_new(json_file_path, data):
+        if not os.path.exists(json_file_path):
+            JsonModel.write_json_file(json_file_path, data)
+        
 
 class HtmlModel:
     @staticmethod
@@ -78,13 +84,21 @@ class HtmlModel:
         return html_file_soup
 
     @staticmethod
-    def write_html_file(html_file_path:str, html:bs) -> None:
+    def write_html_file(html_file_path:str, data:bs) -> None:
         html_file_path = Model.resource_path(html_file_path)
-        html=html.prettify()
+        data=data.prettify()
         with open(html_file_path, "w", encoding="utf-8") as file:
-            file.write(str(html))
+            file.write(str(data))
         pass
-    
+
+    @staticmethod
+    def make_html_file_if_new(html_file_path, data):
+        """
+        If the html file does not exist makes file
+        """
+        if not os.path.exists(html_file_path):
+            HtmlModel.write_html_file(html_file_path, data)    
+
     @staticmethod
     def format_html(html) -> str:
         if type(html) != bs:
@@ -93,7 +107,7 @@ class HtmlModel:
         return html
     
     @staticmethod
-    def save_html_file(html, inital_directory, type):
+    def ask_save_as_html_file(html, inital_directory, type):
         file_path = filedialog.asksaveasfilename(
             initialdir=inital_directory,
             defaultextension=".html", 
@@ -105,6 +119,8 @@ class HtmlModel:
                 file.write(html)
             print(f"File saved to: {file_path}")
         return file_path
+    
+   
 
 class TkModel:
     @staticmethod
@@ -120,3 +136,12 @@ class FileModel:
         file_name = os.path.basename(media)
         new_path = os.path.join(folder_path, file_name)
         return new_path
+    
+    @staticmethod
+    def make_folder_if_new(folder_path):
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
+            return True
+        return False
+
+        

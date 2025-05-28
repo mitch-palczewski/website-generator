@@ -7,7 +7,7 @@ import sys
 import os
 from urllib.parse import quote
 from bs4 import BeautifulSoup as bs
-CONFIG_JSON_PATH = "app\config\config.json"
+CONFIG_JSON_PATH = "config\config.json"
 POSTS_JSON_PATH = "posts.json"
 MESSAGE_HTML = "html_components\communicate\message.html"
 HTML_FILE_PATH = "index.html"

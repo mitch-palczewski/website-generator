@@ -1,5 +1,6 @@
 
 from app.gui.main_window import MainWindow
+from app import config
 
 if __name__ == "__main__":
     try:
