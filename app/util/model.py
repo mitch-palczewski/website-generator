@@ -53,7 +53,6 @@ class StringModel:
 class JsonModel:
     @staticmethod
     def open_json(json_file_path:str):
-        json_file_path = Model.resource_path(json_file_path)
         try:
             with open(json_file_path, "r") as json_file:
                 json_data = json.load(json_file)
@@ -63,7 +62,6 @@ class JsonModel:
 
     @staticmethod
     def write_json_file(json_file_path, data):
-        json_file_path = Model.resource_path(json_file_path)
         with open(json_file_path, "w") as file:
             json.dump(data, file, indent=4)
     
@@ -76,7 +74,6 @@ class JsonModel:
 class HtmlModel:
     @staticmethod
     def open_html(html_file_path:str) -> bs:
-        html_file_path = Model.resource_path(html_file_path)
         with open(html_file_path, "r", encoding="utf-8") as file:
             html_file_soup = bs(file, "html.parser")
         if not html_file_soup:
@@ -85,7 +82,6 @@ class HtmlModel:
 
     @staticmethod
     def write_html_file(html_file_path:str, data:bs) -> None:
-        html_file_path = Model.resource_path(html_file_path)
         data=data.prettify()
         with open(html_file_path, "w", encoding="utf-8") as file:
             file.write(str(data))
@@ -131,7 +127,6 @@ class TkModel:
 class FileModel:
     @staticmethod
     def move_media_to_folder(media:str, folder_path:str) -> str:
-        folder_path = Model.resource_path(folder_path)
         shutil.copy(media, folder_path)
         file_name = os.path.basename(media)
         new_path = os.path.join(folder_path, file_name)

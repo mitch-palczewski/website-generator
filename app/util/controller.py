@@ -2,24 +2,30 @@ from datetime import date
 from bs4 import BeautifulSoup as bs
 import os
 import sys
-import time
-import json
-import glob
-
-CONFIG_JSON_PATH = "config\config.json"
-HTML_VALIDATION_PATH = "config\html_validation.json"
-POSTS_JSON_PATH = "posts.json"
-MESSAGE_HTML = "html_components\communicate\message.html"
-HTML_POST_FOLDER = "html_components\post"
-HTML_HEADER_FOLDER = "html_components\header"
-HTML_FOOTER_FOLDER = "html_components\footer"
-HTML_WEBPAGE_PATH = "index.html"
-ASSET_FOLDER_PATH = "assets"
+from tkinter.messagebox import showwarning
 
 from app.util.model import Model, HtmlModel, StringModel, JsonModel, FileModel
 from app.util.git_integration import push_git
 from app.util.serve_localhost import start_server
-from tkinter.messagebox import showwarning, showinfo
+from app.config import get_resource_paths
+
+RESOURCE_PATHS = get_resource_paths()
+
+
+
+CONFIG_JSON_PATH = RESOURCE_PATHS["config_json"]
+HTML_VALIDATION_PATH = RESOURCE_PATHS["html_validation"]
+POSTS_JSON_PATH = RESOURCE_PATHS["posts_json"]
+MESSAGE_HTML = RESOURCE_PATHS["message_html"]
+HTML_POST_FOLDER = RESOURCE_PATHS["html_post_folder"]
+HTML_HEADER_FOLDER = RESOURCE_PATHS["html_header_folder"]
+HTML_FOOTER_FOLDER = RESOURCE_PATHS["html_footer_folder"]
+HTML_WEBPAGE_PATH = RESOURCE_PATHS["html_webpage"]
+ASSET_FOLDER_PATH = RESOURCE_PATHS["assets_folder"]
+
+
+
+
 
 class Controller:
     @staticmethod
