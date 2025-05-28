@@ -53,12 +53,13 @@ class Controller:
 
     @staticmethod 
     def get_resource_paths(path_type=None):
-        if not type:
-            return RESOURCE_PATHS
-        return RESOURCE_PATHS[path_type]
-    
+        if path_type:
+            return RESOURCE_PATHS[path_type]
+        return RESOURCE_PATHS
 
-    
+
+
+
 class StringController:
     @staticmethod
     def format_media_link(base_link:str, media_path:str) -> str:
@@ -185,6 +186,20 @@ class JsonController:
         config_data["tab_title"] = new_tab_title
         JsonModel.write_json_file(CONFIG_JSON_PATH, config_data)
         HtmlController.update_tab_title()
+    
+    @staticmethod
+    def update_email(new_email):
+        config_data = JsonController.get_config_data()
+        if new_email == config_data["email"]:
+            return
+        if StringModel.is_email(new_email):
+            config_data["email"] = new_email
+            JsonModel.write_json_file(CONFIG_JSON_PATH, config_data)
+            return
+        if StringModel.is_hashed_email(new_email):
+            config_data["email"] = new_email
+            JsonModel.write_json_file(CONFIG_JSON_PATH, config_data)
+            return
 
 class HtmlController:
     @staticmethod
@@ -262,6 +277,29 @@ class HtmlController:
             title_tag.clear()
             title_tag.insert(0, tab_title)
         HtmlModel.write_html_file(HTML_WEBPAGE_PATH, html_webpage)
+
+    @staticmethod
+    def update_grid_cols():
+        config_data = JsonController.get_config_data()
+        grid_cols = config_data["grid_cols"]
+        html_webpage:bs = HtmlModel.open_html(HTML_WEBPAGE_PATH)
+        if not html_webpage:
+            raise ValueError("Error: HTML webpage not found in file system.")
+        posts_tag :bs = html_webpage.find("div", id="posts")
+        if not posts_tag:
+            raise ValueError("Error: No element with id 'posts' found.")
+        class_list = posts_tag.get("class", [])
+        for index, class_item in enumerate(class_list):
+            if (class_item.startswith("grid-cols-") 
+                or class_item.startswith("md:grid-cols-") 
+                or class_item.startswith("lg:grid-cols-") 
+                ):
+                class_list[index] = ""
+        class_list.append(f"grid-cols-{grid_cols['sm']}")
+        class_list.append(f"md:grid-cols-{grid_cols['md']}")
+        class_list.append(f"lg:grid-cols-{grid_cols['lg']}")
+        posts_tag["class"] = class_list
+        HtmlModel.write_html_file(HTML_WEBPAGE_PATH, html_webpage)
     
     @staticmethod
     def update_bg_color(color):
@@ -274,7 +312,7 @@ class HtmlController:
         classes.append(f"bg-[{color}]")
         main_tag["class"] = classes
         HtmlController.set_webpage_html(html_webpage)
-        
+   
     @staticmethod
     def validate_html(type:str, html:str):
         valid = True
@@ -301,6 +339,117 @@ class HtmlController:
         if component_type == "footer":
             file_path = HtmlModel.ask_save_as_html_file(html, HTML_FOOTER_FOLDER, component_type)
             return file_path
+        
+class MessagingController:
+    @staticmethod
+    def insert_message_popup():
+        """
+            Target: 
+                File: index.html
+                After: footer 
+
+            Embedding: 
+                File: message.html  
+        """
+        config_data = JsonController.get_config_data()
+        email = config_data["email"]
+        if not email:
+            print("Messaging HTML will not be inserted untill an Email is attached")
+            return
+        html_webpage:bs = HtmlModel.open_html(HTML_WEBPAGE_PATH)
+        if not html_webpage:
+            raise ValueError("Error: HTML webpage not found in file system.")
+        message_popup_tag:bs = html_webpage.find("div", id="message_popup")
+        if message_popup_tag:
+            return
+        message_html:bs = HtmlModel.open_html(MESSAGE_HTML)
+        if not message_html:
+            raise ValueError("Error: message html not found in file system.")
+        footer_tag:bs = html_webpage.find("footer")
+        if not footer_tag:
+            raise ValueError("Error: No element with id 'footer' found.")
+        footer_tag.insert_after(message_html)
+        HtmlModel.write_html_file(HTML_WEBPAGE_PATH, html_webpage)
+    
+    @staticmethod
+    def delete_message_popup():
+        """
+            Target: 
+                File: index.html 
+                Tag: div
+                ID: message_popup 
+        """
+        html_webpage:bs = HtmlModel.open_html(HTML_WEBPAGE_PATH)
+        if not html_webpage:
+            raise ValueError("Error: HTML webpage not found in file system.")
+        message_popup_tag:bs = html_webpage.find("div", id="message_popup")
+        if message_popup_tag:  
+            message_popup_tag.decompose()
+            HtmlModel.write_html_file(HTML_WEBPAGE_PATH, html_webpage)
+
+    @staticmethod
+    def unhide_message_btn():
+        """
+            Target: 
+                File: index.html 
+                Tag: button
+                ID: message_btn
+        """
+        html_webpage:bs = HtmlModel.open_html(HTML_WEBPAGE_PATH)
+        if not html_webpage:
+            raise ValueError("Error: HTML webpage not found in file system.")
+        message_btns = html_webpage.find_all("button", id="message_btn")
+        for message_btn in message_btns:
+            class_list = message_btn.get("class", [])
+            # Remove 'hidden' from class_list if present, but keep other classes
+            class_list = [cls for cls in class_list if cls != "hidden"]
+            message_btn["class"] = class_list
+        HtmlModel.write_html_file(HTML_WEBPAGE_PATH, html_webpage)
+
+    @staticmethod
+    def hide_message_btn():
+        """
+            Target: 
+                File: index.html 
+                Tag: button
+                ID: message_btn
+        """
+        html_webpage:bs = HtmlModel.open_html(HTML_WEBPAGE_PATH)
+        if not html_webpage:
+            raise ValueError("Error: HTML webpage not found in file system.")
+        message_btns = html_webpage.find_all("button", id="message_btn")
+        for message_btn in message_btns:
+            class_list = message_btn.get("class", [])
+            class_list.append(" hidden")
+            message_btn["class"] = class_list
+        HtmlModel.write_html_file(HTML_WEBPAGE_PATH, html_webpage)
+        
+    @staticmethod
+    def update_email():
+        """
+            Target:
+                File: index.html
+                Tag: form
+                ID: message_form
+            Embedding:
+                Config: email
+        """
+        config_data = JsonController.get_config_data()
+        email = config_data["email"]
+        if not email:
+            print("Email = None")
+            return
+        message_html:bs = HtmlModel.open_html(MESSAGE_HTML)
+        if not message_html:
+            raise ValueError("Error: message html not found in file system.")
+        message_form_tag = message_html.find("form", id="message_form")
+        if not message_form_tag:
+            raise ValueError("Error: No element with id 'message_form' found.")
+        form_submit_link = "https://formsubmit.co/" + email
+        message_form_tag["action"] = form_submit_link
+        HtmlModel.write_html_file(MESSAGE_HTML, message_html)
+        MessagingController.delete_message_popup()
+        MessagingController.insert_message_popup()
         
 class FileController:
     @staticmethod

@@ -12,8 +12,8 @@ except ImportError:
     print("Error: windll not imported. Text may be blurred")
     pass
 
-from app.util.model_controller import Controller
-from app.util.controller import JsonController, FileController, HtmlController
+from app.util.controller import JsonController, FileController, HtmlController, Controller
+
 colors = JsonController.get_config_data("colors")
 C1 = colors["c1"]
 C2 = colors["c2"]
@@ -221,7 +221,7 @@ class ColumnConfig(tk.Frame):
         sm = self.sm_entry.get()
         md = self.md_entry.get()
         lg = self.lg_entry.get()
-        Controller.update_grid_cols(sm,md,lg)
+        HtmlController.update_grid_cols(sm,md,lg)
       
     def cancel(self):
         self.sm_entry.delete(0,tk.END)

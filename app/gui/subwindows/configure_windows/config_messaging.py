@@ -8,8 +8,7 @@ except ImportError:
     print("Error: windll not imported. Text may be blurred")
     pass
 
-from app.util.model_controller import Controller, HtmlController
-from app.util.controller import JsonController
+from app.util.controller import JsonController, MessagingController
 colors = JsonController.get_config_data("colors")
 C1 = colors["c1"]
 C2 = colors["c2"]
@@ -77,7 +76,7 @@ class MessagingSettings(tk.Frame):
         self.cancel_btn = tk.Button(self.body, text="Cancel", font=FONT_SM, command=self.cancel)
 
         #INIT
-        self.config_data = Controller.get_config_data()
+        self.config_data = JsonController.get_config_data()
         if self.config_data["post_messaging"]:
             self.enable_messaging()
         else:
@@ -88,15 +87,15 @@ class MessagingSettings(tk.Frame):
         self.enable_messaging_btn.pack_forget()
         self.disable_messaging_btn.pack(pady=10, padx=10)
         self.body.pack()
-        HtmlController.insert_message_popup()
-        HtmlController.unhide_message_btn()
+        MessagingController.insert_message_popup()
+        MessagingController.unhide_message_btn()
         
     def disable_messaging(self):
         self.disable_messaging_btn.pack_forget()
         self.body.pack_forget()
         self.enable_messaging_btn.pack(pady=10, padx=10)
-        HtmlController.delete_message_popup()
-        HtmlController.hide_message_btn()
+        MessagingController.delete_message_popup()
+        MessagingController.hide_message_btn()
 
     def edit(self):
         self.edit_btn.pack_forget()
@@ -106,7 +105,7 @@ class MessagingSettings(tk.Frame):
 
     def update(self):
         new_email = self.text_field.get()
-        self.config_data = Controller.get_config_data()
+        self.config_data = JsonController.get_config_data()
         self.email = self.config_data["email"]
         self.update_btn.grid_forget()
         self.cancel_btn.grid_forget()
@@ -115,8 +114,8 @@ class MessagingSettings(tk.Frame):
         if new_email == self.email:
             return
         if askyesno(title="Change Email", message=f"Are you sure you want to replace {self.email} with {new_email}"):
-            Controller.update_email(new_email)
-            HtmlController.update_email()
+            JsonController.update_email(new_email)
+            MessagingController.update_email()
         self.load_config_email()
 
     def cancel(self):
@@ -127,7 +126,7 @@ class MessagingSettings(tk.Frame):
         self.load_config_email()
     
     def load_config_email(self):
-        self.config_data = Controller.get_config_data()
+        self.config_data = JsonController.get_config_data()
         self.email = self.config_data["email"]
         self.text_field.config(state="normal")
         self.text_field.delete(0, tk.END)

@@ -8,7 +8,6 @@ except ImportError:
     print("Error: windll not imported. Text may be blurred")
     pass
 
-from app.util.model_controller import Controller
 from app.util.controller import JsonController
 from app.util.serve_localhost import start_server
 
@@ -141,7 +140,7 @@ class BaseLink(tk.Frame):
         self.load_config_base_link()
 
     def load_config_base_link(self):
-        self.config_data = Controller.get_config_data()
+        self.config_data = JsonController.get_config_data()
 
         self.base_link = self.config_data["base_link"]
         self.text_field.config(state="normal")

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
  <head>
-  <link href="assets\Screenshot 2024-12-01 163008.png" rel="icon" type="image/png"/>
+  <link href="assets\Screenshot 2024-12-01 164529.png" rel="icon" type="image/png"/>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
   <title>
-   spooky island
+   spooky island is spooky
   </title>
   <link href="styles.css" rel="stylesheet"/>
   <script src="https://cdn.tailwindcss.com">
@@ -17,9 +17,66 @@
     Header Section
    </h1>
   </header>
-  <main class="flex-1 p-4 bg-[#8eb397]">
+  <main class="flex-1 p-4 bg-[#ffff80]">
    <!--vvv Grid div-->
    <div class="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3" id="posts">
+    <div class="bg-gray-200 p-2 shadow relative lg:col-span-1" id="000004">
+     <div class="grid grid-cols-2">
+      <h1 class="text-2xl font-bold text-gray-800" id="title">
+       sda
+      </h1>
+      <h6 class="text-right" id="date">
+       05-28-2025
+      </h6>
+     </div>
+     <img alt="" class="w-full max-h-[60vh] object-contain rounded py1" id="media" loading="lazy" src="assets\Screenshot (2)2.png"/>
+     <div class="bg-gray-300 p-2 mt-4 mb-14">
+      <p id="caption">
+       sdasdasd
+      </p>
+     </div>
+     <button class="mt-5 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300 absolute bottom-3 left-2 right-2 z-10" id="message_btn" onclick="openMessageFrom('sda','https://mitch-palczewski.github.io/assets/Screenshot%20%282%292.png', 'sdasdasd')">
+      Comment
+     </button>
+    </div>
+    <div class="bg-gray-200 p-2 shadow relative lg:col-span-1" id="000003">
+     <div class="grid grid-cols-2">
+      <h1 class="text-2xl font-bold text-gray-800" id="title">
+       So are Computers
+      </h1>
+      <h6 class="text-right" id="date">
+       05-28-2025
+      </h6>
+     </div>
+     <img alt="" class="w-full max-h-[60vh] object-contain rounded py1" id="media" loading="lazy" src="assets\Screenshot 2024-12-01 163008.png"/>
+     <div class="bg-gray-300 p-2 mt-4 mb-14">
+      <p id="caption">
+       wow
+      </p>
+     </div>
+     <button class="" id="message_btn" onclick="openMessageFrom('So are Computers','https://mitch-palczewski.github.io/assets/Screenshot%202024-12-01%20163008.png', 'wow')">
+      Comment
+     </button>
+    </div>
+    <div class="bg-gray-200 p-2 shadow relative lg:col-span-2" id="000002">
+     <div class="grid grid-cols-2">
+      <h1 class="text-2xl font-bold text-gray-800" id="title">
+       Circles Are Cool
+      </h1>
+      <h6 class="text-right" id="date">
+       05-28-2025
+      </h6>
+     </div>
+     <img alt="" class="w-full max-h-[60vh] object-contain rounded py1" id="media" loading="lazy" src="assets\Screenshot 2024-12-01 165311.png"/>
+     <div class="bg-gray-300 p-2 mt-4 mb-14">
+      <p id="caption">
+       Yes they are
+      </p>
+     </div>
+     <button class="" id="message_btn" onclick="openMessageFrom('Circles Are Cool','https://mitch-palczewski.github.io/assets/Screenshot%202024-12-01%20165311.png', 'Yes they are ')">
+      Comment
+     </button>
+    </div>
     <div class="bg-gray-200 p-2 shadow relative lg:col-span-1" id="000001">
      <div class="grid grid-cols-2">
       <h1 class="text-2xl font-bold text-gray-800" id="title">
@@ -35,7 +92,7 @@
        Yes it is indeed a cool circle
       </p>
      </div>
-     <button class="mt-5 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300 absolute bottom-3 left-2 right-2 z-10" id="message_btn" onclick="openMessageFrom('Cool Circle','https://mitch-palczewski.github.io/assets/Screenshot%202024-12-01%20165301.png', 'Yes it is indeed a cool circle')">
+     <button class="" id="message_btn" onclick="openMessageFrom('Cool Circle','https://mitch-palczewski.github.io/assets/Screenshot%202024-12-01%20165301.png', 'Yes it is indeed a cool circle')">
       Comment
      </button>
     </div>
@@ -47,7 +104,7 @@
     Footer Section
    </p>
   </footer>
-  <div class="overlay fixed inset-0 z-50" id="message_popup">
+  <div class="overlay" id="message_popup">
    <div class="modal max-w-2xl w-full mx-auto">
     <form action="https://formsubmit.co/8e2308e9935d31f75b6fc3fb137d2c63" id="message_form" method="POST" target="_blank">
      <input name="_format" type="hidden" value="html"/>
