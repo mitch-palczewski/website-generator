@@ -46,9 +46,16 @@ class StringModel:
         if (re.match(pattern, string) and len(string) > 15):
             hashed = True
         return hashed
-
-            
     
+    @staticmethod
+    def encode_path(path:str):
+        """
+        Encodes a path for URL use
+        """
+        segments = path.split('/')
+        encoded_segments = [quote(segment, safe="") for segment in segments]
+        encoded_path = "/".join(encoded_segments)
+        return encoded_path
 
 class JsonModel:
     @staticmethod

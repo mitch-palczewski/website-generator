@@ -1,18 +1,6 @@
 import os
 import sys
 
-
-
-CONFIG_JSON_PATH = "config\config.json"
-HTML_VALIDATION_PATH = "config\html_validation.json"
-POSTS_JSON_PATH = "posts.json"
-MESSAGE_HTML = "html_components\communicate\message.html"
-HTML_POST_FOLDER = "html_components\post"
-HTML_HEADER_FOLDER = "html_components\header"
-HTML_FOOTER_FOLDER = "html_components\footer"
-HTML_WEBPAGE_PATH = "index.html"
-ASSET_FOLDER_PATH = "assets"
-
 from app.util.model import FileModel, JsonModel, HtmlModel
 
 def get_app_root():
@@ -75,22 +63,5 @@ def get_resource_paths():
     }
 
     return resource_paths
-
-
-
-
-
-
-
-@staticmethod
-def resource_path(relative_path):
-    try:
-        base_path = sys._MEIPASS
-    except AttributeError:
-        base_path = os.path.abspath(".")
-    return os.path.join(base_path, relative_path)
-
-
-
 
 

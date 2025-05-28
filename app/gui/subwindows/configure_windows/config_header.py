@@ -7,8 +7,8 @@ except ImportError:
     pass
 
 from app.gui.components.html_component_editor import HtmlComponentEditor
-from app.util.controller import JsonController
-HEADER_COMPONENT_PATH = "html_components\header"
+from app.util.controller import JsonController, Controller
+HEADER_COMPONENT_PATH = Controller.get_resource_paths("html_header_path")
 colors = JsonController.get_config_data("colors")
 C1 = colors["c1"]
 
