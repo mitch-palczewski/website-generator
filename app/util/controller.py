@@ -50,14 +50,13 @@ class Controller:
         if auto_push_git:
             push_git()
         start_server()
+
+    @staticmethod 
+    def get_resource_paths(path_type=None):
+        if not type:
+            return RESOURCE_PATHS
+        return RESOURCE_PATHS[path_type]
     
-    @staticmethod
-    def resource_path(relative_path):
-        try:
-            base_path = sys._MEIPASS
-        except AttributeError:
-            base_path = os.path.abspath(".")
-        return os.path.join(base_path, relative_path)
 
     
 class StringController:
