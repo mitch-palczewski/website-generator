@@ -29,7 +29,7 @@ def get_resource_paths():
 
     config_folder = os.path.join(bundled_dir, "config")
     html_components_folder = os.path.join(app_parent_dir, "html_components")
-    backup_index_html = HtmlModel.open_html(os.path.join(html_components_folder, "webpage", "index.html"))
+    #backup_index_html = HtmlModel.open_html(os.path.join(html_components_folder, "webpage", "index.html"))
     assets_folder = os.path.join(app_parent_dir, "assets")
 
     config_json_path = os.path.join(config_folder, "config.json")
@@ -43,7 +43,7 @@ def get_resource_paths():
 
 
     JsonModel.make_json_file_if_new(posts_json_path, {})
-    HtmlModel.make_html_file_if_new(html_webpage, backup_index_html)
+    HtmlModel.make_html_file_if_new(html_webpage, "")
     FileModel.make_folder_if_new(html_components_folder)
     FileModel.make_folder_if_new(html_post_folder)
     FileModel.make_folder_if_new(html_header_folder)
