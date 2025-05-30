@@ -211,7 +211,9 @@ class HtmlController:
     
     @staticmethod
     def get_post_component()->bs:
-        post_component_path = JsonController.get_config_data("post_component")
+        post_component = JsonController.get_config_data("post_component")
+        post_component_basename = os.path.basename(post_component)
+        post_component_path = os.path.join(HTML_POST_FOLDER, post_component_basename)
         post_html:bs = HtmlModel.open_html(post_component_path)
         return post_html
     

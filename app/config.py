@@ -8,6 +8,7 @@ def get_app_root():
         app_root = os.path.dirname(sys.executable)
     else:
         app_root = os.path.dirname(os.path.abspath(__file__)) 
+        app_root = os.path.dirname(app_root)
     return app_root
 
 def get_parent_dir():
@@ -28,18 +29,17 @@ def get_resource_paths():
     bundled_dir = get_bundled_dir()
 
     config_folder = os.path.join(bundled_dir, "config")
-    html_components_folder = os.path.join(app_parent_dir, "html_components")
-    #backup_index_html = HtmlModel.open_html(os.path.join(html_components_folder, "webpage", "index.html"))
-    assets_folder = os.path.join(app_parent_dir, "assets")
+    html_components_folder = os.path.join(app_root, "html_components")
+    assets_folder = os.path.join(app_root, "assets")
 
     config_json_path = os.path.join(config_folder, "config.json")
     html_validation_path = os.path.join(bundled_dir, "config", "html_validation.json")
-    posts_json_path = os.path.join(app_parent_dir, "posts.json")
+    posts_json_path = os.path.join(app_root, "posts.json")
     message_html = os.path.join(html_components_folder, "communicate", "message.html")
     html_post_folder = os.path.join(html_components_folder, "post")
     html_header_folder = os.path.join(html_components_folder, "header")
     html_footer_folder = os.path.join(html_components_folder, "footer")
-    html_webpage = os.path.join(app_parent_dir, "index.html")
+    html_webpage = os.path.join(app_root, "index.html")
 
 
     JsonModel.make_json_file_if_new(posts_json_path, {})
@@ -61,7 +61,6 @@ def get_resource_paths():
         "html_webpage": html_webpage,
         "assets_folder": "assets"
     }
-
     return resource_paths
 
 

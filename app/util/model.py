@@ -99,6 +99,8 @@ class HtmlModel:
         """
         If the html file does not exist makes file
         """
+        if type(data) != bs:
+            data = bs(data, "html.parser")
         if not os.path.exists(html_file_path):
             HtmlModel.write_html_file(html_file_path, data)    
 
