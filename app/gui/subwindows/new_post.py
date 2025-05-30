@@ -218,12 +218,12 @@ class NewPost(tk.Frame):
         
 def insert_post_id(post_html: bs, new_post_id, column_span:str):
     column_span_class = 'lg:col-span-' + column_span
-    post_div_tag = post_html.find("div", id="post_id")
+    post_div_tag = post_html.find("div", attrs={"data-post_id": "post_id"})
     if not post_div_tag:
         post_div_tag = post_html.find("div")
     if not post_div_tag:
         raise ValueError("Error: No <div> tag found for new_post_id element.")
-    post_div_tag["id"] = new_post_id
+    post_div_tag["data-post_id"] = new_post_id
     post_div_tag['class'].append(column_span_class)
 
 

@@ -8,10 +8,10 @@ C3 = colors["c3"]
 C4 = colors["c4"]
 
 class ScrollFrame(tk.Frame):
-    def __init__(self, parent, width = 300, **kwargs):
+    def __init__(self, parent, width = 300, height = 300, **kwargs):
         super().__init__(parent, **kwargs)
 
-        self.canvas = tk.Canvas(self, borderwidth=0, width=width, bg=C1)
+        self.canvas = tk.Canvas(self, borderwidth=0, width=width, height=height, bg=C1)
         self.canvas.pack(side="left", fill="both", expand=True)
         self.v_scrollbar = tk.Scrollbar(self, orient="vertical", command=self.canvas.yview)
         self.v_scrollbar.pack(side="right", fill="y")

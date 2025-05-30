@@ -1,20 +1,22 @@
-<div id="post_id" class="bg-gray-200 p-2 shadow relative">
+<div id="post_id" data-type="post" data-post_id ="post_id" class="bg-gray-200 p-2 shadow relative">
   <div class="grid grid-cols-2">
-    <h1 id="title" class="text-2xl font-bold text-gray-800"></h1>
+    <h1 id="title" data-type="title" class="text-2xl font-bold text-gray-800"></h1>
     <h6 id="date" class="text-right"></h6>
   </div>
   <img
     id="media"
+    data-type="media"
     class="w-full max-h-[60vh] object-contain rounded py1"
     src=""
     alt=""
     loading="lazy"
   />
   <div class="bg-gray-300 p-2 mt-4 mb-14">
-    <p id="caption"></p>
+    <p id="caption" data-type="caption"></p>
   </div>
   <button
     id="message_btn"
+    data-type="message_btn"
     class="mt-5 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300 absolute bottom-3 left-2 right-2 z-10"
   >
     Comment
