@@ -230,7 +230,7 @@ def insert_post_id(post_html: bs, new_post_id, column_span:str):
 
 def insert_date(post_html:bs):
     post_date:str = Controller.get_todays_date()
-    h6_tag = post_html.find("h6", id="date")
+    h6_tag = post_html.find("h6", attrs={"data-type": "date"})
     if not h6_tag:
         h6_tag = post_html.find("h6")
     if not h6_tag:
@@ -239,16 +239,16 @@ def insert_date(post_html:bs):
         h6_tag.insert(0,post_date)
 
 def insert_title(post_html:bs, title:str):
-    h1_tag = post_html.find("h1", id="title")
+    h1_tag = post_html.find("h1", attrs={"data-type": "title"})
     if not h1_tag:
-        h1_tag = post_html.find("h6")
+        h1_tag = post_html.find("h1")
     if not h1_tag:
-        raise ValueError("Error: No <h6> tag found for date element.")
+        raise ValueError("Error: No <h1> tag found for date element.")
     if h1_tag:
         h1_tag.insert(0,title)
 
 def insert_image(post_html:bs, image:str):
-    img_tag = post_html.find("img", id="media")
+    img_tag = post_html.find("img", attrs={"data-type": "media"})
     if not img_tag:
         img_tag = post_html.find("img")
     if not img_tag:
@@ -257,7 +257,7 @@ def insert_image(post_html:bs, image:str):
         img_tag["src"] = image
 
 def insert_caption(post_html:bs, caption:str):
-    p_tag = post_html.find("p", id="caption")
+    p_tag = post_html.find("p", attrs={"data-type": "caption"})
     if not p_tag:
         p_tag = post_html.find("p")
     if not p_tag:
@@ -266,9 +266,9 @@ def insert_caption(post_html:bs, caption:str):
         p_tag.insert(0,caption)
 
 def insert_message_btn(post_messaging:bool, post_html:bs, title:str, media_link:str, caption:str):
-    message_btn_tag = post_html.find("button", id="message_btn")
+    message_btn_tag = post_html.find("button", attrs={"data-type": "message_btn"})
     if not message_btn_tag:
-        raise ValueError("Error: No <button id=message_btn> tag found.")
+        raise ValueError("Error: No <button data-type=message_btn> tag found.")
     if not post_messaging:
         message_btn_tag.decompose()
         return
@@ -280,5 +280,5 @@ def insert_message_btn(post_messaging:bool, post_html:bs, title:str, media_link:
     message_btn_tag['onclick'] = message_btn_tag['onclick'].replace('\n', '')
 
 def delete_media(post_html:bs):
-    media_tag = post_html.find("img", id="media")
+    media_tag = post_html.find("img", attrs={"data-type": "media"})
     media_tag.extract()

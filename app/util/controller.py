@@ -400,7 +400,7 @@ class MessagingController:
         html_webpage:bs = HtmlModel.open_html(HTML_WEBPAGE_PATH)
         if not html_webpage:
             raise ValueError("Error: HTML webpage not found in file system.")
-        message_btns = html_webpage.find_all("button", id="message_btn")
+        message_btns = html_webpage.find_all("button", attrs={"data-type": "message_btn"})
         for message_btn in message_btns:
             class_list = message_btn.get("class", [])
             # Remove 'hidden' from class_list if present, but keep other classes
@@ -419,7 +419,7 @@ class MessagingController:
         html_webpage:bs = HtmlModel.open_html(HTML_WEBPAGE_PATH)
         if not html_webpage:
             raise ValueError("Error: HTML webpage not found in file system.")
-        message_btns = html_webpage.find_all("button", id="message_btn")
+        message_btns = html_webpage.find_all("button", attrs={"data-type": "message_btn"})
         for message_btn in message_btns:
             class_list = message_btn.get("class", [])
             class_list.append(" hidden")

@@ -1,4 +1,8 @@
 import tkinter as tk
+from bs4 import BeautifulSoup as bs
+import os
+
+
 try:
     from ctypes import windll
     windll.shcore.SetProcessDpiAwareness(1)
@@ -9,6 +13,7 @@ except ImportError:
 from app.gui.components.scroll_frame import ScrollFrame
 from app.gui.components.post import Post
 from app.util.controller import HtmlController, JsonController
+from app.config import get_app_root
 
 class EditPosts(tk.Frame):
     def __init__(self, container, main_window):
@@ -26,17 +31,31 @@ class EditPosts(tk.Frame):
         webpage_html = HtmlController.get_webpage_html()
         posts = webpage_html.find_all("div", attrs={"data-type": "post"})
         for post in posts:
-            try:
-                title = post.find("h1",attrs={"data-type": "title"}).text
-            except:
-                title = ""
-            try:
-                img_src = post.find("img", attrs={"data-type": "media"})["src"]
-            except:
-                img_src = ""
-            try:
-                caption = post.find(attrs={"data-type": "caption"}).text
-            except:
-                caption = ""
-            post = Post(self.inner_scroll_frame, title, img_src, caption, 1)
-            post.pack(padx=20, pady=20)
+            self.get_post_attributes(post)
+
+    def get_post_attributes(self, post: bs):
+        try:
+            title:str = post.find("h1",attrs={"data-type": "title"}).text
+            title = title.strip()
+        except:
+            title = ""
+        try:
+            img_src:str = post.find("img", attrs={"data-type": "media"})["src"]
+            img_src = os.path.join(get_app_root(), img_src)
+        except:
+            img_src = None
+        try:
+            caption:str = post.find(attrs={"data-type": "caption"}).text
+            caption = caption.strip()
+        except:
+            caption = ""
+        try:
+            id:str = post["data-post_id"]
+            id = id.strip()
+        except:
+            id = ""
+            print("Error did not find post id")
+        print(f"{title}  {img_src}  {caption}  {id}")
+        post_frame = Post(self.inner_scroll_frame, id, title, img_src, caption, 1)
+        post_frame.pack(padx=20, pady=20)
+        pass
