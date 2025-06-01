@@ -47,5 +47,33 @@
         "media_link": "https://mitch-palczewski.github.io/assets/Screenshot%20%282%29.png",
         "caption": "world",
         "base_link": "https://mitch-palczewski.github.io/"
+    },
+    "000008": {
+        "date": "2025-06-01 09:52:01.984319",
+        "title": "img1-13",
+        "media_link": "https://mitch-palczewski.github.io/assets/Screenshot%202025-01-08%20134310.png",
+        "caption": "this is a new post",
+        "base_link": "https://mitch-palczewski.github.io/"
+    },
+    "000009": {
+        "date": "2025-06-01 10:06:44.227408",
+        "title": "new post",
+        "media_link": "https://mitch-palczewski.github.io/assets/Screenshot%202025-01-02%20145154.png",
+        "caption": "yes",
+        "base_link": "https://mitch-palczewski.github.io/"
+    },
+    "000010": {
+        "date": "2025-06-01 10:07:08.821581",
+        "title": "asdasd",
+        "media_link": "https://mitch-palczewski.github.io/assets/Screenshot%202024-12-01%20163125.png",
+        "caption": "asdasd",
+        "base_link": "https://mitch-palczewski.github.io/"
+    },
+    "000011": {
+        "date": "2025-06-01 10:14:20.552973",
+        "title": "hello",
+        "media_link": "https://mitch-palczewski.github.io/assets/Screenshot%202024-12-01%20163341.png",
+        "caption": "world",
+        "base_link": "https://mitch-palczewski.github.io/"
     }
 }

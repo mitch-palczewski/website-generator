@@ -14,8 +14,8 @@ class Post(tk.Frame):
         self.caption = caption 
         self.id = id
         self.parent = parent
-        main_frame = tk.Frame(self)
-        main_frame.pack()
+        main_frame = tk.Frame(self, bg="blue")
+        main_frame.pack(expand=True, fill='both')
         footer = tk.Frame(self)
         footer.columnconfigure(0, weight=1)
         footer.columnconfigure(1, weight=1)
@@ -23,15 +23,15 @@ class Post(tk.Frame):
         footer.pack(expand=True, fill= 'x')
 
         #MAIN_FRAME
-        self.title_text = tk.Text(main_frame, height=1)
-        self.title_text.pack()
+        self.title_text = tk.Text(main_frame, height=1, width=40*span)
+        self.title_text.pack(expand=True)
         if image and os.path.exists(image):
             tk_image = open_image_as_tk_image(image, 300)
             self.image_lbl = tk.Label(main_frame, image=tk_image)
             self.image_reference = tk_image  # Keep a reference!
-            self.image_lbl.pack(pady=10)
-        self.caption_text = tk.Text(main_frame, height= 8)
-        self.caption_text.pack()
+            self.image_lbl.pack(pady=10, expand=True)
+        self.caption_text = tk.Text(main_frame, height= 8, width=40*span)
+        self.caption_text.pack(expand=True)
 
         #FOOTER
         self.edit_btn = tk.Button(footer, command=self.on_edit, text="Edit")
@@ -87,10 +87,16 @@ def set_post_title(post:bs, title:str):
     title_tag = post.find("h1", attrs={"data-type":"title"})
     title_tag.text = title
 
-def open_image_as_tk_image(image, height):
+def open_image_as_tk_image(image, max_height_width):
     pil_image = Image.open(image)
-    aspect_ratio = pil_image.width / pil_image.height
-    width = int(height * aspect_ratio)
+    if pil_image.height >= pil_image.width:
+        aspect_ratio = pil_image.width / pil_image.height
+        height = max_height_width
+        width = int(max_height_width * aspect_ratio)
+    else:
+        aspect_ratio = pil_image.height / pil_image.width
+        width = max_height_width 
+        height = int(width * aspect_ratio)
     pil_image = pil_image.resize((width,height), Image.Resampling.NEAREST)
     tk_image = ImageTk.PhotoImage(pil_image)
     return tk_image
