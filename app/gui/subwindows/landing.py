@@ -29,7 +29,7 @@ class Landing(tk.Frame):
         self.config(bg=C1)
         #GROUPER
         self.body = tk.Frame(self, bg=C2, border=3, relief="groove")
-        self.body.pack( expand=True, padx=40, pady=80, fill='both')
+        self.body.pack( expand=True, padx=40, pady=40, fill='both')
         
         #BODY
         new_post_btn = tk.Button(
@@ -38,10 +38,10 @@ class Landing(tk.Frame):
             command=lambda: main_window.load_content("NewPost"),
             width=BUTTON_WIDTH,
             height=BUTTON_HEIGHT,
-            font= FONT_XL,
+            font= FONT_MD,
             bg="white"
         )
-        new_post_btn.pack(padx=BUTTON_PADDING, pady=(80,BUTTON_PADDING))
+        new_post_btn.pack(padx=BUTTON_PADDING, pady=BUTTON_PADDING)
 
         configure_post_btn = tk.Button(
             self.body,
@@ -49,7 +49,7 @@ class Landing(tk.Frame):
             command=lambda: main_window.load_content("ConfigureWebsite"),
             width=BUTTON_WIDTH,
             height=BUTTON_HEIGHT,
-            font=FONT_XL,
+            font=FONT_MD,
             bg="white"
         )
         configure_post_btn.pack(padx=BUTTON_PADDING, pady=BUTTON_PADDING)
@@ -60,7 +60,8 @@ class Landing(tk.Frame):
             command=lambda: main_window.load_content("EditPosts"),
             width=BUTTON_WIDTH,
             height=BUTTON_HEIGHT,
-            font=BUTTON_FONT
+            font=FONT_MD,
+            bg='white'
         )
         edit_post_btn.pack(padx=BUTTON_PADDING, pady=BUTTON_PADDING)
 
@@ -73,7 +74,7 @@ class Landing(tk.Frame):
             self.body,
             text="Test With Local Host",
             command= start_server,
-            width=40,
+            width=25,
             height= 1,
             font=FONT_MD,
             bg="white"
@@ -86,6 +87,7 @@ class BaseLink(tk.Frame):
     def __init__(self, container):
         super().__init__(container)
         FONT_LG = font.Font(family="Helvetica", size=20, weight="bold")
+        FONT_MD = font.Font(family="Helvetica", size=16, weight="bold")
         FONT_SM = font.Font(family="Helvetica", size=10, weight="bold")
         self.config_data = None
         self.base_link = None
@@ -100,13 +102,13 @@ class BaseLink(tk.Frame):
         self.body.pack(fill='x', pady=2, padx=2)
 
         #BODY
-        self.lbl = tk.Label(self.body, text="Base Link:   ", font=FONT_LG, bg="white")
+        self.lbl = tk.Label(self.body, text="Base Link:   ", font=FONT_MD, bg="white")
         self.lbl.grid(column=0, row=0)
 
         self.text_field = ttk.Entry(
             master=self.body, 
             width= 40,
-            font=FONT_LG,
+            font=FONT_MD,
             state="disabled")
         self.text_field.grid(column=1,row=0)
 
