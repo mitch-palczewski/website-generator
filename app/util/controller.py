@@ -341,6 +341,94 @@ class HtmlController:
         if component_type == "footer":
             file_path = HtmlModel.ask_save_as_html_file(html, HTML_FOOTER_FOLDER, component_type)
             return file_path
+
+class PostController:     
+    @staticmethod
+    def insert_date(post_html:bs):
+        post_date:str = Controller.get_todays_date()
+        h6_tag = post_html.find("h6", attrs={"data-type": "date"})
+        if not h6_tag:
+            h6_tag = post_html.find("h6")
+        if not h6_tag:
+            raise ValueError("Error: No <h6> tag found for date element.")
+        if h6_tag:
+            h6_tag.insert(0,post_date)
+
+    @staticmethod
+    def insert_title(post_html:bs, title:str):
+        h1_tag = post_html.find("h1", attrs={"data-type": "title"})
+        if not h1_tag:
+            h1_tag = post_html.find("h1")
+        if not h1_tag:
+            raise ValueError("Error: No <h1> tag found for title element.")
+        h1_tag.clear()  # Remove existing text/content
+        h1_tag.insert(0, title)
+
+    @staticmethod
+    def insert_image(post_html:bs, image:str):
+        img_tag = post_html.find("img", attrs={"data-type": "media"})
+        if not img_tag:
+            img_tag = post_html.find("img")
+        if not img_tag:
+            raise ValueError("Error: No <img> tag found for media element.")
+        if img_tag:
+            img_tag["src"] = image
+
+    @staticmethod
+    def insert_caption(post_html:bs, caption:str):
+        p_tag = post_html.find("p", attrs={"data-type": "caption"})
+        if not p_tag:
+            p_tag = post_html.find("p")
+        if not p_tag:
+            raise ValueError("Error: No <p> tag found for caption element.")
+        p_tag.clear()
+        p_tag.insert(0, caption)
+    
+    @staticmethod
+    def insert_post_id(post_html: bs, new_post_id, column_span:str):
+        column_span_class = 'lg:col-span-' + column_span
+        post_div_tag = post_html.find("div", attrs={"data-post_id": "post_id"})
+        if not post_div_tag:
+            post_div_tag = post_html.find("div")
+        if not post_div_tag:
+            raise ValueError("Error: No <div> tag found for new_post_id element.")
+        post_div_tag["data-post_id"] = new_post_id
+        post_div_tag['class'].append(column_span_class)
+
+    @staticmethod
+    def insert_message_btn(post_messaging:bool, post_html:bs, title:str, media_link:str, caption:str):
+        message_btn_tag = post_html.find("button", attrs={"data-type": "message_btn"})
+        if not message_btn_tag:
+            raise ValueError("Error: No <button data-type=message_btn> tag found.")
+        if not post_messaging:
+            message_btn_tag.decompose()
+            return
+        formated_media_link = media_link.replace("\\", "/")
+        formated_title = StringController.format_string_for_html(title)
+        formated_caption = StringController.format_string_for_html(caption)
+        onclick_value = "openMessageFrom('{}','{}', '{}')".format(formated_title, formated_media_link, formated_caption)
+        message_btn_tag["onclick"] = onclick_value
+        message_btn_tag['onclick'] = message_btn_tag['onclick'].replace('\n', '')
+    
+    @staticmethod
+    def update_post(id:str, title:str = None, caption:str = None):
+        webpage_html = HtmlController.get_webpage_html()
+        post = webpage_html.find("div", attrs={"data-post_id": id})
+        if not post:
+            print(f"Could not find post by id {id}")
+            return
+        if title:
+            PostController.insert_title(post, title)
+        if caption:
+            PostController.insert_caption(post, caption)        
+        HtmlModel.write_html_file(HTML_WEBPAGE_PATH, webpage_html)
+    
+    @staticmethod
+    def delete_post(id:str):
+        webpage_html = HtmlController.get_webpage_html()
+        post = webpage_html.find("div", attrs={"data-post_id": id})
+        post.decompose()
+        HtmlModel.write_html_file(HTML_WEBPAGE_PATH, webpage_html)
         
 class MessagingController:
     @staticmethod

@@ -16,7 +16,7 @@ from app.util.controller import HtmlController, JsonController
 from app.config import get_app_root
 
 class EditPosts(tk.Frame):
-    def __init__(self, container, main_window):
+    def __init__(self, container):
         super().__init__(container)
 
         #GROUPER FRAMES
@@ -32,6 +32,11 @@ class EditPosts(tk.Frame):
         posts = webpage_html.find_all("div", attrs={"data-type": "post"})
         for post in posts:
             self.get_post_attributes(post)
+
+    def reset_scrollframe(self):
+        for widget in self.inner_scroll_frame.winfo_children():
+            widget.destroy()
+        self.init_scrollframe()
 
     def get_post_attributes(self, post: bs):
         try:
@@ -56,6 +61,6 @@ class EditPosts(tk.Frame):
             id = ""
             print("Error did not find post id")
         print(f"{title}  {img_src}  {caption}  {id}")
-        post_frame = Post(self.inner_scroll_frame, id, title, img_src, caption, 1)
+        post_frame = Post(self.inner_scroll_frame, id, title, img_src, caption, 1, self)
         post_frame.pack(padx=20, pady=20)
         pass

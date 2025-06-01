@@ -119,7 +119,7 @@ class MainWindow(tk.Tk):
             self.set_page_title("Edit Posts")
             self.pack_landing_page_btn() 
             self.pack_test_btn()
-            edit_posts = EditPosts(self.body_content, self)
+            edit_posts = EditPosts(self.body_content)
             edit_posts.pack(fill='both', expand= True)
   
         self.body_content.pack(fill='both', expand= True, padx=10, pady=10)
