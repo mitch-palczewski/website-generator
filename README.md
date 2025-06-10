@@ -1,12 +1,3 @@
 # website-generator
 
-
-# TODO 
-## New Post 
-- Include style selection 
-## General Config
-- Upload Icon 
-## Messaging Config 
-- Styling 
-- Discription 
-## 
+pyinstaller --onefile --add-data "config/config.json;config" --add-data "config/html_validation.json;html_validation" app/main.py                                                                               

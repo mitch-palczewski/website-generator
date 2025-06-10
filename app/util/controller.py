@@ -195,14 +195,10 @@ class JsonController:
         config_data = JsonController.get_config_data()
         if new_email == config_data["email"]:
             return
-        if StringModel.is_email(new_email):
-            config_data["email"] = new_email
-            JsonModel.write_json_file(CONFIG_JSON_PATH, config_data)
-            return
-        if StringModel.is_hashed_email(new_email):
-            config_data["email"] = new_email
-            JsonModel.write_json_file(CONFIG_JSON_PATH, config_data)
-            return
+
+        config_data["email"] = new_email
+        JsonModel.write_json_file(CONFIG_JSON_PATH, config_data)
+ 
 
 class HtmlController:
     @staticmethod

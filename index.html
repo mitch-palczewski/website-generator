@@ -35,7 +35,7 @@
        world
       </p>
      </div>
-     <button class="mt-5 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300 absolute bottom-3 left-2 right-2 z-10" data-type="message_btn" id="message_btn" onclick="openMessageFrom('hello','https://mitch-palczewski.github.io/assets/Screenshot%202024-12-01%20163341.png', 'world')">
+     <button class="mt-5 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300 absolute bottom-3 left-2 right-2 z-10  hidden" data-type="message_btn" id="message_btn" onclick="openMessageFrom('hello','https://mitch-palczewski.github.io/assets/Screenshot%202024-12-01%20163341.png', 'world')">
       Comment
      </button>
     </div>
@@ -54,7 +54,7 @@
        yes
       </p>
      </div>
-     <button class="mt-5 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300 absolute bottom-3 left-2 right-2 z-10" data-type="message_btn" id="message_btn" onclick="openMessageFrom('new post','https://mitch-palczewski.github.io/assets/Screenshot%202025-01-02%20145154.png', 'yes')">
+     <button class="mt-5 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300 absolute bottom-3 left-2 right-2 z-10  hidden" data-type="message_btn" id="message_btn" onclick="openMessageFrom('new post','https://mitch-palczewski.github.io/assets/Screenshot%202025-01-02%20145154.png', 'yes')">
       Comment
      </button>
     </div>
@@ -73,7 +73,7 @@
        this is a new post
       </p>
      </div>
-     <button class="mt-5 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300 absolute bottom-3 left-2 right-2 z-10" data-type="message_btn" id="message_btn" onclick="openMessageFrom('img1-13','https://mitch-palczewski.github.io/assets/Screenshot%202025-01-08%20134310.png', 'this is a new post')">
+     <button class="mt-5 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300 absolute bottom-3 left-2 right-2 z-10  hidden" data-type="message_btn" id="message_btn" onclick="openMessageFrom('img1-13','https://mitch-palczewski.github.io/assets/Screenshot%202025-01-08%20134310.png', 'this is a new post')">
       Comment
      </button>
     </div>
@@ -92,7 +92,7 @@
        world
       </p>
      </div>
-     <button class="mt-5 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300 absolute bottom-3 left-2 right-2 z-10" data-type="message_btn" id="message_btn" onclick="openMessageFrom('hello ','https://mitch-palczewski.github.io/assets/Screenshot%20%281%29.png', 'world')">
+     <button class="mt-5 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300 absolute bottom-3 left-2 right-2 z-10  hidden" data-type="message_btn" id="message_btn" onclick="openMessageFrom('hello ','https://mitch-palczewski.github.io/assets/Screenshot%20%281%29.png', 'world')">
       Comment
      </button>
     </div>
@@ -111,7 +111,7 @@
        banans
       </p>
      </div>
-     <button class="mt-5 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300 absolute bottom-3 left-2 right-2 z-10" data-type="message_btn" id="message_btn" onclick="openMessageFrom('iguuigfiu','https://mitch-palczewski.github.io/assets/Screenshot%20%283%29.png', 'iufifyfiy')">
+     <button class="mt-5 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300 absolute bottom-3 left-2 right-2 z-10  hidden" data-type="message_btn" id="message_btn" onclick="openMessageFrom('iguuigfiu','https://mitch-palczewski.github.io/assets/Screenshot%20%283%29.png', 'iufifyfiy')">
       Comment
      </button>
     </div>
@@ -142,34 +142,6 @@
     Footer Section
    </p>
   </footer>
-  <div class="overlay z-50" id="message_popup">
-   <div class="modal max-w-2xl w-full mx-auto">
-    <form action="https://formsubmit.co/8e2308e9935d31f75b6fc3fb137d2c63" id="message_form" method="POST" target="_blank">
-     <input name="_format" type="hidden" value="html"/>
-     <input id="message_title" name="Title" type="hidden" value=""/>
-     <input id="message_image" name="Image" type="hidden" value=""/>
-     <input id="message_caption" name="Caption" type="hidden" value="."/>
-     <div class="flex justify-center items-center">
-      <img alt="Message Image" class="w-auto h-80 object-cover p-3 mx-auto" id="message_media" loading="lazy" src=""/>
-     </div>
-     <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mb-2">
-      <div>
-       <input class="p-1 w-full border focus:outline-none focus:ring-2 focus:ring-blue-500" name="name" placeholder="Full Name" required="" type="text"/>
-      </div>
-      <div>
-       <input class="p-1 w-full border focus:outline-none focus:ring-2 focus:ring-blue-500" name="email" placeholder="Email" required="" type="email"/>
-      </div>
-     </div>
-     <textarea class="p-1 w-full border focus:outline-none focus:ring-2 focus:ring-blue-500" name="comment" placeholder="Comment" required="" rows="5" style="min-width: 100%; min-height: 100px"></textarea>
-     <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white p-1 border border-blue-500 hover:border-transparent w-full" type="submit">
-      Submit Comment
-     </button>
-    </form>
-    <button onclick="closeMessageForm()">
-     Close
-    </button>
-   </div>
-  </div>
   <script src="script.js">
   </script>
  </body>

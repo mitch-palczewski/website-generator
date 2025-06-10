@@ -105,8 +105,7 @@ class MessagingSettings(tk.Frame):
 
     def update(self):
         new_email = self.text_field.get()
-        self.config_data = JsonController.get_config_data()
-        self.email = self.config_data["email"]
+        self.email = JsonController.get_config_data("email")
         self.update_btn.grid_forget()
         self.cancel_btn.grid_forget()
         self.edit_btn.grid(column=1, row=1, padx=5, sticky=tk.EW)  
