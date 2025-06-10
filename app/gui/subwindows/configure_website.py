@@ -12,6 +12,7 @@ from app.gui.subwindows.configure_windows.general_config import GeneralConfig
 from app.gui.subwindows.configure_windows.config_post import ConfigPost
 from app.gui.subwindows.configure_windows.config_header import ConfigHeader
 from app.gui.subwindows.configure_windows.config_footer import ConfigFooter
+from app.gui.subwindows.configure_windows.config_site import ConfigSite
 from app.util.controller import JsonController
 colors = JsonController.get_config_data("colors")
 C1 = colors["c1"]
@@ -37,6 +38,7 @@ class ConfigureWebsite(tk.Frame):
         header_frame.columnconfigure(2, weight=1)
         header_frame.columnconfigure(3, weight=1)
         header_frame.columnconfigure(4, weight=1)
+        header_frame.columnconfigure(5, weight=1)
         header_frame.pack(fill="x", expand=True)
         btn_padx = 10
         btn_pady = 10
@@ -80,6 +82,7 @@ class ConfigureWebsite(tk.Frame):
             font=FONT_SM
         )
         self.config_footer_btn.grid(column=4, row=0, sticky=tk.EW, padx=btn_padx, pady=btn_pady)
+
         
         #BODY
         self.body_frame = tk.Frame(self, bg=C1)
@@ -104,7 +107,7 @@ class ConfigureWebsite(tk.Frame):
 
     def load_content(self, content:str):
         """
-        Accepts content: "GeneralConfig", "ConfigMessaging", "ConfigPost"
+        Accepts content: "GeneralConfig", "ConfigMessaging", "ConfigPost", "ConfigSite"
         """
         self.set_btns_color(C5)
         self.new_content_frame()

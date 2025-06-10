@@ -56,6 +56,17 @@ class Controller:
 
     @staticmethod 
     def get_resource_paths(path_type=None):
+        """
+            "config_json"
+            "html_validation"
+            "posts_json"
+            "message_html"
+            "html_post_folder"
+            "html_header_folder"
+            "html_footer_folder"
+            "html_webpage"
+            "assets_folder"
+        """
         if path_type:
             return RESOURCE_PATHS[path_type]
         return RESOURCE_PATHS
@@ -330,7 +341,7 @@ class HtmlController:
         return valid
     
     @staticmethod
-    def save_component_file(html, component_type):
+    def save_as_component_file(html, component_type):
         if component_type == "post":
             file_path = HtmlModel.ask_save_as_html_file(html, HTML_POST_FOLDER, component_type)
             return file_path
@@ -340,6 +351,10 @@ class HtmlController:
         if component_type == "footer":
             file_path = HtmlModel.ask_save_as_html_file(html, HTML_FOOTER_FOLDER, component_type)
             return file_path
+    
+    @staticmethod
+    def save_component_file(file_path, html):
+        HtmlModel.write_html_file(file_path, html)
 
 class PostController:     
     @staticmethod

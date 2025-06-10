@@ -54,7 +54,6 @@ class HtmlComponentEditor(tk.Frame):
         #FOOTER
         self.input_btn = tk.Button(footer,text=f"Update {component_type} HTML", command=self.update_html, bg=C4, font=FONT_LG)
         
-
         self.load_components()
 
     def load_components(self, selected_component_path = None):
@@ -80,8 +79,6 @@ class HtmlComponentEditor(tk.Frame):
                 self.selected_component_path = selected_component_path
                 c.load(selected_component_path)
 
-            
-    
     def update_html(self):
         HtmlController.update_component(
             component_type=self.component_type, 
@@ -115,6 +112,8 @@ class TextEditor(tk.Frame):
         footer.pack(fill='x', expand=True, ipady=10, ipadx=10)
         format_btn = tk.Button(footer, text="Format", command=self.format, bg="white", width=15)
         format_btn.pack(side=tk.LEFT, padx=5)
+        self.save_as_btn = tk.Button(footer, text="Save As", command=self.save_as, bg="white", width=15)
+        self.save_as_btn.pack(side=tk.RIGHT, padx=5)
         self.save_btn = tk.Button(footer, text="Save", command=self.save, bg="white", width=15)
         self.save_btn.pack(side=tk.RIGHT, padx=5)
         self.validate_btn = tk.Button(footer, text="Validate", command=self.validate, bg="white", width=15)
@@ -148,14 +147,20 @@ class TextEditor(tk.Frame):
         
     def save(self):
         html = self.text_field.get('1.0', tk.END)
-        file_path = HtmlController.save_component_file(html, self.component_type)
+        HtmlController.save_component_file(self.selected_component_path, html)
+        self.html_component_editor.load_components(self.selected_component_path)
+
+    def save_as(self):
+        html = self.text_field.get('1.0', tk.END)
+        file_path = HtmlController.save_as_component_file(html, self.component_type)
         self.html_component_editor.load_components(file_path)
+
         
     def change_validate_btn_color(self, color):
         self.validate_btn.config(bg=color)
         
     def change_save_btn_color(self, color):
-        self.save_btn.config(bg=color)
+        self.save_as_btn.config(bg=color)
 
 class Component(tk.Frame):
     def __init__(self, container, html_component_editor: HtmlComponentEditor,component:str, component_folder:str, text_editor:TextEditor):

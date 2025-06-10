@@ -26,9 +26,9 @@ class MainWindow(tk.Tk):
         
         FONT_SM = font.Font(family="Helvetica", size=10, weight="bold")
         self.title("Website Generator")
-        self.geometry(f"{1820}x{1080}+5+5")
+        self.geometry(f"{1720}x{800}+5+5")
         self.resizable(True, True)
-        self.minsize(1820, 1080 )
+        self.minsize(1720, 900 )
         self.config(bg=C3, border=2, relief="solid")
         
         #HEADER

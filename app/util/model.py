@@ -89,7 +89,6 @@ class HtmlModel:
 
     @staticmethod
     def write_html_file(html_file_path:str, data:bs) -> None:
-        data=data.prettify()
         with open(html_file_path, "w", encoding="utf-8") as file:
             file.write(str(data))
         pass
@@ -124,6 +123,7 @@ class HtmlModel:
                 file.write(html)
             print(f"File saved to: {file_path}")
         return file_path
+    
     
    
 

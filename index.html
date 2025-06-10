@@ -1,44 +1,109 @@
 <!DOCTYPE html>
+
 <html lang="en">
- <head>
-  <link href="assets\Screenshot 2024-12-01 164529.png" rel="icon" type="image/png"/>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>
+<head>
+<link href="assets\Screenshot 2024-12-01 164529.png" rel="icon" type="image/png"/>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>
    spooky island is spooky
   </title>
-  <link href="styles.css" rel="stylesheet"/>
-  <script src="https://cdn.tailwindcss.com">
-  </script>
- </head>
- <body class="flex flex-col min-h-screen">
-  <header class="bg-gradient-to-r from-[#e0e4f8] via-blue-300 to-[#7890f8] p-12">
-   <div class="max-w-5xl mx-auto text-center">
-    <h1 class="text-5xl font-serif font-bold text-white">
-     Welcome to my cool scrapbook
-    </h1>
-    <p class="mt-4 text-xl text-white opacity-90">
-     with a cool gradient
-    </p>
-   </div>
-  </header>
-  <main class="flex-1 p-4 bg-[None]">
-   <!--vvv Grid div-->
-   <div class="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3" id="posts">
-   </div>
-   <!--^^^ Grid /div-->
-  </main>
-  <footer class="bg-gradient-to-r from-[#e0e4f8] via-blue-300 to-[#7890f8] p-5">
-   <div class="max-w-5xl mx-auto text-center">
-    <h1 class="text-md font-serif font-bold text-white">
+<link href="styles.css" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com">
+</script>
+</head>
+<body class="flex flex-col min-h-screen">
+<header class="bg-blue-600 text-white p-4">
+<h1 class="text-3xl font-bold text-center">
+  Welcome to my Scrapbook
+ </h1>
+</header>
+<main class="flex-1 p-4 bg-[None]">
+<!--vvv Grid div-->
+<div class="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3" id="posts"><div class="bg-cover bg-center relative p-5 lg:col-span-1" data-post_id="000016" data-type="post" id="post_id" style="background-image: url('https://lipsum.app/random/1600x900');">
+<div class="grid grid-cols-2">
+<h1 class="text-2xl font-bold text-white" data-type="title" id="title">asdasd</h1>
+<h6 class="text-right" data-type="date" id="date">06-10-2025
+</h6>
+</div>
+<img alt="" class="w-full max-h-[60vh] object-contain rounded py1" data-type="media" id="media" loading="lazy" src="assets\Screenshot (2).png"/>
+<div class="bg-gray-300 p-2 mt-4 mb-14">
+<p data-type="caption" id="caption">asdasd</p>
+</div>
+<button class="mt-5 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300 absolute bottom-3 left-2 right-2 z-10" data-type="message_btn" id="message_btn" onclick="openMessageFrom('asdasd','https://mitch-palczewski.github.io/assets/Screenshot%20%282%29.png', 'asdasd')">
+  Comment
+ </button>
+</div>
+<div class="p-3 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 relative lg:col-span-1" data-post_id="000015" data-type="post" id="post_id">
+<div class="grid grid-cols-2">
+<h1 class="text-2xl font-bold text-gray-800" data-type="title" id="title">ugiuh</h1>
+<h6 class="text-right" data-type="date" id="date">06-10-2025
+</h6>
+</div>
+<img alt="" class="w-full max-h-[60vh] object-contain rounded py1" data-type="media" id="media" loading="lazy" src="assets\Screenshot 2024-12-01 163341.png"/>
+<div class="bg-gray-300 p-2 mt-4 mb-14">
+<p data-type="caption" id="caption">sdfas</p>
+</div>
+<button class="mt-5 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300 absolute bottom-3 left-2 right-2 z-10" data-type="message_btn" id="message_btn" onclick="openMessageFrom('ugiuh','https://mitch-palczewski.github.io/assets/Screenshot%202024-12-01%20163341.png', 'sdfas')">
+  Comment
+ </button>
+</div>
+<div class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 relative lg:col-span-1" data-post_id="000014" data-type="post" id="post_id">
+<div class="grid grid-cols-2">
+<h1 class="text-2xl font-bold text-gray-800" data-type="title" id="title">asdasd</h1>
+<h6 class="text-right" data-type="date" id="date">06-10-2025
+</h6>
+</div>
+<img alt="" class="w-full max-h-[60vh] object-contain rounded py1" data-type="media" id="media" loading="lazy" src="assets\Screenshot 2024-12-01 165301.png"/>
+<div class="bg-gray-300 p-2 mt-4 mb-14">
+<p data-type="caption" id="caption">asdasda</p>
+</div>
+<button class="mt-5 px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300 absolute bottom-3 left-2 right-2 z-10" data-type="message_btn" id="message_btn" onclick="openMessageFrom('asdasd','https://mitch-palczewski.github.io/assets/Screenshot%202024-12-01%20165301.png', 'asdasda')">
+  Comment
+ </button>
+</div>
+
+</div>
+<!--^^^ Grid /div-->
+</main>
+<footer class="bg-gradient-to-r from-[#e0e4f8] via-blue-300 to-[#7890f8] p-5">
+<div class="max-w-5xl mx-auto text-center">
+<h1 class="text-md font-serif font-bold text-white">
      Thanks For visiting my Scrapbook
     </h1>
-    <p class="mt-4 text-xl text-white opacity-90">
+<p class="mt-4 text-xl text-white opacity-90">
      with a cool gradient
     </p>
-   </div>
-  </footer>
-  <script src="script.js">
-  </script>
- </body>
+</div>
+</footer><div class="overlay z-50" id="message_popup">
+<div class="modal max-w-2xl w-full mx-auto">
+<form action="https://formsubmit.co/ " id="message_form" method="POST" target="_blank">
+<input name="_format" type="hidden" value="html"/>
+<input id="message_title" name="Title" type="hidden" value=""/>
+<input id="message_image" name="Image" type="hidden" value=""/>
+<input id="message_caption" name="Caption" type="hidden" value="."/>
+<div class="flex justify-center items-center">
+<img alt="Message Image" class="w-auto h-80 object-cover p-3 mx-auto" id="message_media" loading="lazy" src=""/>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-2 mb-2">
+<div>
+<input class="p-1 w-full border focus:outline-none focus:ring-2 focus:ring-blue-500" name="name" placeholder="Full Name" required="" type="text"/>
+</div>
+<div>
+<input class="p-1 w-full border focus:outline-none focus:ring-2 focus:ring-blue-500" name="email" placeholder="Email" required="" type="email"/>
+</div>
+</div>
+<textarea class="p-1 w-full border focus:outline-none focus:ring-2 focus:ring-blue-500" name="comment" placeholder="Comment" required="" rows="5" style="min-width: 100%; min-height: 100px"></textarea>
+<button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white p-1 border border-blue-500 hover:border-transparent w-full" type="submit">
+    Submit Comment
+   </button>
+</form>
+<button onclick="closeMessageForm()">
+   Close
+  </button>
+</div>
+</div>
+<script src="script.js">
+</script>
+</body>
 </html>
