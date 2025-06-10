@@ -14,6 +14,12 @@ from app.gui.components.post import Post
 from app.util.controller import HtmlController, JsonController
 from app.config import get_app_root
 
+colors = JsonController.get_config_data("colors")
+C1 = colors["c1"]
+C2 = colors["c2"]
+C3 = colors["c3"]
+C4 = colors["c4"]
+
 class EditPosts(tk.Frame):
     def __init__(self, container):
         super().__init__(container)

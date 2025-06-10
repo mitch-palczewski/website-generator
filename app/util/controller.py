@@ -24,9 +24,6 @@ HTML_WEBPAGE_PATH = RESOURCE_PATHS["html_webpage"]
 ASSET_FOLDER_PATH = RESOURCE_PATHS["assets_folder"]
 
 
-
-
-
 class Controller:
     @staticmethod
     def get_todays_date()->str:
@@ -46,10 +43,16 @@ class Controller:
     
     @staticmethod
     def web_page_change():
-        auto_push_git = JsonController.get_config_data("auto_push_git")
-        if auto_push_git:
-            push_git()
+        Controller.push_to_git()
         start_server()
+    
+    @staticmethod
+    def push_to_git():
+        auto_push_git = JsonController.get_config_data("auto_push_git")
+        github_repo_url = JsonController.get_config_data("github_repo_url")
+        if auto_push_git:
+            push_git(github_repo_url)
+
 
     @staticmethod 
     def get_resource_paths(path_type=None):

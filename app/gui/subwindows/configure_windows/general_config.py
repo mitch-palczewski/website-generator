@@ -13,6 +13,7 @@ except ImportError:
     pass
 
 from app.util.controller import JsonController, FileController, HtmlController, Controller
+from app.gui.components.config_text_editor import ConfigTextEditor
 
 colors = JsonController.get_config_data("colors")
 C1 = colors["c1"]
@@ -42,6 +43,11 @@ class GeneralConfig(tk.Frame):
         column_config.grid(column=0, row=2, sticky=tk.W, pady=10)
         bg_config = BackgroundColor(body)
         bg_config.grid(column=0, row=3, sticky=tk.W, pady=10)
+        git_hub_config = ConfigTextEditor(body, "Github Repository Link:", update_github_repo_url, "github_repo_url", 60)
+        git_hub_config.grid(column=0, row=4, sticky= tk.W, pady=10)
+
+def update_github_repo_url(new_github_repo_url):
+    JsonController.set_config_data("github_repo_url", new_github_repo_url)
 
 class BackgroundColor(tk.Frame):
     def __init__(self, container):
@@ -53,7 +59,7 @@ class BackgroundColor(tk.Frame):
         body.columnconfigure(0, weight=1)
         body.columnconfigure(1, weight=1)
         body.pack(padx=5, pady=5)
-        lbl = tk.Label(body, text="Web Tab Icon: ", font=FONT_LG, bg="white")
+        lbl = tk.Label(body, text="Background Color: ", font=FONT_LG, bg="white")
         lbl.grid(column=0, row=0)
         btn = tk.Button(body,
                         text= "Background Color",

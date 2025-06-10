@@ -5,7 +5,13 @@ import os
 from PIL import Image, ImageTk
 
 
-from app.util.controller import HtmlController, PostController
+from app.util.controller import HtmlController, PostController, JsonController, Controller
+
+colors = JsonController.get_config_data("colors")
+C1 = colors["c1"]
+C2 = colors["c2"]
+C3 = colors["c3"]
+C4 = colors["c4"]
 
 class Post(tk.Frame):
     def __init__(self, container, id, title, image, caption, span, parent):
@@ -14,32 +20,33 @@ class Post(tk.Frame):
         self.caption = caption 
         self.id = id
         self.parent = parent
-        main_frame = tk.Frame(self, bg="blue")
+        self.config(border=2, relief="solid", bg=C1)
+        main_frame = tk.Frame(self, bg=C1)
         main_frame.pack(expand=True, fill='both')
-        footer = tk.Frame(self)
+        footer = tk.Frame(self, bg=C1)
         footer.columnconfigure(0, weight=1)
         footer.columnconfigure(1, weight=1)
         footer.columnconfigure(2, weight=1)
-        footer.pack(expand=True, fill= 'x')
+        footer.pack(expand=True, fill= 'x', padx=5, pady=5)
 
         #MAIN_FRAME
         self.title_text = tk.Text(main_frame, height=1, width=40*span)
-        self.title_text.pack(expand=True)
+        self.title_text.pack(expand=True, padx=5, pady=5)
         if image and os.path.exists(image):
             tk_image = open_image_as_tk_image(image, 300)
             self.image_lbl = tk.Label(main_frame, image=tk_image)
             self.image_reference = tk_image  # Keep a reference!
             self.image_lbl.pack(pady=10, expand=True)
         self.caption_text = tk.Text(main_frame, height= 8, width=40*span)
-        self.caption_text.pack(expand=True)
+        self.caption_text.pack(expand=True, padx=5, pady=5)
 
         #FOOTER
-        self.edit_btn = tk.Button(footer, command=self.on_edit, text="Edit")
+        self.edit_btn = tk.Button(footer, command=self.on_edit, text="Edit", bg=C4)
         self.edit_btn.grid(column=0, row=0)
 
-        self.cancel_btn = tk.Button(footer, command=self.on_cancel, text="Cancel")
-        self.save_btn = tk.Button(footer, command=self.on_save, text="Save")
-        self.delete_btn = tk.Button(footer, command=self.on_delete, text="Delete")
+        self.cancel_btn = tk.Button(footer, command=self.on_cancel, text="Cancel", bg=C4)
+        self.save_btn = tk.Button(footer, command=self.on_save, text="Save", bg=C4)
+        self.delete_btn = tk.Button(footer, command=self.on_delete, text="Delete", bg=C4)
 
         self.init_post(title, caption, span)
 
@@ -72,9 +79,10 @@ class Post(tk.Frame):
         self.caption = self.caption_text.get("1.0", tk.END)
         self.on_cancel()
         PostController.update_post(self.id, self.title, self.caption)
+        Controller.push_to_git()
 
     def on_delete(self):
-        answer = askyesno(f"Delete Post ID {self.id}")
+        answer = askyesno(f"Delete Post ID {self.id}", message="Deleting Post can not be undone \n confirm deletion")
         if answer:
             PostController.delete_post(self.id)
             self.parent.reset_scrollframe()

@@ -28,8 +28,10 @@ class Landing(tk.Frame):
         FONT_MD = font.Font(family="Helvetica", size=16, weight="bold")
         self.config(bg=C1)
         #GROUPER
-        self.body = tk.Frame(self, bg=C2, border=3, relief="groove")
-        self.body.pack( expand=True, padx=40, pady=40, fill='both')
+        container = tk.Frame(self, bg=C2, border=3, relief="groove")
+        container.pack( expand=True, padx=40, pady=40, fill='both')
+        self.body = tk.Frame(container, bg=C2)
+        self.body.pack( expand=True)
         
         #BODY
         new_post_btn = tk.Button(
@@ -75,7 +77,7 @@ class Landing(tk.Frame):
             text="Test With Local Host",
             command= start_server,
             width=25,
-            height= 1,
+            height=BUTTON_HEIGHT,
             font=FONT_MD,
             bg="white"
         )

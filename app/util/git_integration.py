@@ -3,8 +3,8 @@ import git
 from git import InvalidGitRepositoryError, GitCommandError
 
 
-def push_git():
-    github_repo_url = 'https://github.com/mitch-palczewski/mitch-palczewski.github.io.git'
+
+def push_git(github_repo_url):
     
     try:
         repo = git.Repo('.', search_parent_directories=True)
